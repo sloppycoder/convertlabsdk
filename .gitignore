@@ -47,3 +47,6 @@ pkg
 
 # For rubinius:
 #*.rbc
+
+# ruby debugger
+.byebug_*

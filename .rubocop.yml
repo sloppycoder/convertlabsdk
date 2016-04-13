@@ -1,0 +1,21 @@
+# inherit_from:
+#   - .rubocop_todo.yml
+
+#AllCops:
+#  Exclude:
+#    - 'features/**/*'
+
+Style/Encoding:
+  Enabled: true
+
+Style/TrailingWhitespace:
+  Enabled: false
+
+Metrics/MethodLength:
+  Max: 15
+
+Metrics/AbcSize:
+  Max: 20  
+
+Metrics/LineLength:
+  Max: 90

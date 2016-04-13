@@ -14,15 +14,16 @@ require 'rake'
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://guides.rubygems.org/specification-reference/ for more options
-  gem.name = "convertlab-sdk"
-  gem.homepage = "http://github.com/sloppycoder/convertlab-sdk"
-  gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.name = "convertlabsdk"
+  gem.homepage = "http://github.com/sloppycoder/convertlabsdk"
+  gem.license = "Commercial"
+  gem.summary = %Q{ConvertLab SDK}
+  gem.description = %Q{Library to facilitate synchronizing your application object with ConvertLab cloud services}
   gem.email = "guru.lin@gmail.com"
   gem.authors = ["Li Lin"]
   # dependencies defined in Gemfile
 end
+
 Jeweler::RubygemsDotOrgTasks.new
 
 require 'rake/testtask'
@@ -38,14 +39,27 @@ task :simplecov do
   Rake::Task['test'].execute
 end
 
+require 'rubocop/rake_task'
+
+desc 'Run RuboCop on the lib directory'
+RuboCop::RakeTask.new(:rubocop) do |task|
+  task.patterns = ['lib/**/*.rb', 'test/**/*.rb']
+  # only show the files with failures
+  #task.formatters = ['files']
+  # don't abort rake on failure
+  task.fail_on_error = false
+end
+
 task :default => :test
 
-require 'rdoc/task'
-Rake::RDocTask.new do |rdoc|
-  version = File.exist?('VERSION') ? File.read('VERSION') : ""
+# TODO: restore rdoc later
 
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "convertlab-sdk #{version}"
-  rdoc.rdoc_files.include('README*')
-  rdoc.rdoc_files.include('lib/**/*.rb')
-end
+# require 'rdoc/task'
+# Rake::RDocTask.new do |rdoc|
+#   version = File.exist?('VERSION') ? File.read('VERSION') : ""
+
+#   rdoc.rdoc_dir = 'rdoc'
+#   rdoc.title = "convertlabsdk #{version}"
+#   rdoc.rdoc_files.include('README*')
+#   rdoc.rdoc_files.include('lib/**/*.rb')
+# end
