@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 # Add dependencies required to use your gem here.
 # Example:
 #   gem 'activesupport', '>= 2.3.5'
+gem 'rest-client'
 
 # Add dependencies to develop your gem here.
 # Include everything needed to run rake, tests, features, etc.
@@ -13,7 +14,6 @@ group :development do
   gem 'simplecov', '>= 0'
   gem 'rubocop'
   gem 'byebug'
-  gem 'rest-client'
   gem 'test-unit'
   gem 'webmock'
   gem 'vcr'

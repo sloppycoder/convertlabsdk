@@ -24,7 +24,8 @@ Jeweler::Tasks.new do |gem|
   # dependencies defined in Gemfile
 end
 
-Jeweler::RubygemsDotOrgTasks.new
+# do not publish to rubygems.org just yet
+#Jeweler::RubygemsDotOrgTasks.new
 
 require 'rake/testtask'
 Rake::TestTask.new(:test) do |test|
