@@ -75,5 +75,4 @@ module ConvertLab
   #
   class SycnedObject
   end
-
 end

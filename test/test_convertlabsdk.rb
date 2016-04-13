@@ -1,25 +1,24 @@
 # encoding: utf-8
 
 require 'helper'
-require 'byebug'
 require 'webmock'
 require 'vcr'
+require 'byebug'
 
 VCR.configure do |config|
-  config.cassette_library_dir = "fixtures/vcr_cassettes"
+  config.cassette_library_dir = 'fixtures/vcr_cassettes'
   config.hook_into :webmock 
 end
 
-
-class TestConvertlabSdk < Test::Unit::TestCase
+class TestAppClientToken < Test::Unit::TestCase
   should 'get a valid access token' do
-    VCR.use_cassette("get_new_access_token") do
+    VCR.use_cassette('get_new_access_token') do
       assert_not_nil create_app_client.access_token
     end
   end
 
   should 'should get a new token after expiring the old one' do
-    VCR.use_cassette("get_new_access_token_after_expiry") do
+    VCR.use_cassette('get_new_access_token_after_expiry') do
       app_client = create_app_client
       old_token = app_client.access_token
       assert_not_nil old_token

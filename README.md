@@ -29,6 +29,6 @@ helpers that facilitate syncing of external objects to convertlab cloud services
 
 ### TODO
 * add object access APIs in AppClient class (new classes outside AppClient?)
-* (low) study RSpec vs MiniTest vs Test::Unit
-* implent local storage helper to keep tracking of mapping (big)
+* implement local storage helper to keep tracking of mapping (big)
+* implement logging
 
