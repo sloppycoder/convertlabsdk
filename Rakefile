@@ -41,7 +41,6 @@ task :simplecov do
 end
 
 require 'rubocop/rake_task'
-
 desc 'Run RuboCop on the lib directory'
 RuboCop::RakeTask.new(:rubocop) do |task|
   task.patterns = ['lib/**/*.rb', 'test/**/*.rb']
