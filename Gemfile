@@ -15,4 +15,6 @@ group :development do
   gem 'byebug'
   gem 'rest-client'
   gem 'test-unit'
+  gem 'webmock'
+  gem 'vcr'
 end

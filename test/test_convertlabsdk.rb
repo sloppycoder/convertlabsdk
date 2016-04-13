@@ -2,32 +2,38 @@
 
 require 'helper'
 require 'byebug'
-require 'yaml'
+require 'webmock'
+require 'vcr'
 
-#
-# TODO:
-#   1. enable vcr gem for offline testing
-#   2. use rspect or minitest?
-#
+VCR.configure do |config|
+  config.cassette_library_dir = "fixtures/vcr_cassettes"
+  config.hook_into :webmock 
+end
+
+
 class TestConvertlabSdk < Test::Unit::TestCase
   should 'get a valid access token' do
-    assert_not_nil create_app_client.access_token
+    VCR.use_cassette("get_new_access_token") do
+      assert_not_nil create_app_client.access_token
+    end
   end
 
   should 'should get a new token after expiring the old one' do
-    app_client = create_app_client
-    old_token = app_client.access_token
-    assert_not_nil old_token
+    VCR.use_cassette("get_new_access_token_after_expiry") do
+      app_client = create_app_client
+      old_token = app_client.access_token
+      assert_not_nil old_token
 
-    old_token2 = app_client.access_token
-    assert_equal old_token, old_token2
+      old_token2 = app_client.access_token
+      assert_equal old_token, old_token2
 
-    app_client.expire_token!
-    new_token = app_client.access_token
-    assert_not_nil new_token
+      app_client.expire_token!
+      new_token = app_client.access_token
+      assert_not_nil new_token
 
-    # will this be valid once vcr is enabled?
-    assert_not_equal old_token, new_token 
+      # will this be valid once vcr is enabled?
+      assert_not_equal old_token, new_token 
+    end
   end
 end
 
