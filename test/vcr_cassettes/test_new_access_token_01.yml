@@ -21,7 +21,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Sat, 16 Apr 2016 06:29:35 GMT
+      - Sat, 16 Apr 2016 12:12:45 GMT
       Content-Type:
       - application/json;charset=UTF-8
       Transfer-Encoding:
@@ -32,7 +32,7 @@ http_interactions:
       - application:test:8015
     body:
       encoding: UTF-8
-      string: '{"error_code":0,"access_token":"f8255589c9dc4ef79e4a93f5a42400f6","expires_in":7200}'
+      string: '{"error_code":0,"access_token":"db3d43d0aa73ce81760fa5d617d036d5","expires_in":7200}'
     http_version: 
-  recorded_at: Sat, 16 Apr 2016 06:29:36 GMT
+  recorded_at: Sat, 16 Apr 2016 12:12:46 GMT
 recorded_with: VCR 3.0.1

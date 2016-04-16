@@ -21,7 +21,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Sat, 16 Apr 2016 06:29:37 GMT
+      - Sat, 16 Apr 2016 12:12:47 GMT
       Content-Type:
       - application/json;charset=UTF-8
       Transfer-Encoding:
@@ -34,5 +34,5 @@ http_interactions:
       encoding: UTF-8
       string: '{"error_code":"40004","error_description":"the params is illegal"}'
     http_version: 
-  recorded_at: Sat, 16 Apr 2016 06:29:37 GMT
+  recorded_at: Sat, 16 Apr 2016 12:12:47 GMT
 recorded_with: VCR 3.0.1

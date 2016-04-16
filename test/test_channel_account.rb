@@ -6,6 +6,12 @@ require 'helper'
 class TestChannelAccount < Test::Unit::TestCase
   channel_type = 'RBSDK_TEST_CHANNEL'
 
+  # always get a new token for test case so that get access token is record by VCR 
+  # then this case can be run independently with running test_access_token first
+  def setup
+    app_client.expire_token!
+  end
+
   should '01 can be created then deleted then cannot be retrieved again' do 
     cust1 = Random.rand(2000000..4000000)
     channel_acc1 = { type: channel_type, customerId: cust1, userId: "u#{cust1}" }
@@ -29,7 +35,7 @@ class TestChannelAccount < Test::Unit::TestCase
   should '02 return search result based on filter' do 
     # we use a fix customer id here because the id will be part of the url parameters
     # having a random number can cause problem with VCR uri matching
-    cust2 = 3021299
+    cust2 = 3021200
     tag_line = 'Feel the Bern!'
     bern1 = { type: channel_type, customerId: cust2, userId: "u#{cust2}", name: 'bernie' }
     bern3 = { type: channel_type, customerId: cust2, userId: "u#{cust2}", name: 'bernie', att1: tag_line }
@@ -54,7 +60,7 @@ class TestChannelAccount < Test::Unit::TestCase
 
       [id1, id2, id3].each do |id|
         begin
-          app_client.channel_account.get(id)
+          app_client.channel_account.delete(id)
         rescue RestClient::InternalServerError
         end
       end
@@ -79,7 +85,7 @@ class TestChannelAccount < Test::Unit::TestCase
 
       # delete what we just created so that we can run the test again
       begin
-        app_client.channel_account.get(id)
+        app_client.channel_account.delete(id)
       rescue RestClient::InternalServerError
       end
     end

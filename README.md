@@ -27,15 +27,18 @@ helpers that facilitate syncing of external objects to convertlab cloud services
 git clone <url_of_this_repo>
 cd convertlabsdk
 bundle install
-COVERAGE=1 appid=<appid> scecret=<secret> rake test 
+
+# run test with VCR cassettes
+rake test
+
+# bypass VCR and send request to servers
+NO_VCR=1 appid=<appid> scecret=<secret> rake test 
+
+# to get coverage report
+COVERAGE=1 rake test
 cd coverage
 open index.html
-```
 
-By default the test will not send request to API server but uses VCR cassette files instead. This ensures the repeatbility of the test result. To always send request to server,
-
-```
-NO_VCR=1 rake test
 ```
 
 To run individual test case files, ``` ruby -I 'test' test/<your_test>.rb ```
@@ -54,7 +57,5 @@ To run individual test case files, ``` ruby -I 'test' test/<your_test>.rb ```
 4. get customer and channel with invalid id  will return 500. should be 404?
 5. post to customer with invalid access token returns http status 200, with error message in body. should be 401?
 6. standard oauth2 style http header 'Authorization: Bearer ' does not work. require access_token as url parameter is clunky and cause problem with VCR recording
-
-
-
+7. query channelaccount returns an array of records. empty array when no match is found. but customer query returns a hash with 'record', 'rows', 'total'. inconsistent.
 

@@ -61,6 +61,14 @@ module ConvertLab
       @channel_account ||= Resource.new(self, '/v1/channelaccounts')
     end
 
+    def customer
+      @customer ||= Resource.new(self, '/v1/customers')
+    end
+
+    def customer_event
+      @customer_event ||= Resource.new(self, '/v1/customerevents')
+    end
+
     def parse_response(response)
       resp_obj = JSON.parse(response)
       if resp_obj.is_a?(Hash) && resp_obj.key?('error_code') 
