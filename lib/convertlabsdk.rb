@@ -68,18 +68,6 @@ module ConvertLab
     def customer_event
       @customer_event ||= Resource.new(self, '/v1/customerevents')
     end
-
-    def parse_response(response)
-      resp_obj = JSON.parse(response)
-      if resp_obj.is_a?(Hash) && resp_obj.key?('error_code') 
-        err_code = resp_obj['error_code'].to_i
-        if err_code != 0
-          raise ApiError "#{err_code} - #{resp_obj['error_description']}"
-        end
-      end
-
-      resp_obj
-    end
   end
 
   # helper class to wrap HTTP requests to API end point

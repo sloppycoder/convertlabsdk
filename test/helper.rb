@@ -94,4 +94,3 @@ def app_client
   $app_client ||= ConvertLab::AppClient.new url, ENV['CLAB_APPID'], ENV['CLAB_SECRET']
 end 
 # rubocop:enable Style/GlobalVars
-

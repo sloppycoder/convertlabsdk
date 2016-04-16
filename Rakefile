@@ -1,5 +1,4 @@
 # encoding: utf-8
-# rubocop:disable Metrics/LineLength
 
 require 'rubygems'
 require 'bundler'
