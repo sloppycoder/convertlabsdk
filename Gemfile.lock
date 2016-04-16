@@ -115,10 +115,13 @@ DEPENDENCIES
   byebug
   jeweler (~> 2.0.1)
   rdoc (~> 3.12)
-  rest-client
+  rest-client (~> 1.8)
   rubocop
   shoulda
   simplecov
   test-unit
   vcr
   webmock
+
+BUNDLED WITH
+   1.11.2

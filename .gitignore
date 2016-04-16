@@ -50,3 +50,6 @@ pkg
 
 # ruby debugger
 .byebug_*
+
+#
+*.gem
