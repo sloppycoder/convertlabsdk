@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["Li Lin"]
-  s.date = "2016-04-13"
+  s.date = "2016-04-16"
   s.description = "Library to facilitate synchronizing your application object with ConvertLab cloud services"
   s.email = "guru.lin@gmail.com"
   s.extra_rdoc_files = [
@@ -31,11 +31,23 @@ Gem::Specification.new do |s|
     "README.rdoc",
     "Rakefile",
     "VERSION",
+    "convertlabsdk.gemspec",
     "fixtures/vcr_cassettes/get_new_access_token.yml",
     "fixtures/vcr_cassettes/get_new_access_token_after_expiry.yml",
     "lib/convertlabsdk.rb",
     "test/helper.rb",
-    "test/test_convertlabsdk.rb"
+    "test/test_access_token.rb",
+    "test/test_channel_account.rb",
+    "test/test_convertlabsdk.rb",
+    "test/test_customer.rb",
+    "test/vcr_cassettes/test_channel_account_01.yml",
+    "test/vcr_cassettes/test_channel_account_02.yml",
+    "test/vcr_cassettes/test_channel_account_03.yml",
+    "test/vcr_cassettes/test_customer_01.yml",
+    "test/vcr_cassettes/test_customer_02.yml",
+    "test/vcr_cassettes/test_new_access_token_01.yml",
+    "test/vcr_cassettes/test_new_access_token_02.yml",
+    "test/vcr_cassettes/test_new_access_token_03.yml"
   ]
   s.homepage = "http://github.com/sloppycoder/convertlabsdk"
   s.licenses = ["Commercial"]
@@ -46,39 +58,39 @@ Gem::Specification.new do |s|
     s.specification_version = 4
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<rest-client>, [">= 0"])
+      s.add_runtime_dependency(%q<rest-client>, ["~> 1.8"])
+      s.add_runtime_dependency(%q<byebug>, [">= 0"])
       s.add_development_dependency(%q<shoulda>, [">= 0"])
       s.add_development_dependency(%q<rdoc>, ["~> 3.12"])
       s.add_development_dependency(%q<bundler>, ["~> 1.0"])
       s.add_development_dependency(%q<jeweler>, ["~> 2.0.1"])
       s.add_development_dependency(%q<simplecov>, [">= 0"])
       s.add_development_dependency(%q<rubocop>, [">= 0"])
-      s.add_development_dependency(%q<byebug>, [">= 0"])
       s.add_development_dependency(%q<test-unit>, [">= 0"])
       s.add_development_dependency(%q<webmock>, [">= 0"])
       s.add_development_dependency(%q<vcr>, [">= 0"])
     else
-      s.add_dependency(%q<rest-client>, [">= 0"])
+      s.add_dependency(%q<rest-client>, ["~> 1.8"])
+      s.add_dependency(%q<byebug>, [">= 0"])
       s.add_dependency(%q<shoulda>, [">= 0"])
       s.add_dependency(%q<rdoc>, ["~> 3.12"])
       s.add_dependency(%q<bundler>, ["~> 1.0"])
       s.add_dependency(%q<jeweler>, ["~> 2.0.1"])
       s.add_dependency(%q<simplecov>, [">= 0"])
       s.add_dependency(%q<rubocop>, [">= 0"])
-      s.add_dependency(%q<byebug>, [">= 0"])
       s.add_dependency(%q<test-unit>, [">= 0"])
       s.add_dependency(%q<webmock>, [">= 0"])
       s.add_dependency(%q<vcr>, [">= 0"])
     end
   else
-    s.add_dependency(%q<rest-client>, [">= 0"])
+    s.add_dependency(%q<rest-client>, ["~> 1.8"])
+    s.add_dependency(%q<byebug>, [">= 0"])
     s.add_dependency(%q<shoulda>, [">= 0"])
     s.add_dependency(%q<rdoc>, ["~> 3.12"])
     s.add_dependency(%q<bundler>, ["~> 1.0"])
     s.add_dependency(%q<jeweler>, ["~> 2.0.1"])
     s.add_dependency(%q<simplecov>, [">= 0"])
     s.add_dependency(%q<rubocop>, [">= 0"])
-    s.add_dependency(%q<byebug>, [">= 0"])
     s.add_dependency(%q<test-unit>, [">= 0"])
     s.add_dependency(%q<webmock>, [">= 0"])
     s.add_dependency(%q<vcr>, [">= 0"])
