@@ -7,12 +7,13 @@
 #
 require 'rest-client'
 require 'json'
-
-# uncomment the line below to see request/resposne
-# RestClient.log = 'stdout'
+require 'active_record'
 
 module ConvertLab
   
+  MAX_SYNC_ERR ||= 10
+  DUMMY_TIMESTAMP ||= Time.at(0)
+
   class AccessTokenError < RuntimeError; end
   class ApiError < RuntimeError; end
 
@@ -21,8 +22,7 @@ module ConvertLab
   #
   class AppClient
     
-    attr_reader :url, :options
-    attr_accessor :appid, :secret
+    attr_accessor :url, :appid, :secret
 
     def initialize(url, appid, secret)
       @url = url
@@ -136,17 +136,101 @@ module ConvertLab
     end
   end
 
+  class SyncError < RuntimeError; end
+
   #
-  # helpers that facilitate syncing of external objects to convertlab 
+  # class that facilitate syncing of external objects to convertlab 
   # cloud services locally maintain external object and cloud object mappings
   # it mains a local datastore that stores the mapping:
-  #  
-  #  clab object type and id
-  #  external object type and id
-  #  last update of local object attributes
-  #  last upload to clab
-  #  last download from clab (to be sync back to external app)??
   #
-  class SycnedObject
+  # the APIs provide support for the following use case scenarios:
+  #
+  # TODO: to do need to use with_lock for concurrency?
+  # 
+  class SyncedObject < ActiveRecord::Base
+    validates :ext_channel, :ext_type, :ext_id, presence: true
+    enum sync_type: { SYNC_UP: 0, SYNC_DOWN: 1, SYNC_BOTHWAYS: 2 }  
+    
+    before_save :default_values
+    def default_values
+      self.sync_type ||= :SYNC_UP
+      self.last_sync ||= DUMMY_TIMESTAMP
+      case self.type
+      when 'ConvertLab::SyncedChannelAccount'
+        self.clab_type = 'channelaccount'
+      when 'ConvertLab::SyncedCustomer'
+        self.clab_type = 'customer'
+      when 'ConvertLab::SyncedCustomerEvent'
+        self.clab_type = 'customerevent'
+      else
+        self.clab_type = 'unknown'
+      end
+    end  
+
+    def lock
+      # locking will automatically trigger reload
+      # locker older than 1 hour is considered stale
+      if !is_locked || (is_locked && locked_at < Time.now - 3600)
+        self.is_locked = true
+        self.locked_at = Time.now
+        save!
+      else 
+        false
+      end
+    end
+
+    def unlock
+      self.is_locked = false
+      self.locked_at = nil
+      save!
+    end
+
+    def need_sync?
+      if is_ignored || err_count >= MAX_SYNC_ERR
+        false
+      else
+        case sync_type.to_sym
+        when :SYNC_UP
+          ext_last_update > last_sync
+        when :SYNC_DOWN
+          clab_last_update > last_sync
+        else
+          raise SyncError, 'sync mode not supported'
+        end
+      end
+    end
+
+    def sync_success(timestamp = Time.now)
+      self.last_sync = timestamp
+      save!
+    end
+
+    def sync_failed(timestamp = Time.now, msg = '')
+      self.last_err = timestamp
+      self.err_msg = msg
+      self.err_count += 1
+      save!
+    end
+
+    def link_ext_obj(channel, type, id, timestamp = DUMMY_TIMESTAMP)
+      self.ext_channel = channel
+      self.ext_type = type
+      self.ext_id = id
+      self.ext_last_update = timestamp
+    end
+
+    def link_obj(id, timestamp = DUMMY_TIMESTAMP)
+      self.clab_id = id
+      self.clab_last_update = timestamp
+    end
+  end
+
+  class SyncedChannelAccount < SyncedObject
+  end
+
+  class SyncedCustomer < SyncedObject
+  end
+
+  class SyncedCustomerEvent < SyncedObject
   end
 end

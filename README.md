@@ -15,11 +15,8 @@ client application that access the cloud APIs.
 
 ### SyncedObject
 helpers that facilitate syncing of external objects to convertlab cloud services locally maintain external object and cloud object mappings it mains a local datastore that stores the mapping:
-* clab object type and id
-* external object type and id
-* last update of local object attributes
-* last upload to clab
-* last download from clab (to be sync back to external app)??
+
+...
 
 ### Running the test and check the coverage report
 
@@ -27,6 +24,9 @@ helpers that facilitate syncing of external objects to convertlab cloud services
 git clone <url_of_this_repo>
 cd convertlabsdk
 bundle install
+
+# prepare test data, this should be incorporated into Rakefile later
+rake db:migrate
 
 # run test with VCR cassettes
 rake test
@@ -44,7 +44,7 @@ open index.html
 To run individual test case files, ``` ruby -I 'test' test/<your_test>.rb ```
 
 ### TODO
-* add object access APIs in AppClient class similiar to channelaccount
+* add object access APIs in AppClient class similiar to channelaccount. 
 * implement local storage helper to keep tracking of mapping (big)
 * add SSL::VERIFY option to Resources
 * store access token in file so that they can be shared amount multiple processes (CLAB only allows 1 active access token per appid)

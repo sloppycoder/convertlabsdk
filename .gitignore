@@ -53,3 +53,7 @@ pkg
 
 #
 *.gem
+
+# files created during test executions
+*.sqlite3
+*.log

@@ -5,14 +5,10 @@
 # blocked by GFW inside China
 source 'https://ruby.taobao.org'
 
-# Add dependencies required to use your gem here.
-# Example:
-#   gem 'activesupport', '>= 2.3.5'
 gem 'rest-client', '~> 1.8'
+gem 'activerecord', '~> 4.2.5.1' # version required by standalone_migrations
 gem 'byebug'
 
-# Add dependencies to develop your gem here.
-# Include everything needed to run rake, tests, features, etc.
 group :development do
   gem 'shoulda', '>= 0'
   gem 'rdoc', '~> 3.12'
@@ -22,5 +18,7 @@ group :development do
   gem 'rubocop'
   gem 'test-unit'
   gem 'webmock'
-  gem 'vcr'
+  gem 'vcr', '~> 3.0.1'
+  gem 'standalone_migrations', '4.0.3'
+  gem 'sqlite3'
 end

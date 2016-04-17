@@ -38,9 +38,12 @@ require 'convertlabsdk'
 class Test::Unit::TestCase
 end
 
+require 'rest-client'
 require 'byebug'
 require 'webmock'
 require 'vcr'
+
+# RestClient.log = 'stdout'
 
 # VCR config helpers
 
@@ -87,6 +90,8 @@ if disable_vcr?
 end
 
 # end of VCR config helper
+
+require 'standalone_migrations'
 
 # rubocop:disable Style/GlobalVars
 def app_client
