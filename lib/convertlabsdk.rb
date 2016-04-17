@@ -155,16 +155,16 @@ module ConvertLab
     def default_values
       self.sync_type ||= :SYNC_UP
       self.last_sync ||= DUMMY_TIMESTAMP
-      case self.type
-      when 'ConvertLab::SyncedChannelAccount'
-        self.clab_type = 'channelaccount'
-      when 'ConvertLab::SyncedCustomer'
-        self.clab_type = 'customer'
-      when 'ConvertLab::SyncedCustomerEvent'
-        self.clab_type = 'customerevent'
-      else
-        self.clab_type = 'unknown'
-      end
+      self.clab_type = case type
+                       when 'ConvertLab::SyncedChannelAccount'
+                         'channelaccount'
+                       when 'ConvertLab::SyncedCustomer'
+                         'customer'
+                       when 'ConvertLab::SyncedCustomerEvent'
+                         'customerevent'
+                       else
+                         'unknown'
+                       end
     end  
 
     def lock

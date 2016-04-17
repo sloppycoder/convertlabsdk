@@ -1,5 +1,13 @@
 # encoding: utf-8
 
+task :clean do
+  rm_rf "coverage"
+  rm_rf "dev.sqlite3"
+  rm_rf "test.sqlite3"
+  rm_rf "pkg"
+  rm_rf "convertlabsdk.gem"
+end
+
 require 'rubygems'
 require 'bundler'
 begin

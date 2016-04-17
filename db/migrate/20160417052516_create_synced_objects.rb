@@ -3,7 +3,6 @@
 
 require 'active_record'
 
-
 class CreateSyncedObjects < ActiveRecord::Migration
   def change
     create_table :synced_objects do |t|      
