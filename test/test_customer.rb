@@ -14,7 +14,7 @@ class TestCustomer < Test::Unit::TestCase
     app_client.expire_token!
   end
 
-  should '01 can be created and create customer with same mobile number will return the existing record' do 
+  should '01 create customer with same mobile number will return the existing record' do 
     VCR.use_cassette('test_customer_01', record: vcr_record_mode) do
       # creating new object will return its id when success
       id = app_client.customer.post(guru)['id']
@@ -38,7 +38,7 @@ class TestCustomer < Test::Unit::TestCase
     end
   end
 
-  should '02 attributes can be updated ' do 
+  should '02 attributes can be updated for existing customer' do 
     VCR.use_cassette('test_customer_02', record: vcr_record_mode) do
       # creating new object will return its id when success
       id = app_client.customer.post(guru)['id']

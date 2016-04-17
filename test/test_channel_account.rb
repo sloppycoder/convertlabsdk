@@ -12,7 +12,7 @@ class TestChannelAccount < Test::Unit::TestCase
     app_client.expire_token!
   end
 
-  should '01 can be created then deleted then cannot be retrieved again' do 
+  should '01 channel account create and delete should work' do 
     cust1 = Random.rand(2000000..4000000)
     channel_acc1 = { type: channel_type, customerId: cust1, userId: "u#{cust1}" }
 
@@ -32,7 +32,7 @@ class TestChannelAccount < Test::Unit::TestCase
     end
   end
 
-  should '02 return search result based on filter' do 
+  should '02 search using filter should return matching result' do 
     # we use a fix customer id here because the id will be part of the url parameters
     # having a random number can cause problem with VCR uri matching
     cust2 = 3021200
@@ -67,7 +67,7 @@ class TestChannelAccount < Test::Unit::TestCase
     end
   end
 
-  should '03 allow update of attributes' do 
+  should '03 attributes can be updated' do 
     # we use a fix customer id here because the id will be part of the url parameters
     # having a random number can cause problem with VCR uri matching
     cust3 = Random.rand(2000000..4000000)
