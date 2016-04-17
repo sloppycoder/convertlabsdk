@@ -18,7 +18,7 @@ helpers that facilitate syncing of external objects to convertlab cloud services
 
 ...
 
-### Running the test and check the coverage report
+### Running the test 
 
 ```
 git clone <url_of_this_repo>
@@ -28,16 +28,33 @@ bundle install
 # prepare test data, this should be incorporated into Rakefile later
 rake db:migrate
 
+
+# set CLAB APPID and SECRET in envronment variables
+export CLAB_APPID=<appid>
+export CLAB_SECRET=<secret>
+
+
 # run test with VCR cassettes
 rake test
 
+
 # bypass VCR and send request to servers
-NO_VCR=1 appid=<appid> scecret=<secret> rake test 
+NO_VCR=1 rake test 
+
 
 # to get coverage report
 COVERAGE=1 rake test
 cd coverage
 open index.html
+
+
+# the test cases nromally does cleanup after themselves. In some cases, the test case execution is 
+# interrupted# eitehr due to test failure or user intervention, the test data remaining in the 
+# system can cause next test execution to fail. When this happens, run this script to cleanup 
+# the data, then run the test cases again
+
+ruby -I test test/cleanup_testdata.rb
+
 
 ```
 
