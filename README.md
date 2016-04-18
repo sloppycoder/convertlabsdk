@@ -28,19 +28,15 @@ bundle install
 # prepare test data, this should be incorporated into Rakefile later
 rake db:migrate
 
-
 # set CLAB APPID and SECRET in envronment variables
 export CLAB_APPID=<appid>
 export CLAB_SECRET=<secret>
 
-
 # run test with VCR cassettes
 rake test
 
-
-# bypass VCR and send request to servers
-NO_VCR=1 rake test 
-
+# bypass VCR and send request to servers and log request/response to the console
+NO_VCR=1 RESTCLIENT_LOG=stdout rake test 
 
 # to get coverage report
 COVERAGE=1 rake test
@@ -53,19 +49,18 @@ open index.html
 # system can cause next test execution to fail. When this happens, run this script to cleanup 
 # the data, then run the test cases again
 
-ruby -I test test/cleanup_testdata.rb
+NO_VCR=1 ruby -I test test/cleanup_testdata.rb
 
+# to run individual test case files
+ruby -I 'test' test/<your_test>.rb 
 
 ```
 
-To run individual test case files, ``` ruby -I 'test' test/<your_test>.rb ```
 
 ### TODO
 * add object access APIs in AppClient class similiar to channelaccount. 
-* implement local storage helper to keep tracking of mapping (big)
 * add SSL::VERIFY option to Resources
 * store access token in file so that they can be shared amount multiple processes (CLAB only allows 1 active access token per appid)
-* implement logging
 
 ### Issue with APIs
 1. search for customer only filter on mobile, other filters are ignored. this is not consistent with API reference. channelaccounts can be searched by any filter

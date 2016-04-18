@@ -43,8 +43,6 @@ require 'byebug'
 require 'webmock'
 require 'vcr'
 
-# RestClient.log = 'stdout'
-
 # VCR config helpers
 
 # def vcr_configure_sensitive_data(config)
