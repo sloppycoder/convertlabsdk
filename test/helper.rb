@@ -28,17 +28,17 @@ rescue Bundler::BundlerError => e
   exit e.status_code
 end
 
-require 'test/unit'
-require 'shoulda'
+require 'minitest'
+require 'minitest/autorun'
+require 'minitest/profile'
+# reporter is not working
+# require "minitest/reporters"
+# Minitest::Reporters.use! Minitest::Reporters::HtmlReporter
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'convertlabsdk'
 
-class Test::Unit::TestCase
-end
-
-require 'rest-client'
 require 'byebug'
 require 'webmock'
 require 'vcr'
@@ -98,3 +98,8 @@ def app_client
   url = config['api_endpoint'] || 'http://api.51convert.cn'
   @app_client ||= ConvertLab::AppClient.new url, ENV['CLAB_APPID'], ENV['CLAB_SECRET']
 end 
+
+class MiniTest::Test
+end
+
+MiniTest.autorun

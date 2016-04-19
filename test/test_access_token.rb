@@ -1,36 +1,36 @@
 # encoding: utf-8
 require 'helper'
 
-class TestAccessToken < Test::Unit::TestCase
+class TestAccessToken < MiniTest::Test
   
-  should '01 get a valid access token' do
+  def test_can_get_a_valid_access_token
     VCR.use_cassette('test_access_token_01', record: vcr_record_mode) do
-      assert_not_nil app_client.access_token
+      refute_nil app_client.access_token
     end
   end
 
-  should '02 get a different token after expiring the old one' do
+  def test_can_get_a_new_token_after_expire_old_token
     VCR.use_cassette('test_access_token_02', record: vcr_record_mode) do
       old_token = app_client.access_token
-      assert_not_nil old_token
+      refute_nil old_token
 
       old_token2 = app_client.access_token
       assert_equal old_token, old_token2
 
       app_client.expire_token!
       new_token = app_client.access_token
-      assert_not_nil new_token
+      refute_nil new_token
 
-      assert_not_equal old_token, new_token 
+      refute_equal old_token, new_token 
     end
   end
 
-  should '03 incorrect credentials will cause an AccessTokenError' do
+  def test_incorrect_credentials_causes_access_token_error
     VCR.use_cassette('test_access_token_03', record: vcr_record_mode) do
       old_secret = app_client.secret
       app_client.secret = 'bogus'
       
-      assert_raise ConvertLab::AccessTokenError do 
+      assert_raises ConvertLab::AccessTokenError do 
         app_client.new_access_token
       end
 

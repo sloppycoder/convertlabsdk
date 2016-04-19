@@ -1,40 +1,40 @@
 # encoding: utf-8
-# rubocop:disable Lint/HandleExceptions:
-
 require 'helper'
+# rubocop:disable Lint/HandleExceptions:
+# rubocop:disable Metrics/MethodLength:
 
-class TestChannelAccount < Test::Unit::TestCase
-  channel_type = 'RBSDK_TEST_CHANNEL'
-
+class TestChannelAccount < MiniTest::Test
   # always get a new token for test case so that get access token is record by VCR 
   # then this case can be run independently with running test_access_token first
   def setup
     app_client.expire_token!
   end
 
-  should '01 channel account create and delete should work' do 
+  def test_channel_account_can_be_created_and_deleted
+    channel_type = 'RBSDK_TEST_CHANNEL'
     cust1 = Random.rand(2000000..4000000)
     channel_acc1 = { type: channel_type, customerId: cust1, userId: "u#{cust1}" }
 
     VCR.use_cassette('test_channel_account_01', record: vcr_record_mode) do
       # creating new object will return its id when success
       id = app_client.channel_account.post(channel_acc1)['id']
-      assert_not_nil id
+      refute_nil id
 
       # nil is returned for a successful deletion
       assert_nil app_client.channel_account.delete(id)
 
       # retrieve with non-existent id throws internal exception
       # instead of return 404. is it a bug?
-      assert_raise RestClient::InternalServerError do 
+      assert_raises RestClient::InternalServerError do 
         app_client.channel_account.get(id)
       end
     end
   end
 
-  should '02 search using filter should return matching result' do 
+  def test_search_using_filter_returns_matching_result
     # we use a fix customer id here because the id will be part of the url parameters
     # having a random number can cause problem with VCR uri matching
+    channel_type = 'RBSDK_TEST_CHANNEL'
     cust2 = 3021200
     tag_line = 'Feel the Bern!'
     bern1 = { type: channel_type, customerId: cust2, userId: "u#{cust2}", name: 'bernie' }
@@ -44,11 +44,11 @@ class TestChannelAccount < Test::Unit::TestCase
       # channel account allow create record with same attributes. bug?
       id1 = app_client.channel_account.post(bern1)['id']
       id2 = app_client.channel_account.post(bern1)['id']
-      assert_not_equal id1, id2
+      refute_equal id1, id2
 
       # create a record with different attributes
       id3 = app_client.channel_account.post(bern3)['id']
-      assert_not_nil id3
+      refute_nil id3
 
       o = app_client.channel_account.find(att1: tag_line, userId: "u#{cust2}")
       # only matches bern3
@@ -67,9 +67,10 @@ class TestChannelAccount < Test::Unit::TestCase
     end
   end
 
-  should '03 attributes can be updated' do 
+  def test_attributes_can_be_updated
     # we use a fix customer id here because the id will be part of the url parameters
     # having a random number can cause problem with VCR uri matching
+    channel_type = 'RBSDK_TEST_CHANNEL'
     cust3 = Random.rand(2000000..4000000)
     old_tag_line = 'Make America great again.'
     new_tag_line =  "You're fired!"
@@ -78,7 +79,7 @@ class TestChannelAccount < Test::Unit::TestCase
 
     VCR.use_cassette('test_channel_account_03', record: vcr_record_mode) do
       id = app_client.channel_account.post(trump)['id']
-      assert_not_nil id
+      refute_nil id
 
       app_client.channel_account.put(id, trump2)
       assert_equal app_client.channel_account.get(id)['att1'], new_tag_line

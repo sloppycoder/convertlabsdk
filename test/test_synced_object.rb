@@ -1,14 +1,15 @@
 # encoding: utf-8
 require 'helper'
 
-class TestSyncedObject < Test::Unit::TestCase
+class TestSyncedObject < MiniTest::Test
   
   def setup
+    config
     ActiveRecord::Base.establish_connection
     ConvertLab::SyncedObject.destroy_all
   end
 
-  should 'new ChannelAccount record can be retrieved as SyncedObject' do
+  def test_channel_account_record_can_be_retrieved_as_synced_object
     ext_id = '123123123'
     obj_id = 11112222
     ch = ConvertLab::SyncedChannelAccount.new
@@ -23,29 +24,29 @@ class TestSyncedObject < Test::Unit::TestCase
     assert_equal obj.clab_id, obj_id
   end
 
-  should 'external object attributes must be present or validation will fail' do
+  def test_validation_fails_when_external_object_attributes_not_present
     ch = ConvertLab::SyncedChannelAccount.new
-    assert_raise ActiveRecord::RecordInvalid do
+    assert_raises ActiveRecord::RecordInvalid do
       ch.save!
     end
   end
 
-  should 'lock should work on unlocked record and record that has a stale lock' do
+  def test_lock_works_on_unlocked_record_or_record_with_stale_lock
     ch = ConvertLab::SyncedChannelAccount.new
     ch.link_ext_obj 'my_channel', 'sales_order', '999888'
     ch.save
 
-    assert_true ch.lock # 1st time lock should suceed
-    assert_false ch.lock # 2nd time lock should fail
+    assert ch.lock # 1st time lock should suceed
+    refute ch.lock # 2nd time lock should fail
 
     ch.locked_at = Time.now - 7200 
-    assert_true ch.lock # lock suceed when lock is stale
+    assert ch.lock # lock suceed when lock is stale
 
     ch.unlock
-    assert_false ch.is_locked
+    refute ch.is_locked
   end
 
-  should 'after update need_sync? should return true until after sync_success is called' do
+  def test_need_sync_returns_true_after_sync_success_is_called
     customer = ConvertLab::SyncedCustomer.create(ext_channel: 'my_channel', ext_type: 'customer', 
                                                  ext_id: '112233444', ext_last_update: Time.now - 1800,
                                                  sync_type: :SYNC_UP)
@@ -54,37 +55,37 @@ class TestSyncedObject < Test::Unit::TestCase
     customer.update clab_type: 'customer', clab_id: 11223344
 
     assert_equal customer.last_sync, ConvertLab::DUMMY_TIMESTAMP
-    assert_true customer.need_sync?
+    assert customer.need_sync?
 
     customer.sync_success
     
-    assert_not_equal customer.last_sync, ConvertLab::DUMMY_TIMESTAMP
-    assert_false customer.need_sync?
+    refute_equal customer.last_sync, ConvertLab::DUMMY_TIMESTAMP
+    refute customer.need_sync?
   end
 
-  should 'ignored record does not need to be synced' do
+  def test_need_sync_returns_false_for_ignored_record
     customer = ConvertLab::SyncedCustomer.create(ext_channel: 'my_channel', ext_type: 'customer', 
                                                  ext_id: '112233444', ext_last_update: Time.now - 1800,
                                                  sync_type: :SYNC_UP)
 
     assert_equal customer.last_sync, ConvertLab::DUMMY_TIMESTAMP
-    assert_true customer.need_sync?
+    assert customer.need_sync?
 
     customer.is_ignored = true
-    assert_false customer.need_sync?    
+    refute customer.need_sync?    
   end
 
-  should 'sync should be skipped after too many (10) errors ' do
+  def test_need_sync_returns_false_for_record_has_max_sync_err
     customer = ConvertLab::SyncedCustomer.create(ext_channel: 'my_channel', ext_type: 'customer', 
                                                  ext_id: '112233444', ext_last_update: Time.now - 1800,
                                                  sync_type: :SYNC_UP)
 
-    assert_true customer.need_sync?
+    assert customer.need_sync?
 
     (1..ConvertLab::MAX_SYNC_ERR).each do 
       customer.sync_failed
     end
 
-    assert_false customer.need_sync?    
+    refute customer.need_sync?    
   end
 end

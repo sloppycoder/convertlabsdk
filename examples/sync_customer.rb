@@ -67,7 +67,7 @@ intervals.each do |since|
     # steps and cannot be generalize
     clab_cust = app_client.customer.find(mobile: order['mobile'])['rows'].first || {}
     # add data transformation and lookup
-    # customer = extract_customer_info(order)
+    customer = order
     # channelaccount = extract_channle_info(order)
     # customerevent = extract_event_info(order)
     # clab_channel_id = app_client.channelaccount.find(blah) 

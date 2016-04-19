@@ -10,13 +10,14 @@ gem 'activerecord', '~> 4.2.5.1' # version required by standalone_migrations
 gem 'byebug'
 
 group :development do
-  gem 'shoulda', '>= 0'
+  gem 'minitest', '>= 0'
+  gem 'minitest-profile', '>=0'
+  # gem 'minitest-reporters', '>=0'
   gem 'rdoc', '~> 3.12'
   gem 'bundler', '~> 1.0'
   gem 'jeweler', '~> 2.0.1'
   gem 'simplecov', '>= 0'
   gem 'rubocop'
-  gem 'test-unit'
   gem 'webmock'
   gem 'vcr', '~> 3.0.1'
   gem 'standalone_migrations', '4.0.3'

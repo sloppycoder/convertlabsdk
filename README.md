@@ -38,6 +38,10 @@ rake test
 # bypass VCR and send request to servers and log request/response to the console
 NO_VCR=1 RESTCLIENT_LOG=stdout rake test 
 
+# run the tests and display slowest 10 test cases
+NO_VCR=1 ruby -I test test/test_convertlabsdk.rb --profile
+Run options: --profile --seed 22739
+
 # to get coverage report
 COVERAGE=1 rake test
 cd coverage
