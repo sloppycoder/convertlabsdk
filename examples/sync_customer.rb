@@ -66,9 +66,18 @@ intervals.each do |since|
     # this is not implmented in SDK itself since the match logic can involve multiple
     # steps and cannot be generalize
     clab_cust = app_client.customer.find(mobile: order['mobile'])['rows'].first || {}
+    # add data transformation and lookup
+    # customer = extract_customer_info(order)
+    # channelaccount = extract_channle_info(order)
+    # customerevent = extract_event_info(order)
+    # clab_channel_id = app_client.channelaccount.find(blah) 
+    
     # invoke helper method to perform sync up to clab cloud service
     ext_id = order['membershipNo']
-    ConvertLab::SyncedCustomer.sync_up channel, type, ext_id, clab_cust['id'], app_client.customer, order
+    ConvertLab::SyncedCustomer.sync_up channel, 'buyer', ext_id, clab_cust['id'], app_client.customer, customer
+    # ConvertLab::SyncedChannelAccount.sync_up channel, 'buyer' ext_id, clab_channel_id, app_client.channelaccount, channelaccount
+    # ConvertLab::SyncedCustomer.sync_up channel, type, 'order', nil, app_client.customerevent, customerevent
+
   end
 
   logger.info "done with current batch at #{since}"
