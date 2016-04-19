@@ -8,11 +8,21 @@
 require 'rest-client'
 require 'json'
 require 'active_record'
+require 'date'
+require 'logger'
 
 module ConvertLab
   
   MAX_SYNC_ERR ||= 10
   DUMMY_TIMESTAMP ||= Time.at(0)
+
+  def self.logger
+    @logger
+  end
+
+  def self.logger=(logger)
+    @logger = logger
+  end
 
   class AccessTokenError < RuntimeError; end
   class ApiError < RuntimeError; end
@@ -166,6 +176,62 @@ module ConvertLab
                          'unknown'
                        end
     end  
+
+    def self.logger
+      ConvertLab::logger
+    end
+
+    def logger
+      ConvertLab::logger
+    end
+
+    # used for logging
+    def self.clab_obj_name(sync_obj)
+      id_string = sync_obj.clab_id ? sync_obj.clab_id : 'new'
+      "clab #{sync_obj.clab_type} #{id_string}"
+    end
+
+    # used fo logging 
+    def self.sync_obj_name(sync_obj)
+      "sync object #{sync_obj.id}"
+    end
+
+    def self.sync_up(ext_channel, ext_type, ext_id, clab_id = nil, api_client, data)
+      sync_obj = self.where(ext_channel: ext_channel, ext_type: ext_type, 
+                            ext_id: ext_id, sync_type: sync_types[:SYNC_UP]).first_or_create
+      logger.info "#{sync_obj_name(sync_obj)} #{ext_channel}/#{ext_type}/#{ext_id} to #{clab_obj_name(sync_obj)}"
+      
+      if clab_id != sync_obj.clab_id
+        logger.warn "#{sync_obj_name(sync_obj)}  overwriting #{clab_obj_name(sync_obj)} with new id #{clab_id}" if sync_obj.clab_id
+        sync_obj.clab_id = clab_id
+      end
+      sync_obj.ext_last_update = Time.new(data['last_update'])
+      sync_obj.save!
+
+      if sync_obj.need_sync?
+        begin
+          if sync_obj.clab_id
+            # update the linked clab record 
+            logger.info "#{sync_obj_name(sync_obj)} updating #{clab_obj_name(sync_obj)}"
+            clab_obj = api_client.public_send'put', sync_obj.clab_id, data
+          else
+            # create a new clab record and link it
+            logger.info "#{sync_obj_name(sync_obj)} creating new clab object"
+            clab_obj = api_client.public_send('post', data)
+            sync_obj.clab_id = clab_obj['id']
+            logger.info "#{sync_obj_name(sync_obj)} created #{clab_obj_name(sync_obj)}"
+          end
+          sync_obj.clab_last_update = DateTime.iso8601(clab_obj['lastUpdated']).to_time
+          sync_obj.sync_success
+          logger.info "#{sync_obj_name(sync_obj)} marking sync sync success"
+        rescue RuntimeError => e
+          sync_obj.sync_fail e.to_s
+          logger.error "#{sync_obj_name(sync_obj)} sync error. err_count => #{sync_obj.err_count}, error => #{e}"
+        end
+      else
+        logger.info "#{sync_obj_name(sync_obj)} is up to date with #{clab_obj_name(sync_obj)}"
+      end
+    end
 
     def lock
       # locking will automatically trigger reload

@@ -17,13 +17,14 @@ require 'helper'
 # this method cleans up data created by test_customers.rb
 #
 def cleanup_test_custoemrs 
-  mobile_no = '13911223366'
-  app_client.customer.find(mobile: mobile_no)['rows'].each do |c|
-    id = c['id']
-    puts "Deleting customer #{id}"
-    begin
-      app_client.customer.delete(id)
-    rescue RestClient::InternalServerError
+  %w(13911223366 139112233 133333333 133123123).each do |mobile_no|
+    app_client.customer.find(mobile: mobile_no)['rows'].each do |c|
+      id = c['id']
+      puts "Deleting customer #{id}"
+      begin
+        app_client.customer.delete(id)
+      rescue RestClient::InternalServerError
+      end
     end
   end
 end
