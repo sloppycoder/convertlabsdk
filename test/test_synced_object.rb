@@ -50,6 +50,9 @@ class TestSyncedObject < Test::Unit::TestCase
                                                  ext_id: '112233444', ext_last_update: Time.now - 1800,
                                                  sync_type: :SYNC_UP)
 
+    # clab_id nil will trigger sync
+    customer.update clab_type: 'customer', clab_id: 11223344
+
     assert_equal customer.last_sync, ConvertLab::DUMMY_TIMESTAMP
     assert_true customer.need_sync?
 

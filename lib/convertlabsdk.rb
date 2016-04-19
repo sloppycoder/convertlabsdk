@@ -191,7 +191,11 @@ module ConvertLab
       else
         case sync_type.to_sym
         when :SYNC_UP
-          ext_last_update > last_sync
+          # clab_id is nil indicates no syncing was ever done
+          # we'll need to sync regardless of last_sync
+          # this could happen when clab object was deleted after
+          # the last sync
+          clab_id == nil || ext_last_update > last_sync
         when :SYNC_DOWN
           clab_last_update > last_sync
         else
