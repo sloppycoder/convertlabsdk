@@ -6,6 +6,7 @@ AllCops:
     # this file is generated 
     - 'convertlabsdk.gemspec'
     - 'db/schema.rb'
+    - 'Rakefile'
 
 Style/Encoding:
   Enabled: true
@@ -24,11 +25,16 @@ Style/NumericLiterals:
   MinDigits: 30
 
 Metrics/MethodLength:
-  Max: 15
+  Max: 20
 
 Metrics/AbcSize:
-  Max: 20  
+  Max: 32
 
 Metrics/LineLength:
   Max: 120
 
+Metrics/ClassLength:
+  Max: 115
+
+Metrics/ParameterLists:
+  Max: 6

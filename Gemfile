@@ -7,7 +7,6 @@ source 'https://ruby.taobao.org'
 
 gem 'rest-client', '~> 1.8'
 gem 'activerecord', '~> 4.2.5.1' # version required by standalone_migrations
-gem 'byebug'
 
 group :development do
   gem 'minitest', '>= 0'
@@ -22,4 +21,5 @@ group :development do
   gem 'vcr', '~> 3.0.1'
   gem 'standalone_migrations', '4.0.3'
   gem 'sqlite3'
+  gem 'byebug'
 end

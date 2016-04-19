@@ -197,40 +197,44 @@ module ConvertLab
     end
 
     def self.sync_up(ext_channel, ext_type, ext_id, clab_id = nil, api_client, data)
-      sync_obj = self.where(ext_channel: ext_channel, ext_type: ext_type, 
-                            ext_id: ext_id, sync_type: sync_types[:SYNC_UP]).first_or_create
+      sync_obj = where(ext_channel: ext_channel, ext_type: ext_type, 
+                       ext_id: ext_id, sync_type: sync_types[:SYNC_UP]).first_or_create
       logger.info "#{sync_obj_name(sync_obj)} #{ext_channel}/#{ext_type}/#{ext_id} to #{clab_obj_name(sync_obj)}"
       
       if clab_id != sync_obj.clab_id
-        logger.warn "#{sync_obj_name(sync_obj)}  overwriting #{clab_obj_name(sync_obj)} with new id #{clab_id}" if sync_obj.clab_id
+        if sync_obj.clab_id
+          logger.warn "#{sync_obj_name(sync_obj)} overwriting #{clab_obj_name(sync_obj)} with new id #{clab_id}"
+        end
         sync_obj.clab_id = clab_id
       end
       sync_obj.ext_last_update = Time.new(data['last_update'])
       sync_obj.save!
 
       if sync_obj.need_sync?
-        begin
-          if sync_obj.clab_id
-            # update the linked clab record 
-            logger.info "#{sync_obj_name(sync_obj)} updating #{clab_obj_name(sync_obj)}"
-            clab_obj = api_client.public_send'put', sync_obj.clab_id, data
-          else
-            # create a new clab record and link it
-            logger.info "#{sync_obj_name(sync_obj)} creating new clab object"
-            clab_obj = api_client.public_send('post', data)
-            sync_obj.clab_id = clab_obj['id']
-            logger.info "#{sync_obj_name(sync_obj)} created #{clab_obj_name(sync_obj)}"
-          end
-          sync_obj.clab_last_update = DateTime.iso8601(clab_obj['lastUpdated']).to_time
-          sync_obj.sync_success
-          logger.info "#{sync_obj_name(sync_obj)} marking sync sync success"
-        rescue RuntimeError => e
-          sync_obj.sync_fail e.to_s
-          logger.error "#{sync_obj_name(sync_obj)} sync error. err_count => #{sync_obj.err_count}, error => #{e}"
-        end
+        do_sync_up(sync_obj, api_client, data)
       else
         logger.info "#{sync_obj_name(sync_obj)} is up to date with #{clab_obj_name(sync_obj)}"
       end
+    end
+
+    def self.do_sync_up(sync_obj, api_client, data)
+      if sync_obj.clab_id
+        # update the linked clab record 
+        logger.info "#{sync_obj_name(sync_obj)} updating #{clab_obj_name(sync_obj)}"
+        clab_obj = api_client.public_send'put', sync_obj.clab_id, data
+      else
+        # create a new clab record and link it
+        logger.info "#{sync_obj_name(sync_obj)} creating new clab object"
+        clab_obj = api_client.public_send('post', data)
+        sync_obj.clab_id = clab_obj['id']
+        logger.info "#{sync_obj_name(sync_obj)} created #{clab_obj_name(sync_obj)}"
+      end
+      sync_obj.clab_last_update = DateTime.iso8601(clab_obj['lastUpdated']).to_time
+      sync_obj.sync_success
+      logger.info "#{sync_obj_name(sync_obj)} marking sync sync success"
+    rescue RuntimeError => e
+      sync_obj.sync_fail e.to_s
+      logger.error "#{sync_obj_name(sync_obj)} sync error. err_count => #{sync_obj.err_count}, error => #{e}"
     end
 
     def lock
@@ -261,7 +265,7 @@ module ConvertLab
           # we'll need to sync regardless of last_sync
           # this could happen when clab object was deleted after
           # the last sync
-          clab_id == nil || ext_last_update > last_sync
+          clab_id.nil? || ext_last_update > last_sync
         when :SYNC_DOWN
           clab_last_update > last_sync
         else

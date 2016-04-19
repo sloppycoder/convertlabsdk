@@ -4,7 +4,6 @@
 require 'helper'
 
 class TestCustomer < MiniTest::Test
-
   # always get a new token for test case so that get access token is record by VCR 
   # then this case can be run independently with running test_access_token first
   def setup
