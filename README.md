@@ -60,9 +60,11 @@ ruby -I test test/<your_test>.rb
 
 
 ### TODO
-* add object access APIs in AppClient class similiar to channelaccount. 
+* add object access APIs and test cases for deals
 * add SSL::VERIFY option to Resources
 * store access token in file so that they can be shared amount multiple processes (CLAB only allows 1 active access token per appid)
+* mask sensitive info in VCR cassette files.
+* enable HTML test report from minitest/reporter
 
 ### Issue with APIs (only tested customers and channelaccounts so far)
 
