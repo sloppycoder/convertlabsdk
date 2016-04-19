@@ -40,13 +40,11 @@ NO_VCR=1 RESTCLIENT_LOG=stdout rake test
 
 # run the tests and display slowest 10 test cases
 NO_VCR=1 ruby -I test test/test_convertlabsdk.rb --profile
-Run options: --profile --seed 22739
 
 # to get coverage report
 COVERAGE=1 rake test
 cd coverage
 open index.html
-
 
 # the test cases nromally does cleanup after themselves. In some cases, the test case execution is 
 # interrupted# eitehr due to test failure or user intervention, the test data remaining in the 
