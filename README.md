@@ -73,7 +73,7 @@ ruby -I test test/<your_test>.rb
     * 搜索客户返回一个hash，搜索客户渠道返回一个array
     * 删除客户返回204，删除客户渠道返回500
     * 如果创建新客户的mobile如果和已经存在客户一样，API返回旧客户信息，不会再建一个新客户。客户渠道每次创建都是新纪录。
-2. GET /v1/customers/id 和 GET /v1/channelaccounts/id 如果id不存储会返回500。按惯例应该返回404.
+2. GET /v1/xxx/id 和 DELETE /v1/xxx/id 如果id不存储会返回500。按惯例应该返回404
 3. 无效的access token返回200，错误信息在payload里面。按惯例应该返回401。
 4. 不支持标准的oauth2 http header 'Authorization: Bearer xxx'. 把access token放在URL里导致引起VCR URL不匹配，额外处理麻烦。
 5. DELETE 比其它动作明显要慢。
