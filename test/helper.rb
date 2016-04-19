@@ -90,10 +90,11 @@ end
 # end of VCR config helper
 
 require 'standalone_migrations'
+config = StandaloneMigrations::Configurator.new.config_for(ENV['RAILS_ENV'])
 
 # rubocop:disable Style/GlobalVars
 def app_client
-  url = ENV['CLAB_URL'] || 'http://api.51convert.cn'
+  url = config['api_endpoint'] || 'http://api.51convert.cn'
   $app_client ||= ConvertLab::AppClient.new url, ENV['CLAB_APPID'], ENV['CLAB_SECRET']
 end 
 # rubocop:enable Style/GlobalVars

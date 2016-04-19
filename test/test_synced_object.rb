@@ -4,7 +4,6 @@ require 'helper'
 class TestSyncedObject < Test::Unit::TestCase
   
   def setup
-    StandaloneMigrations::Configurator.new.config_for_all
     ActiveRecord::Base.establish_connection
     ConvertLab::SyncedObject.destroy_all
   end
