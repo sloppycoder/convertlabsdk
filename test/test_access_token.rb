@@ -4,13 +4,13 @@ require 'helper'
 class TestAccessToken < Test::Unit::TestCase
   
   should '01 get a valid access token' do
-    VCR.use_cassette('test_new_access_token_01', record: vcr_record_mode) do
+    VCR.use_cassette('test_access_token_01', record: vcr_record_mode) do
       assert_not_nil app_client.access_token
     end
   end
 
   should '02 get a different token after expiring the old one' do
-    VCR.use_cassette('test_new_access_token_02', record: vcr_record_mode) do
+    VCR.use_cassette('test_access_token_02', record: vcr_record_mode) do
       old_token = app_client.access_token
       assert_not_nil old_token
 
@@ -26,7 +26,7 @@ class TestAccessToken < Test::Unit::TestCase
   end
 
   should '03 incorrect credentials will cause an AccessTokenError' do
-    VCR.use_cassette('test_new_access_token_03', record: vcr_record_mode) do
+    VCR.use_cassette('test_access_token_03', record: vcr_record_mode) do
       old_secret = app_client.secret
       app_client.secret = 'bogus'
       
