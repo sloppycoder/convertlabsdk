@@ -56,7 +56,7 @@ open index.html
 NO_VCR=1 ruby -I test test/cleanup_testdata.rb
 
 # to run individual test case files
-ruby -I 'test' test/<your_test>.rb 
+ruby -I test test/<your_test>.rb 
 
 ```
 
@@ -66,12 +66,18 @@ ruby -I 'test' test/<your_test>.rb
 * add SSL::VERIFY option to Resources
 * store access token in file so that they can be shared amount multiple processes (CLAB only allows 1 active access token per appid)
 
-### Issue with APIs
-1. search for customer only filter on mobile, other filters are ignored. this is not consistent with API reference. channelaccounts can be searched by any filter
-2. create new customer with same mobile number will return an existing record instead of creating a new one. channelaccounts can create different record with exact same attributes
-3. delete custoemr always return 204, even when id is invalid. delete channelaccount always return http status 500. though the record seems to be deleted correctly.
-4. get customer and channel with invalid id  will return 500. should be 404?
-5. post to customer with invalid access token returns http status 200, with error message in body. should be 401?
-6. standard oauth2 style http header 'Authorization: Bearer ' does not work. require access_token as url parameter is clunky and cause problem with VCR recording
-7. query channelaccount returns an array of records. empty array when no match is found. but customer query returns a hash with 'record', 'rows', 'total'. inconsistent.
+### Issue with APIs (only tested customers and channelaccounts so far)
+
+#### Common
+1. 客户和客户渠道的API返回数据格式和出错信息不一致。比如：
+.. * 搜索客户返回一个hash，搜索客户渠道返回一个array
+.. * 删除客户返回204，删除客户渠道返回500
+.. * 如果创建新客户的mobile如果和已经存在客户一样，API返回旧客户信息，不会再建一个新客户。客户渠道每次创建都是新纪录。
+2. GET /v1/customers/id 和 GET /v1/channelaccounts/id 如果id不存储会返回500。按惯例应该返回404.
+3. 无效的access token返回200，错误信息在payload里面。按惯例应该返回401。
+4. 不支持标准的oauth2 http header 'Authorization: Bearer xxx'. 把access token放在URL里导致引起VCR URL不匹配，额外处理麻烦。
+5. DELETE 比其它动作明显要慢。
+
+#### 客户API
+1. 按mobile搜索返回结果是正确的，按其它任何字段搜索都会多余的结果。
 
