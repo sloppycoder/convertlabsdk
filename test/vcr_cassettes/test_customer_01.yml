@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://api.51convert.cn/security/accesstoken?appid=cl03091540aeb085c&grant_type=client_credentials&secret=6ddd11a9405219f7100853784bef45261b250ce2
+    uri: http://api.51convert.cn/security/accesstoken?appid=<APPID>&grant_type=client_credentials&secret=<SECRET>
     body:
       encoding: US-ASCII
       string: ''
@@ -21,7 +21,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Sat, 16 Apr 2016 12:23:04 GMT
+      - Wed, 20 Apr 2016 16:48:57 GMT
       Content-Type:
       - application/json;charset=UTF-8
       Transfer-Encoding:
@@ -32,12 +32,12 @@ http_interactions:
       - application:test:8015
     body:
       encoding: UTF-8
-      string: '{"error_code":0,"access_token":"37836eca163bb54cc9c0564c4b5d3b19","expires_in":7200}'
+      string: '{"error_code":0,"access_token":"db8bfa6cb6c935ca63b3b1064e525ca7","expires_in":7200}'
     http_version: 
-  recorded_at: Sat, 16 Apr 2016 12:23:04 GMT
+  recorded_at: Wed, 20 Apr 2016 16:48:57 GMT
 - request:
     method: post
-    uri: http://api.51convert.cn/v1/customers?access_token=37836eca163bb54cc9c0564c4b5d3b19
+    uri: http://api.51convert.cn/v1/customers?access_token=<ACCESSTOKEN>
     body:
       encoding: UTF-8
       string: '{"name":"guru","mobile":"13911223366","email":"guru@jungle.cc","external_id":"XYZ1234"}'
@@ -60,7 +60,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Sat, 16 Apr 2016 12:23:05 GMT
+      - Wed, 20 Apr 2016 16:48:58 GMT
       Content-Type:
       - application/json;charset=UTF-8
       Transfer-Encoding:
@@ -71,12 +71,12 @@ http_interactions:
       - application:test:8015
     body:
       encoding: UTF-8
-      string: '{"acceptEmail":false,"acceptSMS":false,"annualRevenue":null,"birthday":null,"campaignId":null,"campaignName":null,"city":null,"code":null,"company":null,"contentName":null,"country":null,"county":null,"createFrom":null,"createFromName":null,"createMethod":null,"dateCreated":"2016-04-16T12:23:05Z","dateJoin":"2016-04-16T12:23:05Z","dateMemberReg":null,"email":"guru@jungle.cc","emailVerified":false,"employeeNumber":null,"externalId":null,"gender":0,"homeAddress":null,"id":328942,"img":null,"industry":null,"isAnonymous":false,"isEmployee":false,"isMember":false,"isReferrer":false,"lastUpdated":"2016-04-16T12:23:05Z","latestEngageDate":null,"membershipLevel":null,"membershipNo":null,"membershipScore":null,"mobile":"13911223366","mobileVerified":false,"name":"guru","nickName":null,"notAcceptEmail":false,"notAcceptSMS":false,"officeAddress":null,"ownerId":null,"ownerName":null,"postcode":null,"province":null,"qq":null,"referrer":null,"referrerName":null,"region":null,"remark":null,"source":null,"stage":null,"status":null,"street":null,"tags":null,"telephone":null,"title":null,"type":null,"typeName":null,"updateMethod":null,"utmMedium":null,"utmTerm":null,"website":null,"wechat":null,"wechatCity":null,"wechatNickName":null,"weibo":null}'
+      string: '{"acceptEmail":false,"acceptSMS":false,"annualRevenue":null,"birthday":null,"campaignId":null,"campaignName":null,"city":null,"code":null,"company":null,"contentName":null,"country":null,"county":null,"createFrom":null,"createFromName":null,"createMethod":null,"dateCreated":"2016-04-20T16:48:58Z","dateJoin":"2016-04-20T16:48:58Z","dateMemberReg":null,"email":"guru@jungle.cc","emailVerified":false,"employeeNumber":null,"externalId":null,"gender":0,"homeAddress":null,"id":329120,"img":null,"industry":null,"isAnonymous":false,"isEmployee":false,"isMember":false,"isReferrer":false,"lastUpdated":"2016-04-20T16:48:58Z","latestEngageDate":null,"membershipLevel":null,"membershipNo":null,"membershipScore":null,"mobile":"13911223366","mobileVerified":false,"name":"guru","nickName":null,"notAcceptEmail":false,"notAcceptSMS":false,"officeAddress":null,"ownerId":null,"ownerName":null,"postcode":null,"province":null,"qq":null,"referrer":null,"referrerName":null,"region":null,"remark":null,"source":null,"stage":null,"status":null,"street":null,"tags":null,"telephone":null,"title":null,"type":null,"typeName":null,"updateMethod":null,"utmMedium":null,"utmTerm":null,"website":null,"wechat":null,"wechatCity":null,"wechatNickName":null,"weibo":null}'
     http_version: 
-  recorded_at: Sat, 16 Apr 2016 12:23:05 GMT
+  recorded_at: Wed, 20 Apr 2016 16:48:58 GMT
 - request:
     method: post
-    uri: http://api.51convert.cn/v1/customers?access_token=37836eca163bb54cc9c0564c4b5d3b19
+    uri: http://api.51convert.cn/v1/customers?access_token=<ACCESSTOKEN>
     body:
       encoding: UTF-8
       string: '{"name":"fake guru","mobile":"13911223366","email":"guru@jungle.co","external_id":"XYZ1235"}'
@@ -99,7 +99,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Sat, 16 Apr 2016 12:23:06 GMT
+      - Wed, 20 Apr 2016 16:48:59 GMT
       Content-Type:
       - application/json;charset=UTF-8
       Transfer-Encoding:
@@ -110,13 +110,13 @@ http_interactions:
       - application:test:8015
     body:
       encoding: UTF-8
-      string: '{"acceptEmail":false,"acceptSMS":false,"annualRevenue":null,"birthday":null,"campaignId":null,"campaignName":null,"city":null,"code":null,"company":null,"contentName":null,"country":null,"county":null,"createFrom":null,"createFromName":null,"createMethod":null,"dateCreated":"2016-04-16T12:23:05Z","dateJoin":"2016-04-16T12:23:05Z","dateMemberReg":null,"email":"guru@jungle.co","emailVerified":false,"employeeNumber":null,"externalId":null,"gender":0,"homeAddress":null,"id":328942,"img":null,"industry":null,"isAnonymous":false,"isEmployee":false,"isMember":false,"isReferrer":false,"lastUpdated":"2016-04-16T12:23:06Z","latestEngageDate":null,"membershipLevel":null,"membershipNo":null,"membershipScore":null,"mobile":"13911223366","mobileVerified":false,"name":"fake
+      string: '{"acceptEmail":false,"acceptSMS":false,"annualRevenue":null,"birthday":null,"campaignId":null,"campaignName":null,"city":null,"code":null,"company":null,"contentName":null,"country":null,"county":null,"createFrom":null,"createFromName":null,"createMethod":null,"dateCreated":"2016-04-20T16:48:58Z","dateJoin":"2016-04-20T16:48:59Z","dateMemberReg":null,"email":"guru@jungle.co","emailVerified":false,"employeeNumber":null,"externalId":null,"gender":0,"homeAddress":null,"id":329120,"img":null,"industry":null,"isAnonymous":false,"isEmployee":false,"isMember":false,"isReferrer":false,"lastUpdated":"2016-04-20T16:48:59Z","latestEngageDate":null,"membershipLevel":null,"membershipNo":null,"membershipScore":null,"mobile":"13911223366","mobileVerified":false,"name":"fake
         guru","nickName":null,"notAcceptEmail":false,"notAcceptSMS":false,"officeAddress":null,"ownerId":null,"ownerName":null,"postcode":null,"province":null,"qq":null,"referrer":null,"referrerName":null,"region":null,"remark":null,"source":null,"stage":null,"status":null,"street":null,"tags":null,"telephone":null,"title":null,"type":null,"typeName":null,"updateMethod":null,"utmMedium":null,"utmTerm":null,"website":null,"wechat":null,"wechatCity":null,"wechatNickName":null,"weibo":null}'
     http_version: 
-  recorded_at: Sat, 16 Apr 2016 12:23:06 GMT
+  recorded_at: Wed, 20 Apr 2016 16:48:59 GMT
 - request:
     method: get
-    uri: http://api.51convert.cn/v1/customers?access_token=37836eca163bb54cc9c0564c4b5d3b19&mobile=13911223366
+    uri: http://api.51convert.cn/v1/customers?access_token=<ACCESSTOKEN>&mobile=13911223366
     body:
       encoding: US-ASCII
       string: ''
@@ -135,7 +135,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Sat, 16 Apr 2016 12:23:07 GMT
+      - Wed, 20 Apr 2016 16:49:00 GMT
       Content-Type:
       - application/json;charset=UTF-8
       Transfer-Encoding:
@@ -146,13 +146,13 @@ http_interactions:
       - application:test:8015
     body:
       encoding: UTF-8
-      string: '{"records":1,"rows":[{"acceptEmail":false,"acceptSMS":false,"annualRevenue":null,"birthday":null,"campaignId":null,"campaignName":null,"city":null,"code":null,"company":null,"contentName":null,"country":null,"county":null,"createFrom":null,"createFromName":null,"createMethod":null,"dateCreated":"2016-04-16T12:23:05Z","dateJoin":"2016-04-16T12:23:05Z","dateMemberReg":null,"email":"guru@jungle.co","emailVerified":false,"employeeNumber":null,"externalId":null,"gender":0,"homeAddress":null,"id":328942,"img":null,"industry":null,"isAnonymous":false,"isEmployee":false,"isMember":false,"isReferrer":false,"lastUpdated":"2016-04-16T12:23:07Z","latestEngageDate":null,"membershipLevel":null,"membershipNo":null,"membershipScore":null,"mobile":"13911223366","mobileVerified":false,"name":"fake
+      string: '{"records":1,"rows":[{"acceptEmail":false,"acceptSMS":false,"annualRevenue":null,"birthday":null,"campaignId":null,"campaignName":null,"city":null,"code":null,"company":null,"contentName":null,"country":null,"county":null,"createFrom":null,"createFromName":null,"createMethod":null,"dateCreated":"2016-04-20T16:48:58Z","dateJoin":"2016-04-20T16:48:59Z","dateMemberReg":null,"email":"guru@jungle.co","emailVerified":false,"employeeNumber":null,"externalId":null,"gender":0,"homeAddress":null,"id":329120,"img":null,"industry":null,"isAnonymous":false,"isEmployee":false,"isMember":false,"isReferrer":false,"lastUpdated":"2016-04-20T16:49:00Z","latestEngageDate":null,"membershipLevel":null,"membershipNo":null,"membershipScore":null,"mobile":"13911223366","mobileVerified":false,"name":"fake
         guru","nickName":null,"notAcceptEmail":false,"notAcceptSMS":false,"officeAddress":null,"ownerId":null,"ownerName":null,"postcode":null,"province":null,"qq":null,"referrer":null,"referrerName":null,"region":null,"remark":null,"source":null,"stage":null,"status":null,"street":null,"tags":null,"telephone":null,"title":null,"type":null,"typeName":null,"updateMethod":null,"utmMedium":null,"utmTerm":null,"website":null,"wechat":null,"wechatCity":null,"wechatNickName":null,"weibo":null}],"total":1}'
     http_version: 
-  recorded_at: Sat, 16 Apr 2016 12:23:08 GMT
+  recorded_at: Wed, 20 Apr 2016 16:49:00 GMT
 - request:
     method: delete
-    uri: http://api.51convert.cn/v1/customers/328942?access_token=37836eca163bb54cc9c0564c4b5d3b19
+    uri: http://api.51convert.cn/v1/customers/329120?access_token=<ACCESSTOKEN>
     body:
       encoding: US-ASCII
       string: ''
@@ -171,7 +171,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Sat, 16 Apr 2016 12:23:12 GMT
+      - Wed, 20 Apr 2016 16:49:04 GMT
       Content-Type:
       - text/html;charset=utf-8
       Connection:
@@ -182,10 +182,10 @@ http_interactions:
       encoding: UTF-8
       string: ''
     http_version: 
-  recorded_at: Sat, 16 Apr 2016 12:23:12 GMT
+  recorded_at: Wed, 20 Apr 2016 16:49:04 GMT
 - request:
     method: get
-    uri: http://api.51convert.cn/v1/customers/328942?access_token=37836eca163bb54cc9c0564c4b5d3b19
+    uri: http://api.51convert.cn/v1/customers/329120?access_token=<ACCESSTOKEN>
     body:
       encoding: US-ASCII
       string: ''
@@ -204,7 +204,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Sat, 16 Apr 2016 12:23:13 GMT
+      - Wed, 20 Apr 2016 16:49:05 GMT
       Content-Type:
       - application/json;charset=UTF-8
       Transfer-Encoding:
@@ -219,5 +219,5 @@ http_interactions:
       encoding: UTF-8
       string: '{"error_code":40201,"error_description":"permission is not enough"}'
     http_version: 
-  recorded_at: Sat, 16 Apr 2016 12:23:13 GMT
+  recorded_at: Wed, 20 Apr 2016 16:49:05 GMT
 recorded_with: VCR 3.0.1

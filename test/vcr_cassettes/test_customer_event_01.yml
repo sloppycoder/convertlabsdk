@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://api.51convert.cn/security/accesstoken?appid=cl03091540aeb085c&grant_type=client_credentials&secret=6ddd11a9405219f7100853784bef45261b250ce2
+    uri: http://api.51convert.cn/security/accesstoken?appid=<APPID>&grant_type=client_credentials&secret=<SECRET>
     body:
       encoding: US-ASCII
       string: ''
@@ -21,7 +21,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Tue, 19 Apr 2016 17:10:08 GMT
+      - Wed, 20 Apr 2016 16:48:37 GMT
       Content-Type:
       - application/json;charset=UTF-8
       Transfer-Encoding:
@@ -32,12 +32,12 @@ http_interactions:
       - application:test:8015
     body:
       encoding: UTF-8
-      string: '{"error_code":0,"access_token":"54c0552f5a14b68addd92c259883c31d","expires_in":7200}'
+      string: '{"error_code":0,"access_token":"2b0a7ae733ecf0e8a2b64dc3c3f3406b","expires_in":7200}'
     http_version: 
-  recorded_at: Tue, 19 Apr 2016 17:10:08 GMT
+  recorded_at: Wed, 20 Apr 2016 16:48:37 GMT
 - request:
     method: post
-    uri: http://api.51convert.cn/v1/customerevents?access_token=54c0552f5a14b68addd92c259883c31d
+    uri: http://api.51convert.cn/v1/customerevents?access_token=<ACCESSTOKEN>
     body:
       encoding: UTF-8
       string: '{"channelAccount":"TEST_CHANNEL","channelType":"sales_order","externalId":"12234","customerId":"531","targetId":"531","source":"TEST_CHANNEL","attr1":"headache"}'
@@ -60,7 +60,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Tue, 19 Apr 2016 17:10:09 GMT
+      - Wed, 20 Apr 2016 16:48:39 GMT
       Content-Type:
       - application/json;charset=UTF-8
       Transfer-Encoding:
@@ -71,12 +71,12 @@ http_interactions:
       - application:test:8015
     body:
       encoding: UTF-8
-      string: '{"attr1":"headache","attr2":null,"attr3":null,"attr4":null,"attr5":null,"batchId":null,"campaign":null,"campaignName":null,"channelAccount":"TEST_CHANNEL","channelType":"sales_order","contentName":null,"customerId":531,"date":"2016-04-19T17:10:09Z","device":null,"employee":null,"event":null,"eventGroup":null,"externalId":"12234","id":1059023,"inbound":true,"internalContentId":null,"lastForwarder":null,"lastUpdated":"2016-04-19T17:10:09Z","location":null,"pageId":null,"refScore":0,"referrer":null,"referrerName":null,"score":0,"source":"TEST_CHANNEL","summary":null,"tag":null,"targetId":"531","targetName":null}'
+      string: '{"attr1":"headache","attr2":null,"attr3":null,"attr4":null,"attr5":null,"batchId":null,"campaign":null,"campaignName":null,"channelAccount":"TEST_CHANNEL","channelType":"sales_order","contentName":null,"customerId":531,"date":"2016-04-20T16:48:38Z","device":null,"employee":null,"event":null,"eventGroup":null,"externalId":"12234","id":1059051,"inbound":true,"internalContentId":null,"lastForwarder":null,"lastUpdated":"2016-04-20T16:48:38Z","location":null,"pageId":null,"refScore":0,"referrer":null,"referrerName":null,"score":0,"source":"TEST_CHANNEL","summary":null,"tag":null,"targetId":"531","targetName":null}'
     http_version: 
-  recorded_at: Tue, 19 Apr 2016 17:10:10 GMT
+  recorded_at: Wed, 20 Apr 2016 16:48:39 GMT
 - request:
     method: put
-    uri: http://api.51convert.cn/v1/customerevents/1059023?access_token=54c0552f5a14b68addd92c259883c31d
+    uri: http://api.51convert.cn/v1/customerevents/1059051?access_token=<ACCESSTOKEN>
     body:
       encoding: UTF-8
       string: '{"attr1":"happy"}'
@@ -99,7 +99,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Tue, 19 Apr 2016 17:10:10 GMT
+      - Wed, 20 Apr 2016 16:48:39 GMT
       Content-Type:
       - application/json;charset=UTF-8
       Transfer-Encoding:
@@ -110,12 +110,12 @@ http_interactions:
       - application:test:8015
     body:
       encoding: UTF-8
-      string: '{"attr1":"happy","attr2":null,"attr3":null,"attr4":null,"attr5":null,"batchId":null,"campaign":null,"campaignName":null,"channelAccount":"TEST_CHANNEL","channelType":"sales_order","contentName":null,"customerId":531,"date":"2016-04-19T17:10:09Z","device":null,"employee":null,"event":"default","eventGroup":null,"externalId":"12234","id":1059023,"inbound":true,"internalContentId":null,"lastForwarder":null,"lastUpdated":"2016-04-19T17:10:10Z","location":null,"pageId":null,"refScore":0,"referrer":null,"referrerName":null,"score":0,"source":"TEST_CHANNEL","summary":null,"tag":null,"targetId":"531","targetName":null}'
+      string: '{"attr1":"happy","attr2":null,"attr3":null,"attr4":null,"attr5":null,"batchId":null,"campaign":null,"campaignName":null,"channelAccount":"TEST_CHANNEL","channelType":"sales_order","contentName":null,"customerId":531,"date":"2016-04-20T16:48:38Z","device":null,"employee":null,"event":null,"eventGroup":null,"externalId":"12234","id":1059051,"inbound":true,"internalContentId":null,"lastForwarder":null,"lastUpdated":"2016-04-20T16:48:39Z","location":null,"pageId":null,"refScore":0,"referrer":null,"referrerName":null,"score":0,"source":"TEST_CHANNEL","summary":null,"tag":null,"targetId":"531","targetName":null}'
     http_version: 
-  recorded_at: Tue, 19 Apr 2016 17:10:11 GMT
+  recorded_at: Wed, 20 Apr 2016 16:48:40 GMT
 - request:
     method: delete
-    uri: http://api.51convert.cn/v1/customerevents/1059023?access_token=54c0552f5a14b68addd92c259883c31d
+    uri: http://api.51convert.cn/v1/customerevents/1059051?access_token=<ACCESSTOKEN>
     body:
       encoding: US-ASCII
       string: ''
@@ -134,7 +134,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Tue, 19 Apr 2016 17:10:11 GMT
+      - Wed, 20 Apr 2016 16:48:40 GMT
       Content-Type:
       - text/html;charset=utf-8
       Connection:
@@ -145,5 +145,5 @@ http_interactions:
       encoding: UTF-8
       string: ''
     http_version: 
-  recorded_at: Tue, 19 Apr 2016 17:10:12 GMT
+  recorded_at: Wed, 20 Apr 2016 16:48:41 GMT
 recorded_with: VCR 3.0.1

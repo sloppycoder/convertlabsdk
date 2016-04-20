@@ -4,13 +4,13 @@ require 'helper'
 class TestAccessToken < MiniTest::Test
   
   def test_can_get_a_valid_access_token
-    VCR.use_cassette('test_access_token_01', record: vcr_record_mode) do
+    VCR.use_cassette('test_access_token_01') do
       refute_nil app_client.access_token
     end
   end
 
   def test_can_get_a_new_token_after_expire_old_token
-    VCR.use_cassette('test_access_token_02', record: vcr_record_mode) do
+    VCR.use_cassette('test_access_token_02') do
       old_token = app_client.access_token
       refute_nil old_token
 
@@ -26,7 +26,7 @@ class TestAccessToken < MiniTest::Test
   end
 
   def test_incorrect_credentials_causes_access_token_error
-    VCR.use_cassette('test_access_token_03', record: vcr_record_mode) do
+    VCR.use_cassette('test_access_token_03') do
       old_secret = app_client.secret
       app_client.secret = 'bogus'
       

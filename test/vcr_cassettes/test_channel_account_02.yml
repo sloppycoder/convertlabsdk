@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://api.51convert.cn/security/accesstoken?appid=cl03091540aeb085c&grant_type=client_credentials&secret=6ddd11a9405219f7100853784bef45261b250ce2
+    uri: http://api.51convert.cn/security/accesstoken?appid=<APPID>&grant_type=client_credentials&secret=<SECRET>
     body:
       encoding: US-ASCII
       string: ''
@@ -21,7 +21,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Sat, 16 Apr 2016 12:12:52 GMT
+      - Wed, 20 Apr 2016 16:48:49 GMT
       Content-Type:
       - application/json;charset=UTF-8
       Transfer-Encoding:
@@ -32,12 +32,12 @@ http_interactions:
       - application:test:8015
     body:
       encoding: UTF-8
-      string: '{"error_code":0,"access_token":"497b93753fa5260fda25bf12cc450012","expires_in":7200}'
+      string: '{"error_code":0,"access_token":"684c2edfd4f7343413ca5d47d1f95629","expires_in":7200}'
     http_version: 
-  recorded_at: Sat, 16 Apr 2016 12:12:52 GMT
+  recorded_at: Wed, 20 Apr 2016 16:48:49 GMT
 - request:
     method: post
-    uri: http://api.51convert.cn/v1/channelaccounts?access_token=497b93753fa5260fda25bf12cc450012
+    uri: http://api.51convert.cn/v1/channelaccounts?access_token=<ACCESSTOKEN>
     body:
       encoding: UTF-8
       string: '{"type":"RBSDK_TEST_CHANNEL","customerId":3021200,"userId":"u3021200","name":"bernie"}'
@@ -60,7 +60,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Sat, 16 Apr 2016 12:12:53 GMT
+      - Wed, 20 Apr 2016 16:48:50 GMT
       Content-Type:
       - application/json;charset=UTF-8
       Transfer-Encoding:
@@ -71,12 +71,12 @@ http_interactions:
       - application:test:8015
     body:
       encoding: UTF-8
-      string: '{"account":null,"att1":null,"att2":null,"att3":null,"att4":null,"att5":null,"city":null,"country":null,"customerId":3021200,"dateCreated":"2016-04-16T12:12:53Z","externalId":null,"gender":0,"id":24350,"img":null,"lastUpdated":"2016-04-16T12:12:53Z","location":null,"name":"bernie","province":null,"subscribe":false,"type":"RBSDK_TEST_CHANNEL","userId":"u3021200","userName":null}'
+      string: '{"account":null,"att1":null,"att2":null,"att3":null,"att4":null,"att5":null,"city":null,"country":null,"customerId":3021200,"dateCreated":"2016-04-20T16:48:50Z","externalId":null,"gender":0,"id":24439,"img":null,"lastUpdated":"2016-04-20T16:48:50Z","location":null,"name":"bernie","province":null,"subscribe":false,"type":"RBSDK_TEST_CHANNEL","userId":"u3021200","userName":null}'
     http_version: 
-  recorded_at: Sat, 16 Apr 2016 12:12:53 GMT
+  recorded_at: Wed, 20 Apr 2016 16:48:50 GMT
 - request:
     method: post
-    uri: http://api.51convert.cn/v1/channelaccounts?access_token=497b93753fa5260fda25bf12cc450012
+    uri: http://api.51convert.cn/v1/channelaccounts?access_token=<ACCESSTOKEN>
     body:
       encoding: UTF-8
       string: '{"type":"RBSDK_TEST_CHANNEL","customerId":3021200,"userId":"u3021200","name":"bernie"}'
@@ -99,7 +99,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Sat, 16 Apr 2016 12:12:54 GMT
+      - Wed, 20 Apr 2016 16:48:51 GMT
       Content-Type:
       - application/json;charset=UTF-8
       Transfer-Encoding:
@@ -110,12 +110,12 @@ http_interactions:
       - application:test:8015
     body:
       encoding: UTF-8
-      string: '{"account":null,"att1":null,"att2":null,"att3":null,"att4":null,"att5":null,"city":null,"country":null,"customerId":3021200,"dateCreated":"2016-04-16T12:12:54Z","externalId":null,"gender":0,"id":24351,"img":null,"lastUpdated":"2016-04-16T12:12:54Z","location":null,"name":"bernie","province":null,"subscribe":false,"type":"RBSDK_TEST_CHANNEL","userId":"u3021200","userName":null}'
+      string: '{"account":null,"att1":null,"att2":null,"att3":null,"att4":null,"att5":null,"city":null,"country":null,"customerId":3021200,"dateCreated":"2016-04-20T16:48:51Z","externalId":null,"gender":0,"id":24440,"img":null,"lastUpdated":"2016-04-20T16:48:51Z","location":null,"name":"bernie","province":null,"subscribe":false,"type":"RBSDK_TEST_CHANNEL","userId":"u3021200","userName":null}'
     http_version: 
-  recorded_at: Sat, 16 Apr 2016 12:12:54 GMT
+  recorded_at: Wed, 20 Apr 2016 16:48:51 GMT
 - request:
     method: post
-    uri: http://api.51convert.cn/v1/channelaccounts?access_token=497b93753fa5260fda25bf12cc450012
+    uri: http://api.51convert.cn/v1/channelaccounts?access_token=<ACCESSTOKEN>
     body:
       encoding: UTF-8
       string: '{"type":"RBSDK_TEST_CHANNEL","customerId":3021200,"userId":"u3021200","name":"bernie","att1":"Feel
@@ -139,7 +139,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Sat, 16 Apr 2016 12:12:55 GMT
+      - Wed, 20 Apr 2016 16:48:52 GMT
       Content-Type:
       - application/json;charset=UTF-8
       Transfer-Encoding:
@@ -150,12 +150,12 @@ http_interactions:
       - application:test:8015
     body:
       encoding: UTF-8
-      string: '{"account":null,"att1":"Feel the Bern!","att2":null,"att3":null,"att4":null,"att5":null,"city":null,"country":null,"customerId":3021200,"dateCreated":"2016-04-16T12:12:55Z","externalId":null,"gender":0,"id":24352,"img":null,"lastUpdated":"2016-04-16T12:12:55Z","location":null,"name":"bernie","province":null,"subscribe":false,"type":"RBSDK_TEST_CHANNEL","userId":"u3021200","userName":null}'
+      string: '{"account":null,"att1":"Feel the Bern!","att2":null,"att3":null,"att4":null,"att5":null,"city":null,"country":null,"customerId":3021200,"dateCreated":"2016-04-20T16:48:52Z","externalId":null,"gender":0,"id":24441,"img":null,"lastUpdated":"2016-04-20T16:48:52Z","location":null,"name":"bernie","province":null,"subscribe":false,"type":"RBSDK_TEST_CHANNEL","userId":"u3021200","userName":null}'
     http_version: 
-  recorded_at: Sat, 16 Apr 2016 12:12:55 GMT
+  recorded_at: Wed, 20 Apr 2016 16:48:52 GMT
 - request:
     method: get
-    uri: http://api.51convert.cn/v1/channelaccounts?access_token=497b93753fa5260fda25bf12cc450012&att1=Feel%20the%20Bern!&userId=u3021200
+    uri: http://api.51convert.cn/v1/channelaccounts?access_token=<ACCESSTOKEN>&att1=Feel%20the%20Bern!&userId=u3021200
     body:
       encoding: US-ASCII
       string: ''
@@ -174,7 +174,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Sat, 16 Apr 2016 12:12:56 GMT
+      - Wed, 20 Apr 2016 16:48:53 GMT
       Content-Type:
       - application/json;charset=UTF-8
       Transfer-Encoding:
@@ -185,12 +185,12 @@ http_interactions:
       - application:test:8015
     body:
       encoding: UTF-8
-      string: '[{"account":null,"att1":"Feel the Bern!","att2":null,"att3":null,"att4":null,"att5":null,"city":null,"country":null,"customerId":3021200,"dateCreated":"2016-04-16T12:12:55Z","externalId":null,"gender":0,"id":24352,"img":null,"lastUpdated":"2016-04-16T12:12:55Z","location":null,"name":"bernie","province":null,"subscribe":false,"type":"RBSDK_TEST_CHANNEL","userId":"u3021200","userName":null}]'
+      string: '[{"account":null,"att1":"Feel the Bern!","att2":null,"att3":null,"att4":null,"att5":null,"city":null,"country":null,"customerId":3021200,"dateCreated":"2016-04-20T16:48:52Z","externalId":null,"gender":0,"id":24441,"img":null,"lastUpdated":"2016-04-20T16:48:52Z","location":null,"name":"bernie","province":null,"subscribe":false,"type":"RBSDK_TEST_CHANNEL","userId":"u3021200","userName":null}]'
     http_version: 
-  recorded_at: Sat, 16 Apr 2016 12:12:56 GMT
+  recorded_at: Wed, 20 Apr 2016 16:48:53 GMT
 - request:
     method: get
-    uri: http://api.51convert.cn/v1/channelaccounts?access_token=497b93753fa5260fda25bf12cc450012&userId=u3021200
+    uri: http://api.51convert.cn/v1/channelaccounts?access_token=<ACCESSTOKEN>&userId=u3021200
     body:
       encoding: US-ASCII
       string: ''
@@ -209,7 +209,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Sat, 16 Apr 2016 12:12:57 GMT
+      - Wed, 20 Apr 2016 16:48:54 GMT
       Content-Type:
       - application/json;charset=UTF-8
       Transfer-Encoding:
@@ -220,13 +220,13 @@ http_interactions:
       - application:test:8015
     body:
       encoding: UTF-8
-      string: '[{"account":null,"att1":null,"att2":null,"att3":null,"att4":null,"att5":null,"city":null,"country":null,"customerId":3021200,"dateCreated":"2016-04-16T12:12:53Z","externalId":null,"gender":0,"id":24350,"img":null,"lastUpdated":"2016-04-16T12:12:53Z","location":null,"name":"bernie","province":null,"subscribe":false,"type":"RBSDK_TEST_CHANNEL","userId":"u3021200","userName":null},{"account":null,"att1":null,"att2":null,"att3":null,"att4":null,"att5":null,"city":null,"country":null,"customerId":3021200,"dateCreated":"2016-04-16T12:12:54Z","externalId":null,"gender":0,"id":24351,"img":null,"lastUpdated":"2016-04-16T12:12:54Z","location":null,"name":"bernie","province":null,"subscribe":false,"type":"RBSDK_TEST_CHANNEL","userId":"u3021200","userName":null},{"account":null,"att1":"Feel
-        the Bern!","att2":null,"att3":null,"att4":null,"att5":null,"city":null,"country":null,"customerId":3021200,"dateCreated":"2016-04-16T12:12:55Z","externalId":null,"gender":0,"id":24352,"img":null,"lastUpdated":"2016-04-16T12:12:55Z","location":null,"name":"bernie","province":null,"subscribe":false,"type":"RBSDK_TEST_CHANNEL","userId":"u3021200","userName":null}]'
+      string: '[{"account":null,"att1":null,"att2":null,"att3":null,"att4":null,"att5":null,"city":null,"country":null,"customerId":3021200,"dateCreated":"2016-04-20T16:48:51Z","externalId":null,"gender":0,"id":24439,"img":null,"lastUpdated":"2016-04-20T16:48:50Z","location":null,"name":"bernie","province":null,"subscribe":false,"type":"RBSDK_TEST_CHANNEL","userId":"u3021200","userName":null},{"account":null,"att1":null,"att2":null,"att3":null,"att4":null,"att5":null,"city":null,"country":null,"customerId":3021200,"dateCreated":"2016-04-20T16:48:51Z","externalId":null,"gender":0,"id":24440,"img":null,"lastUpdated":"2016-04-20T16:48:51Z","location":null,"name":"bernie","province":null,"subscribe":false,"type":"RBSDK_TEST_CHANNEL","userId":"u3021200","userName":null},{"account":null,"att1":"Feel
+        the Bern!","att2":null,"att3":null,"att4":null,"att5":null,"city":null,"country":null,"customerId":3021200,"dateCreated":"2016-04-20T16:48:52Z","externalId":null,"gender":0,"id":24441,"img":null,"lastUpdated":"2016-04-20T16:48:52Z","location":null,"name":"bernie","province":null,"subscribe":false,"type":"RBSDK_TEST_CHANNEL","userId":"u3021200","userName":null}]'
     http_version: 
-  recorded_at: Sat, 16 Apr 2016 12:12:57 GMT
+  recorded_at: Wed, 20 Apr 2016 16:48:54 GMT
 - request:
     method: delete
-    uri: http://api.51convert.cn/v1/channelaccounts/24350?access_token=497b93753fa5260fda25bf12cc450012
+    uri: http://api.51convert.cn/v1/channelaccounts/24439?access_token=<ACCESSTOKEN>
     body:
       encoding: US-ASCII
       string: ''
@@ -245,7 +245,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Sat, 16 Apr 2016 12:12:58 GMT
+      - Wed, 20 Apr 2016 16:48:54 GMT
       Content-Type:
       - text/html;charset=utf-8
       Connection:
@@ -256,10 +256,10 @@ http_interactions:
       encoding: UTF-8
       string: ''
     http_version: 
-  recorded_at: Sat, 16 Apr 2016 12:12:58 GMT
+  recorded_at: Wed, 20 Apr 2016 16:48:55 GMT
 - request:
     method: delete
-    uri: http://api.51convert.cn/v1/channelaccounts/24351?access_token=497b93753fa5260fda25bf12cc450012
+    uri: http://api.51convert.cn/v1/channelaccounts/24440?access_token=<ACCESSTOKEN>
     body:
       encoding: US-ASCII
       string: ''
@@ -278,7 +278,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Sat, 16 Apr 2016 12:12:58 GMT
+      - Wed, 20 Apr 2016 16:48:55 GMT
       Content-Type:
       - text/html;charset=utf-8
       Connection:
@@ -289,10 +289,10 @@ http_interactions:
       encoding: UTF-8
       string: ''
     http_version: 
-  recorded_at: Sat, 16 Apr 2016 12:12:59 GMT
+  recorded_at: Wed, 20 Apr 2016 16:48:56 GMT
 - request:
     method: delete
-    uri: http://api.51convert.cn/v1/channelaccounts/24352?access_token=497b93753fa5260fda25bf12cc450012
+    uri: http://api.51convert.cn/v1/channelaccounts/24441?access_token=<ACCESSTOKEN>
     body:
       encoding: US-ASCII
       string: ''
@@ -311,7 +311,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Sat, 16 Apr 2016 12:12:59 GMT
+      - Wed, 20 Apr 2016 16:48:56 GMT
       Content-Type:
       - text/html;charset=utf-8
       Connection:
@@ -322,5 +322,5 @@ http_interactions:
       encoding: UTF-8
       string: ''
     http_version: 
-  recorded_at: Sat, 16 Apr 2016 12:13:00 GMT
+  recorded_at: Wed, 20 Apr 2016 16:48:56 GMT
 recorded_with: VCR 3.0.1

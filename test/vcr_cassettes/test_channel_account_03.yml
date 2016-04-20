@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://api.51convert.cn/security/accesstoken?appid=cl03091540aeb085c&grant_type=client_credentials&secret=6ddd11a9405219f7100853784bef45261b250ce2
+    uri: http://api.51convert.cn/security/accesstoken?appid=<APPID>&grant_type=client_credentials&secret=<SECRET>
     body:
       encoding: US-ASCII
       string: ''
@@ -21,7 +21,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Sat, 16 Apr 2016 12:13:00 GMT
+      - Wed, 20 Apr 2016 16:48:41 GMT
       Content-Type:
       - application/json;charset=UTF-8
       Transfer-Encoding:
@@ -32,15 +32,15 @@ http_interactions:
       - application:test:8015
     body:
       encoding: UTF-8
-      string: '{"error_code":0,"access_token":"8f92483d6e80547d0e1c59d5cbf6f504","expires_in":7200}'
+      string: '{"error_code":0,"access_token":"b54d029c479d0368bb4d1af78bf01448","expires_in":7200}'
     http_version: 
-  recorded_at: Sat, 16 Apr 2016 12:13:01 GMT
+  recorded_at: Wed, 20 Apr 2016 16:48:41 GMT
 - request:
     method: post
-    uri: http://api.51convert.cn/v1/channelaccounts?access_token=8f92483d6e80547d0e1c59d5cbf6f504
+    uri: http://api.51convert.cn/v1/channelaccounts?access_token=<ACCESSTOKEN>
     body:
       encoding: UTF-8
-      string: '{"type":"RBSDK_TEST_CHANNEL","customerId":3954370,"userId":"u3954370","att1":"Make
+      string: '{"type":"RBSDK_TEST_CHANNEL","customerId":2081226,"userId":"u2081226","att1":"Make
         America great again."}'
     headers:
       Accept:
@@ -61,7 +61,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Sat, 16 Apr 2016 12:13:01 GMT
+      - Wed, 20 Apr 2016 16:48:42 GMT
       Content-Type:
       - application/json;charset=UTF-8
       Transfer-Encoding:
@@ -72,12 +72,12 @@ http_interactions:
       - application:test:8015
     body:
       encoding: UTF-8
-      string: '{"account":null,"att1":"Make America great again.","att2":null,"att3":null,"att4":null,"att5":null,"city":null,"country":null,"customerId":3954370,"dateCreated":"2016-04-16T12:13:01Z","externalId":null,"gender":0,"id":24353,"img":null,"lastUpdated":"2016-04-16T12:13:01Z","location":null,"name":null,"province":null,"subscribe":false,"type":"RBSDK_TEST_CHANNEL","userId":"u3954370","userName":null}'
+      string: '{"account":null,"att1":"Make America great again.","att2":null,"att3":null,"att4":null,"att5":null,"city":null,"country":null,"customerId":2081226,"dateCreated":"2016-04-20T16:48:42Z","externalId":null,"gender":0,"id":24437,"img":null,"lastUpdated":"2016-04-20T16:48:42Z","location":null,"name":null,"province":null,"subscribe":false,"type":"RBSDK_TEST_CHANNEL","userId":"u2081226","userName":null}'
     http_version: 
-  recorded_at: Sat, 16 Apr 2016 12:13:02 GMT
+  recorded_at: Wed, 20 Apr 2016 16:48:42 GMT
 - request:
     method: put
-    uri: http://api.51convert.cn/v1/channelaccounts/24353?access_token=8f92483d6e80547d0e1c59d5cbf6f504
+    uri: http://api.51convert.cn/v1/channelaccounts/24437?access_token=<ACCESSTOKEN>
     body:
       encoding: UTF-8
       string: '{"att1":"You''re fired!"}'
@@ -100,7 +100,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Sat, 16 Apr 2016 12:13:02 GMT
+      - Wed, 20 Apr 2016 16:48:43 GMT
       Content-Type:
       - application/json;charset=UTF-8
       Transfer-Encoding:
@@ -111,12 +111,12 @@ http_interactions:
       - application:test:8015
     body:
       encoding: UTF-8
-      string: '{"account":null,"att1":"You''re fired!","att2":null,"att3":null,"att4":null,"att5":null,"city":null,"country":null,"customerId":3954370,"dateCreated":"2016-04-16T12:13:02Z","externalId":null,"gender":0,"id":24353,"img":null,"lastUpdated":"2016-04-16T12:13:02Z","location":null,"name":null,"province":null,"subscribe":false,"type":"RBSDK_TEST_CHANNEL","userId":"u3954370","userName":null}'
+      string: '{"account":null,"att1":"You''re fired!","att2":null,"att3":null,"att4":null,"att5":null,"city":null,"country":null,"customerId":2081226,"dateCreated":"2016-04-20T16:48:43Z","externalId":null,"gender":0,"id":24437,"img":null,"lastUpdated":"2016-04-20T16:48:43Z","location":null,"name":null,"province":null,"subscribe":false,"type":"RBSDK_TEST_CHANNEL","userId":"u2081226","userName":null}'
     http_version: 
-  recorded_at: Sat, 16 Apr 2016 12:13:03 GMT
+  recorded_at: Wed, 20 Apr 2016 16:48:43 GMT
 - request:
     method: get
-    uri: http://api.51convert.cn/v1/channelaccounts/24353?access_token=8f92483d6e80547d0e1c59d5cbf6f504
+    uri: http://api.51convert.cn/v1/channelaccounts/24437?access_token=<ACCESSTOKEN>
     body:
       encoding: US-ASCII
       string: ''
@@ -135,7 +135,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Sat, 16 Apr 2016 12:13:03 GMT
+      - Wed, 20 Apr 2016 16:48:44 GMT
       Content-Type:
       - application/json;charset=UTF-8
       Transfer-Encoding:
@@ -146,12 +146,12 @@ http_interactions:
       - application:test:8015
     body:
       encoding: UTF-8
-      string: '{"account":null,"att1":"You''re fired!","att2":null,"att3":null,"att4":null,"att5":null,"city":null,"country":null,"customerId":3954370,"dateCreated":"2016-04-16T12:13:02Z","externalId":null,"gender":0,"id":24353,"img":null,"lastUpdated":"2016-04-16T12:13:02Z","location":null,"name":null,"province":null,"subscribe":false,"type":"RBSDK_TEST_CHANNEL","userId":"u3954370","userName":null}'
+      string: '{"account":null,"att1":"You''re fired!","att2":null,"att3":null,"att4":null,"att5":null,"city":null,"country":null,"customerId":2081226,"dateCreated":"2016-04-20T16:48:43Z","externalId":null,"gender":0,"id":24437,"img":null,"lastUpdated":"2016-04-20T16:48:43Z","location":null,"name":null,"province":null,"subscribe":false,"type":"RBSDK_TEST_CHANNEL","userId":"u2081226","userName":null}'
     http_version: 
-  recorded_at: Sat, 16 Apr 2016 12:13:04 GMT
+  recorded_at: Wed, 20 Apr 2016 16:48:44 GMT
 - request:
     method: delete
-    uri: http://api.51convert.cn/v1/channelaccounts/24353?access_token=8f92483d6e80547d0e1c59d5cbf6f504
+    uri: http://api.51convert.cn/v1/channelaccounts/24437?access_token=<ACCESSTOKEN>
     body:
       encoding: US-ASCII
       string: ''
@@ -170,7 +170,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Sat, 16 Apr 2016 12:13:04 GMT
+      - Wed, 20 Apr 2016 16:48:45 GMT
       Content-Type:
       - text/html;charset=utf-8
       Connection:
@@ -181,5 +181,5 @@ http_interactions:
       encoding: UTF-8
       string: ''
     http_version: 
-  recorded_at: Sat, 16 Apr 2016 12:13:04 GMT
+  recorded_at: Wed, 20 Apr 2016 16:48:45 GMT
 recorded_with: VCR 3.0.1

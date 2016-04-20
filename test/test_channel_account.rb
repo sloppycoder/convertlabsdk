@@ -15,7 +15,7 @@ class TestChannelAccount < MiniTest::Test
     cust1 = Random.rand(2000000..4000000)
     channel_acc1 = { type: channel_type, customerId: cust1, userId: "u#{cust1}" }
 
-    VCR.use_cassette('test_channel_account_01', record: vcr_record_mode) do
+    VCR.use_cassette('test_channel_account_01') do
       # creating new object will return its id when success
       id = app_client.channel_account.post(channel_acc1)['id']
       refute_nil id
@@ -40,7 +40,7 @@ class TestChannelAccount < MiniTest::Test
     bern1 = { type: channel_type, customerId: cust2, userId: "u#{cust2}", name: 'bernie' }
     bern3 = { type: channel_type, customerId: cust2, userId: "u#{cust2}", name: 'bernie', att1: tag_line }
 
-    VCR.use_cassette('test_channel_account_02', record: vcr_record_mode) do
+    VCR.use_cassette('test_channel_account_02') do
       # channel account allow create record with same attributes. bug?
       id1 = app_client.channel_account.post(bern1)['id']
       id2 = app_client.channel_account.post(bern1)['id']
@@ -77,7 +77,7 @@ class TestChannelAccount < MiniTest::Test
     trump = { type: channel_type, customerId: cust3, userId: "u#{cust3}", att1: old_tag_line }
     trump2 = { att1: new_tag_line }
 
-    VCR.use_cassette('test_channel_account_03', record: vcr_record_mode) do
+    VCR.use_cassette('test_channel_account_03') do
       id = app_client.channel_account.post(trump)['id']
       refute_nil id
 

@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://api.51convert.cn/security/accesstoken?appid=cl03091540aeb085c&grant_type=client_credentials&secret=6ddd11a9405219f7100853784bef45261b250ce2
+    uri: http://api.51convert.cn/security/accesstoken?appid=<APPID>&grant_type=client_credentials&secret=<SECRET>
     body:
       encoding: US-ASCII
       string: ''
@@ -21,7 +21,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Tue, 19 Apr 2016 10:04:52 GMT
+      - Wed, 20 Apr 2016 16:49:13 GMT
       Content-Type:
       - application/json;charset=UTF-8
       Transfer-Encoding:
@@ -32,12 +32,12 @@ http_interactions:
       - application:test:8015
     body:
       encoding: UTF-8
-      string: '{"error_code":0,"access_token":"cd7d744e50272e00737717f241796e4a","expires_in":7200}'
+      string: '{"error_code":0,"access_token":"8b30cfea5c7bdacc4f5aaa4115c93249","expires_in":7200}'
     http_version: 
-  recorded_at: Tue, 19 Apr 2016 10:04:53 GMT
+  recorded_at: Wed, 20 Apr 2016 16:49:13 GMT
 - request:
     method: get
-    uri: http://api.51convert.cn/security/accesstoken?appid=cl03091540aeb085c&grant_type=client_credentials&secret=6ddd11a9405219f7100853784bef45261b250ce2
+    uri: http://api.51convert.cn/security/accesstoken?appid=<APPID>&grant_type=client_credentials&secret=<SECRET>
     body:
       encoding: US-ASCII
       string: ''
@@ -56,7 +56,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Tue, 19 Apr 2016 10:04:53 GMT
+      - Wed, 20 Apr 2016 16:49:14 GMT
       Content-Type:
       - application/json;charset=UTF-8
       Transfer-Encoding:
@@ -67,7 +67,7 @@ http_interactions:
       - application:test:8015
     body:
       encoding: UTF-8
-      string: '{"error_code":0,"access_token":"aa6b037e1aa7f6469cd8798beaa5ad1f","expires_in":7200}'
+      string: '{"error_code":0,"access_token":"c121cd0f070e69cf5dfe53fee474beab","expires_in":7200}'
     http_version: 
-  recorded_at: Tue, 19 Apr 2016 10:04:54 GMT
+  recorded_at: Wed, 20 Apr 2016 16:49:14 GMT
 recorded_with: VCR 3.0.1

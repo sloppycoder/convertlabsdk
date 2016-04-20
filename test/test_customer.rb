@@ -15,7 +15,7 @@ class TestCustomer < MiniTest::Test
     guru = { name: 'guru', mobile: mobile_no, email: 'guru@jungle.cc', external_id: 'XYZ1234' }
     fake_guru = { name: 'fake guru', mobile: mobile_no, email: 'guru@jungle.co', external_id: 'XYZ1235' }
 
-    VCR.use_cassette('test_customer_01', record: vcr_record_mode) do
+    VCR.use_cassette('test_customer_01') do
       # creating new object will return its id when success
       id = app_client.customer.post(guru)['id']
       refute_nil id
@@ -42,7 +42,7 @@ class TestCustomer < MiniTest::Test
     mobile_no = '13911223366'
     guru = { name: 'guru', mobile: mobile_no, email: 'guru@jungle.cc', external_id: 'XYZ1234' }
 
-    VCR.use_cassette('test_customer_02', record: vcr_record_mode) do
+    VCR.use_cassette('test_customer_02') do
       # creating new object will return its id when success
       id = app_client.customer.post(guru)['id']
       refute_nil id

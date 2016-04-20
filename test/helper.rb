@@ -45,22 +45,21 @@ require 'vcr'
 
 # VCR config helpers
 
-# def vcr_configure_sensitive_data(config)
-#   config.filter_sensitive_data('APPID') do |interaction|
-#     byebug
-#     uri_param_value interaction.request.uri, 'appid'
-#   end
-#   config.filter_sensitive_data('SECRET') do |interaction|
-#     uri_param_value interaction.request.uri, 'secret'
-#   end
-#   config.filter_sensitive_data('ACCESSTOKEN') do |interaction|
-#     uri_param_value interaction.request.uri, 'access_token'
-#   end
-# end
+def vcr_configure_sensitive_data(config)
+  config.filter_sensitive_data('<APPID>') do |interaction|
+    uri_param_value interaction.request.uri, 'appid'
+  end
+  config.filter_sensitive_data('<SECRET>') do |interaction|
+    uri_param_value interaction.request.uri, 'secret'
+  end
+  config.filter_sensitive_data('<ACCESSTOKEN>') do |interaction|
+    uri_param_value interaction.request.uri, 'access_token'
+  end
+end
 
-# def uri_param_value(url, key)
-#   CGI.parse(URI.parse(url).query)[key].first
-# end
+def uri_param_value(url, key)
+  CGI.parse(URI.parse(url).query)[key].first
+end
 
 # sometimes it's handy to disable VCR to go server directly
 def disable_vcr?
@@ -68,18 +67,13 @@ def disable_vcr?
   env && %w(yes 1 true).include?(env.downcase)
 end
 
-def vcr_record_mode
-  mode = ENV['VCR_MODE']
-  if mode && !mode.empty?
-    mode.downcase.to_sym
-  else
-    :once
-  end
-end
-
 VCR.configure do |config|
   config.cassette_library_dir = 'test/vcr_cassettes'
   config.hook_into :webmock 
+  config.default_cassette_options = {
+    match_requests_on: [:method, VCR.request_matchers.uri_without_param(:access_token, :appid, :secret)]
+  }
+  vcr_configure_sensitive_data(config)
 end
 
 if disable_vcr?
