@@ -1,5 +1,4 @@
 # encoding: utf-8
-# rubocop:disable Metrics/MethodLength:
 
 require 'active_record'
 

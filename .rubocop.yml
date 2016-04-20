@@ -21,6 +21,9 @@ Style/ClassAndModuleChildren:
 Style/Documentation:
   Enabled: false
 
+Style/ColonMethodCall:
+  Enabled: false
+
 Style/NumericLiterals:
   MinDigits: 30
 
@@ -34,7 +37,7 @@ Metrics/LineLength:
   Max: 120
 
 Metrics/ClassLength:
-  Max: 115
+  Max: 120
 
 Metrics/ParameterLists:
   Max: 6
