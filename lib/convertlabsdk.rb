@@ -7,21 +7,31 @@
 #
 require 'rest-client'
 require 'json'
+require 'active_support/all'
 require 'active_record'
 require 'date'
 require 'logger'
 
 module ConvertLab
   
+  mattr_accessor :logger
+
   MAX_SYNC_ERR ||= 10
   DUMMY_TIMESTAMP ||= Time.at(0).utc
 
-  def self.logger
-    @logger
-  end
+  # include this module will give a class logger class method and instance method
+  module Logging
+    extend ActiveSupport::Concern
 
-  def self.logger=(logger)
-    @logger = logger
+    module ClassMethods
+      def logger
+        ConvertLab::logger
+      end
+    end
+
+    def logger
+      ConvertLab::logger
+    end
   end
 
   class AccessTokenError < RuntimeError; end
@@ -31,7 +41,8 @@ module ConvertLab
   # used to access APIs
   #
   class AppClient
-    
+    include Logging
+
     attr_accessor :url, :appid, :secret
 
     def initialize(url, appid, secret)
@@ -82,6 +93,7 @@ module ConvertLab
 
   # helper class to wrap HTTP requests to API end point
   class Resource
+    include Logging
     
     attr_reader :app_client, :resource_path
 
@@ -158,6 +170,8 @@ module ConvertLab
   # TODO: to do need to use with_lock for concurrency?
   # 
   class SyncedObject < ActiveRecord::Base
+    include Logging
+
     validates :ext_channel, :ext_type, :ext_id, presence: true
     enum sync_type: { SYNC_UP: 0, SYNC_DOWN: 1, SYNC_BOTHWAYS: 2 }  
     
@@ -176,14 +190,6 @@ module ConvertLab
                          'unknown'
                        end
     end  
-
-    def self.logger
-      ConvertLab::logger
-    end
-
-    def logger
-      ConvertLab::logger
-    end
 
     # used for logging
     def self.clab_obj_name(sync_obj)
