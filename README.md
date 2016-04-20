@@ -70,7 +70,9 @@ ruby -I test test/<your_test>.rb
 * fix ugliness of logger access methods 
 * rethink and add test cases for sync_up (using mock)
 * implement sync_down and test cases
-
+* add async submit and forget support?
+* removed standalone_migrations dependency. too many gems!
+* add API for remember last sync time.=
 
 ### Issue with APIs (haven't tested with deals yet)
 
