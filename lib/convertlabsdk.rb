@@ -14,7 +14,7 @@ require 'logger'
 module ConvertLab
   
   MAX_SYNC_ERR ||= 10
-  DUMMY_TIMESTAMP ||= Time.at(0)
+  DUMMY_TIMESTAMP ||= Time.at(0).utc
 
   def self.logger
     @logger
@@ -43,7 +43,7 @@ module ConvertLab
       
     def access_token
       # we fresh 5 seconds before token expires to be safe
-      if @token && Time.now.to_i < @token_expires_at - 5
+      if @token && Time.now.utc.to_i < @token_expires_at - 5
         @token
       else
         new_access_token
@@ -58,13 +58,13 @@ module ConvertLab
         raise AccessTokenError, "get access token returned #{resp_body}" 
       end
 
-      @token_expires_at = Time.now.to_i + resp_body['expires_in'].to_i  
+      @token_expires_at = Time.now.utc.to_i + resp_body['expires_in'].to_i  
       @token = resp_body['access_token']
       @token
     end
 
     def expire_token!
-      @token_expires_at = Time.now.to_i - 1
+      @token_expires_at = Time.now.utc.to_i - 1
     end
 
     def channel_account
@@ -240,9 +240,9 @@ module ConvertLab
     def lock
       # locking will automatically trigger reload
       # locker older than 1 hour is considered stale
-      if !is_locked || (is_locked && locked_at < Time.now - 3600)
+      if !is_locked || (is_locked && locked_at < Time.now.utc - 3600)
         self.is_locked = true
-        self.locked_at = Time.now
+        self.locked_at = Time.now.utc
         save!
       else 
         false
@@ -274,12 +274,12 @@ module ConvertLab
       end
     end
 
-    def sync_success(timestamp = Time.now)
+    def sync_success(timestamp = Time.now.utc)
       self.last_sync = timestamp
       save!
     end
 
-    def sync_failed(timestamp = Time.now, msg = '')
+    def sync_failed(timestamp = Time.now.utc, msg = '')
       self.last_err = timestamp
       self.err_msg = msg
       self.err_count += 1
