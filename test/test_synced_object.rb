@@ -14,7 +14,7 @@ class TestSyncedObject < MiniTest::Test
     obj_id = 11112222
     ch = ConvertLab::SyncedChannelAccount.new
     ch.link_ext_obj 'test_channel', 'ext_type', ext_id
-    ch.link_obj obj_id
+    ch.clab_id = obj_id
     ch.save
 
     obj = ConvertLab::SyncedObject.find(ch.id)
@@ -39,7 +39,7 @@ class TestSyncedObject < MiniTest::Test
     assert ch.lock # 1st time lock should suceed
     refute ch.lock # 2nd time lock should fail
 
-    ch.locked_at = Time.now.utc - 7200 
+    ch.locked_at = Time.now - 7200 
     assert ch.lock # lock suceed when lock is stale
 
     ch.unlock
@@ -48,7 +48,7 @@ class TestSyncedObject < MiniTest::Test
 
   def test_need_sync_returns_true_after_sync_success_is_called
     customer = ConvertLab::SyncedCustomer.create(ext_channel: 'my_channel', ext_type: 'customer', 
-                                                 ext_id: '112233444', ext_last_update: Time.now.utc - 1800,
+                                                 ext_id: '112233444', ext_last_update: Time.now - 1800,
                                                  sync_type: :SYNC_UP)
 
     # clab_id nil will trigger sync
@@ -65,7 +65,7 @@ class TestSyncedObject < MiniTest::Test
 
   def test_need_sync_returns_false_for_ignored_record
     customer = ConvertLab::SyncedCustomer.create(ext_channel: 'my_channel', ext_type: 'customer', 
-                                                 ext_id: '112233444', ext_last_update: Time.now.utc - 1800,
+                                                 ext_id: '112233444', ext_last_update: Time.now - 1800,
                                                  sync_type: :SYNC_UP)
 
     assert_equal customer.last_sync, ConvertLab::DUMMY_TIMESTAMP
@@ -77,7 +77,7 @@ class TestSyncedObject < MiniTest::Test
 
   def test_need_sync_returns_false_for_record_has_max_sync_err
     customer = ConvertLab::SyncedCustomer.create(ext_channel: 'my_channel', ext_type: 'customer', 
-                                                 ext_id: '112233444', ext_last_update: Time.now.utc - 1800,
+                                                 ext_id: '112233444', ext_last_update: Time.now - 1800,
                                                  sync_type: :SYNC_UP)
 
     assert customer.need_sync?

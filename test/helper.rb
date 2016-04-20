@@ -83,6 +83,10 @@ end
 
 # end of VCR config helper
 
+logger = Logger.new STDOUT
+logger.level = Logger::INFO
+ConvertLab::logger = logger
+
 require 'standalone_migrations'
 def config
   @config ||= StandaloneMigrations::Configurator.new.config_for(ENV['RAILS_ENV'])

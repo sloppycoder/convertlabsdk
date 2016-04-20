@@ -72,8 +72,9 @@ intervals.each do |since|
     
     # invoke helper method to perform sync up to clab cloud service
     ext_id = order['membershipNo']
-    ConvertLab::SyncedCustomer.sync_up channel, 'buyer', ext_id, 
-                                       clab_cust['id'], app_client.customer, customer
+    ConvertLab::SyncedCustomer.sync app_client.customer, customer, 
+                                    ext_channel: channel, ext_type: 'buyer', ext_id: ext_id, 
+                                    clab_id: clab_cust['id']
     # ConvertLab::SyncedChannelAccount.sync_up channel, 'buyer' ext_id, 
     #                                          clab_channel_id, app_client.channelaccount, channelaccount
     # ConvertLab::SyncedCustomer.sync_up channel, type, 'order', nil, app_client.customerevent, customerevent

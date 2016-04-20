@@ -31,7 +31,7 @@ class TestAccessToken < MiniTest::Test
       app_client.secret = 'bogus'
       
       assert_raises ConvertLab::AccessTokenError do 
-        app_client.new_access_token
+        app_client.access_token!
       end
 
       app_client.secret = old_secret

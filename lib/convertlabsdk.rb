@@ -17,7 +17,7 @@ module ConvertLab
   mattr_accessor :logger
 
   MAX_SYNC_ERR ||= 10
-  DUMMY_TIMESTAMP ||= Time.at(0).utc
+  DUMMY_TIMESTAMP ||= Time.at(0)
 
   # include this module will give a class logger class method and instance method
   module Logging
@@ -43,51 +43,56 @@ module ConvertLab
   class AppClient
     include Logging
 
-    attr_accessor :url, :appid, :secret
+    attr_accessor :url, :appid, :secret, :options
 
-    def initialize(url, appid, secret)
+    def initialize(url, appid, secret, options = {})
       @url = url
       @appid = appid
       @secret = secret
+      @options = options
       @token = nil
     end
       
     def access_token
       # we fresh 5 seconds before token expires to be safe
-      if @token && Time.now.utc.to_i < @token_expires_at - 5
+      if @token && Time.now.to_i < @token_expires_at - 5
         @token
       else
-        new_access_token
+        access_token!
       end
     end
 
-    def new_access_token
-      resp_body = JSON.parse RestClient.get("#{url}/security/accesstoken", 
-                                            params: { grant_type: 'client_credentials', 
-                                                      appid: appid, secret: secret })
+    def access_token!
+      o = options.merge(params: { grant_type: 'client_credentials', appid: appid, secret: secret })
+      resp_body = JSON.parse RestClient.get("#{url}/security/accesstoken", o)
+                                            
       if resp_body['error_code'].to_i != 0 
         raise AccessTokenError, "get access token returned #{resp_body}" 
       end
 
-      @token_expires_at = Time.now.utc.to_i + resp_body['expires_in'].to_i  
+      @token_expires_at = Time.now.to_i + resp_body['expires_in'].to_i  
       @token = resp_body['access_token']
       @token
     end
 
     def expire_token!
-      @token_expires_at = Time.now.utc.to_i - 1
+      @token_expires_at = Time.now.to_i - 1
     end
 
     def channel_account
-      @channel_account ||= Resource.new(self, '/v1/channelaccounts')
+      @channel_account ||= Resource.new(self, '/v1/channelaccounts', options)
     end
 
     def customer
-      @customer ||= Resource.new(self, '/v1/customers')
+      @customer ||= Resource.new(self, '/v1/customers', options)
     end
 
     def customer_event
-      @customer_event ||= Resource.new(self, '/v1/customerevents')
+      @customer_event ||= Resource.new(self, '/v1/customerevents', options)
+    end
+
+    def deal
+      @deal ||= Resource.new(self, '/v1/deals', options)
     end
   end
 
@@ -95,41 +100,44 @@ module ConvertLab
   class Resource
     include Logging
     
-    attr_reader :app_client, :resource_path
+    ACCEPT = { accept: :json }.freeze
+    CONTENT_TYPE = { content_type: :json }.freeze
 
-    def initialize(app_client, resource_path)
+    attr_reader :app_client, :resource_path, :options
+
+    def initialize(app_client, resource_path, options = {})
       @app_client = app_client
       @resource_path = resource_path
+      @options = options
+    end
+
+    def token
+      { access_token: app_client.access_token }
     end
 
     def get(id = nil)
-      parse_response RestClient.get(resource_url(id), 
-                                    params: { access_token: app_client.access_token }, 
-                                    accept: :json)
+      opt = options.merge(params: token).merge(ACCEPT)
+      parse_response RestClient.get(resource_url(id), opt)
     end
 
     def find(params = {})
-      parse_response RestClient.get(resource_url, 
-                                    params: params.merge(access_token: app_client.access_token),
-                                    accept: :json)
+      opt = options.merge(params: token.merge(params)).merge(ACCEPT)
+      parse_response RestClient.get(resource_url, opt)
     end
 
     def post(data)
-      parse_response RestClient.post(resource_url, data.to_json, 
-                                     params: { access_token: app_client.access_token }, 
-                                     accept: :json, content_type: :json)
+      opt = options.merge(params: token).merge(ACCEPT).merge(CONTENT_TYPE)
+      parse_response RestClient.post(resource_url, data.to_json, opt)
     end
 
     def put(id, data)
-      parse_response RestClient.put(resource_url(id), data.to_json, 
-                                    params: { access_token: app_client.access_token }, 
-                                    accept: :json, content_type: :json)
+      opt = options.merge(params: token).merge(ACCEPT).merge(CONTENT_TYPE)
+      parse_response RestClient.put(resource_url(id), data.to_json, opt)
     end
 
     def delete(id)
-      parse_response RestClient.delete(resource_url(id), 
-                                       params: { access_token: app_client.access_token },
-                                       accept: :json)
+      opt = options.merge(params: token).merge(ACCEPT)
+      parse_response RestClient.delete(resource_url(id), opt)
     end
 
     def resource_url(id = nil)
@@ -164,10 +172,6 @@ module ConvertLab
   # class that facilitate syncing of external objects to convertlab 
   # cloud services locally maintain external object and cloud object mappings
   # it mains a local datastore that stores the mapping:
-  #
-  # the APIs provide support for the following use case scenarios:
-  #
-  # TODO: to do need to use with_lock for concurrency?
   # 
   class SyncedObject < ActiveRecord::Base
     include Logging
@@ -186,79 +190,52 @@ module ConvertLab
                          'customer'
                        when 'ConvertLab::SyncedCustomerEvent'
                          'customerevent'
+                       when 'ConvertLab::SyncedDeal'
+                         'deal'
                        else
                          'unknown'
                        end
     end  
 
-    # used for logging
-    def self.clab_obj_name(sync_obj)
-      id_string = sync_obj.clab_id ? sync_obj.clab_id : 'new'
-      "clab #{sync_obj.clab_type} #{id_string}"
+    def self.sync(api_client, data, filters)
+      clab_id = filters.delete(:clab_id)
+      f = filters.dup
+      f.merge(sync_type: sync_types[:SYNC_UP]) unless filters.key? :sync_type
+      sync_obj = where(f).first_or_create
+      logger.info "#{sync_obj} #{sync_obj.ext_obj} <-> #{sync_obj.clab_obj}"
+      sync_obj.sync api_client, data, clab_id
     end
 
-    # used fo logging 
-    def self.sync_obj_name(sync_obj)
-      "sync object #{sync_obj.id}"
-    end
-
-    def self.sync_up(ext_channel, ext_type, ext_id, clab_id = nil, api_client, data)
-      sync_obj = where(ext_channel: ext_channel, ext_type: ext_type, 
-                       ext_id: ext_id, sync_type: sync_types[:SYNC_UP]).first_or_create
-      logger.info "#{sync_obj_name(sync_obj)} #{ext_channel}/#{ext_type}/#{ext_id} to #{clab_obj_name(sync_obj)}"
+    def sync(api_client, data, new_clab_id)
+      link_clab_obj new_clab_id
+      self.ext_last_update = Time.new(data['last_update'])
+      save!
       
-      if clab_id != sync_obj.clab_id
-        if sync_obj.clab_id
-          logger.warn "#{sync_obj_name(sync_obj)} overwriting #{clab_obj_name(sync_obj)} with new id #{clab_id}"
-        end
-        sync_obj.clab_id = clab_id
-      end
-      sync_obj.ext_last_update = Time.new(data['last_update'])
-      sync_obj.save!
-
-      if sync_obj.need_sync?
-        do_sync_up(sync_obj, api_client, data)
+      if need_sync?
+        do_sync_up api_client, data
       else
-        logger.info "#{sync_obj_name(sync_obj)} is up to date with #{clab_obj_name(sync_obj)}"
+        logger.info "#{self} is up to date with #{clab_obj}"
       end
     end
 
-    def self.do_sync_up(sync_obj, api_client, data)
-      if sync_obj.clab_id
+    def do_sync_up(api_client, data)
+      if clab_id
         # update the linked clab record 
-        logger.info "#{sync_obj_name(sync_obj)} updating #{clab_obj_name(sync_obj)}"
-        clab_obj = api_client.public_send'put', sync_obj.clab_id, data
+        logger.info "#{self} updating #{clab_obj}"
+        obj = api_client.public_send('put', clab_id, data)
       else
         # create a new clab record and link it
-        logger.info "#{sync_obj_name(sync_obj)} creating new clab object"
-        clab_obj = api_client.public_send('post', data)
-        sync_obj.clab_id = clab_obj['id']
-        logger.info "#{sync_obj_name(sync_obj)} created #{clab_obj_name(sync_obj)}"
+        logger.info "#{self} creating new clab object"
+        obj = api_client.public_send('post', data)
+        self.clab_id = obj['id']
+        logger.info "#{self} created #{clab_obj}"
       end
-      sync_obj.clab_last_update = DateTime.iso8601(clab_obj['lastUpdated']).to_time
-      sync_obj.sync_success
-      logger.info "#{sync_obj_name(sync_obj)} marking sync sync success"
+      self.clab_last_update = DateTime.iso8601(obj['lastUpdated']).to_time
+      sync_success
+      logger.info "#{self} marking sync sync success"
     rescue RuntimeError => e
-      sync_obj.sync_fail e.to_s
-      logger.error "#{sync_obj_name(sync_obj)} sync error. err_count => #{sync_obj.err_count}, error => #{e}"
-    end
-
-    def lock
-      # locking will automatically trigger reload
-      # locker older than 1 hour is considered stale
-      if !is_locked || (is_locked && locked_at < Time.now.utc - 3600)
-        self.is_locked = true
-        self.locked_at = Time.now.utc
-        save!
-      else 
-        false
-      end
-    end
-
-    def unlock
-      self.is_locked = false
-      self.locked_at = nil
-      save!
+      sync_fail e.to_s
+      logger.error "#{self} sync error. err_count => #{err_count}, error => #{e}"
     end
 
     def need_sync?
@@ -273,35 +250,75 @@ module ConvertLab
           # the last sync
           clab_id.nil? || ext_last_update > last_sync
         when :SYNC_DOWN
-          clab_last_update > last_sync
+          ext_obj_id.nil? || clab_last_update > last_sync
         else
           raise SyncError, 'sync mode not supported'
         end
       end
     end
 
-    def sync_success(timestamp = Time.now.utc)
+    def sync_success(timestamp = Time.now)
+      logger.debug "#{self} sync success"
       self.last_sync = timestamp
       save!
     end
 
-    def sync_failed(timestamp = Time.now.utc, msg = '')
+    def sync_failed(timestamp = Time.now, msg = '')
+      logger.debug "#{self} sync failed with error #{msg}"
       self.last_err = timestamp
       self.err_msg = msg
       self.err_count += 1
       save!
     end
 
-    def link_ext_obj(channel, type, id, timestamp = DUMMY_TIMESTAMP)
+    def lock
+      # locking will automatically trigger reload
+      # locker older than 1 hour is considered stale
+      if !is_locked || (is_locked && locked_at < Time.now - 3600)
+        self.is_locked = true
+        self.locked_at = Time.now
+        save!
+      else 
+        false
+      end
+    end
+
+    def unlock
+      self.is_locked = false
+      self.locked_at = nil
+      save!
+    end
+
+    def link_ext_obj(channel, type, id)
       self.ext_channel = channel
       self.ext_type = type
       self.ext_id = id
-      self.ext_last_update = timestamp
     end
 
-    def link_obj(id, timestamp = DUMMY_TIMESTAMP)
-      self.clab_id = id
-      self.clab_last_update = timestamp
+    def link_clab_obj(new_clab_id)
+      old_clab_id = clab_id
+      if old_clab_id != new_clab_id
+        self.clab_id = new_clab_id
+        unless old_clab_id.nil?
+          logger.warn "#{self} overwriting #{old_clab_id} with #{clab_obj}"
+        end
+      end
+    end
+
+    # used in loggin
+    def ext_obj
+      "ext(#{ext_channel}, #{ext_type}, #{ext_id})"
+    end
+
+    def clab_obj
+      id_string = clab_id ? clab_id : 'new'
+      "clab(#{clab_type}, #{id_string})"
+    end
+
+    def to_s
+      t = (type || 'unknown').split(':')[-1]
+      i = id ? id.to_s : 'new'
+      "#{t}(#{i})"
     end
   end
 

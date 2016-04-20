@@ -60,13 +60,13 @@ ruby -I test test/<your_test>.rb
 
 
 ### TODO
-* add object access APIs and test cases for deals
-* add SSL::VERIFY option to Resources
+* add test cases for deals
+* add SSL::VERIFY option to Resources (pending testing)
 * review and design for multiple concurent workers
 	* store access token in file so that they can be shared amount multiple processes
 	* review SycnedObject implementation for concurrency
-* mask sensitive info in VCR cassette files.
-* rethink and add test cases for sync_up (using mock)
+* add test case for sync (using mock)
+* add caching to rest-client layer
 * (hold) implement sync_down and test cases (conflict with ext fields validation!)
 * (low) add API for remember last sync time.=
 * (low) enable HTML test report from minitest/reporter
