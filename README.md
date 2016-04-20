@@ -66,13 +66,12 @@ ruby -I test test/<your_test>.rb
 	* store access token in file so that they can be shared amount multiple processes
 	* review SycnedObject implementation for concurrency
 * mask sensitive info in VCR cassette files.
-* enable HTML test report from minitest/reporter
-* fix ugliness of logger access methods 
 * rethink and add test cases for sync_up (using mock)
-* implement sync_down and test cases
-* add async submit and forget support?
-* removed standalone_migrations dependency. too many gems!
-* add API for remember last sync time.=
+* (hold) implement sync_down and test cases (conflict with ext fields validation!)
+* (low) add API for remember last sync time.=
+* (low) enable HTML test report from minitest/reporter
+* (low) add async submit and forget support?
+* (low) removed standalone_migrations dependency. too many gems!
 
 ### Issue with APIs (haven't tested with deals yet)
 
@@ -98,5 +97,3 @@ ruby -I test test/<your_test>.rb
 #### 客户事件
 1. customer id输入没有校验，不存在的数值也一样成功
 2. 有unique constraint，但是文档没有说明在那些字段上
-
-
