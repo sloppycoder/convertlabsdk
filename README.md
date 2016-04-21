@@ -58,7 +58,6 @@ ruby -I test test/test_<whatever>.rb
 * 
 ### TODO
 * create complete examples
-	* single worker example
 	* multi worker example based on Resque
 * add test cases for deals API
 * review and design for multiple concurent workers

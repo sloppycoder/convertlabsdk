@@ -6,7 +6,7 @@
 source 'https://ruby.taobao.org'
 
 gem 'rest-client', '~> 1.8'
-gem 'activerecord', '~> 4.2.5.1' # version required by standalone_migrations
+gem 'activerecord', '~> 4.2.5' 
 
 group :development do
   gem 'minitest', '>= 0'
