@@ -9,14 +9,17 @@
 # system can cause next test execution to fail. When this happens, run this script to cleanup 
 # the data, then run the test cases again
 #
-require 'helper'
-
-# TODO: write logic to cleanup data created by test cases
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+require 'convertlabsdk'
 
 #
 # this method cleans up data created by test_customers.rb
 #
-def cleanup_test_custoemrs 
+def app_client
+  @app_client ||= ConvertLab::AppClient.new
+end
+
+def cleanup_test_customers 
   %w(13911223366 139112233 133333333 133123123).each do |mobile_no|
     app_client.customer.find(mobile: mobile_no)['rows'].each do |c|
       id = c['id']
@@ -44,5 +47,5 @@ def cleanup_channel_accounts
   end
 end
 
-cleanup_test_custoemrs
+cleanup_test_customers
 cleanup_channel_accounts

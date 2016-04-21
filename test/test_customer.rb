@@ -4,10 +4,10 @@
 require 'helper'
 
 class TestCustomer < MiniTest::Test
-  # always get a new token for test case so that get access token is record by VCR 
-  # then this case can be run independently with running test_access_token first
+  attr_accessor :app_client
+
   def setup
-    app_client.expire_token!
+    self.app_client = ConvertLab::AppClient.new
   end
 
   def test_create_customer_with_same_mobile_number_will_return_an_existing_record

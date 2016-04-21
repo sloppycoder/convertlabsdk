@@ -4,10 +4,10 @@ require 'helper'
 # rubocop:disable Metrics/MethodLength:
 
 class TestChannelAccount < MiniTest::Test
-  # always get a new token for test case so that get access token is record by VCR 
-  # then this case can be run independently with running test_access_token first
+  attr_accessor :app_client
+
   def setup
-    app_client.expire_token!
+    self.app_client = ConvertLab::AppClient.new
   end
 
   def test_channel_account_can_be_created_and_deleted

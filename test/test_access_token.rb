@@ -2,7 +2,12 @@
 require 'helper'
 
 class TestAccessToken < MiniTest::Test
-  
+  attr_accessor :app_client
+
+  def setup
+    self.app_client = ConvertLab::AppClient.new
+  end
+
   def test_can_get_a_valid_access_token
     VCR.use_cassette('test_access_token_01') do
       refute_nil app_client.access_token

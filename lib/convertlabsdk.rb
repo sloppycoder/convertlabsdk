@@ -6,18 +6,30 @@
 #
 #
 require 'rest-client'
-require 'json'
 require 'active_support/all'
 require 'active_record'
+require 'json'
 require 'date'
 require 'logger'
 
 module ConvertLab
   
-  mattr_accessor :logger
-
   MAX_SYNC_ERR ||= 10
   DUMMY_TIMESTAMP ||= Time.at(0)
+
+  def self.logger
+    @logger ||= default_logger
+  end
+
+  def self.logger=(logger)
+    @logger = logger
+  end
+
+  def self.default_logger
+    new_logger = Logger.new STDOUT
+    new_logger.level = Logger::INFO
+    new_logger
+  end
 
   # include this module will give a class logger class method and instance method
   module Logging
@@ -45,10 +57,10 @@ module ConvertLab
 
     attr_accessor :url, :appid, :secret, :options
 
-    def initialize(url, appid, secret, options = {})
-      @url = url
-      @appid = appid
-      @secret = secret
+    def initialize(url = nil, appid = nil, secret = nil, options = {})
+      @url = url || ENV['CLAB_URL'] || 'http://api.51convert.cn'
+      @appid = appid || ENV['CLAB_APPID']
+      @secret = secret || ENV['CLAB_SECRET']
       @options = options
       @token = nil
     end

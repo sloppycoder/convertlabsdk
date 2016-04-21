@@ -4,7 +4,7 @@ require 'helper'
 class TestSyncedObject < MiniTest::Test
   
   def setup
-    config
+    StandaloneMigrations::Configurator.new.config_for(ENV['RAILS_ENV'])
     ActiveRecord::Base.establish_connection
     ConvertLab::SyncedObject.destroy_all
   end

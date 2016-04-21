@@ -58,20 +58,24 @@ ruby -I test test/<your_test>.rb
 
 ```
 
-
+* 
 ### TODO
-* add test cases for deals
-* add SSL::VERIFY option to Resources (pending testing)
+* add test cases for deals API
+* add SSL::VERIFY option to Resources (not working?)
 * review and design for multiple concurent workers
 	* store access token in file so that they can be shared amount multiple processes
 	* review SycnedObject implementation for concurrency
 * add test case for sync (using mock)
 * add caching to rest-client layer
+* create complete examples of using API without standalone_migration dependency
+	* single worker example
+	* multi worker example based on Resque
 * (hold) implement sync_down and test cases (conflict with ext fields validation!)
 * (low) add API for remember last sync time.=
 * (low) enable HTML test report from minitest/reporter
 * (low) add async submit and forget support?
 * (low) removed standalone_migrations dependency. too many gems!
+* (low) mask access token values in VCR cassette files
 
 ### Issue with APIs (haven't tested with deals yet)
 
@@ -82,7 +86,7 @@ ruby -I test test/<your_test>.rb
     * 如果创建新客户的mobile如果和已经存在客户一样，API返回旧客户信息，不会再建一个新客户。客户渠道每次创建都是新纪录。
 2. GET /v1/xxx/id 和 DELETE /v1/xxx/id 如果id不存储会返回500。按惯例应该返回404
 3. 无效的access token返回200，错误信息在payload里面。按惯例应该返回401。
-4. 不支持标准的oauth2 http header 'Authorization: Bearer xxx'. 把access token放在URL里导致引起VCR URL不匹配，额外处理麻烦。
+4. 不支持标准的oauth2 http header 'Authorization: Bearer xxx'
 5. 只支持一个acess token，多进程的客户要增加负担来实现共享一个access token。
 6. DELETE 比其它动作明显要慢。
 7. 是不是所有appid都能看到，更新和删除所有的数据？

@@ -28,22 +28,9 @@ rescue Bundler::BundlerError => e
   exit e.status_code
 end
 
-require 'minitest'
-require 'minitest/autorun'
-require 'minitest/profile'
-# reporter is not working
-# require "minitest/reporters"
-# Minitest::Reporters.use! Minitest::Reporters::HtmlReporter
-
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
-$LOAD_PATH.unshift(File.dirname(__FILE__))
-require 'convertlabsdk'
-
-require 'byebug'
+# VCR config helpers
 require 'webmock'
 require 'vcr'
-
-# VCR config helpers
 
 def vcr_configure_sensitive_data(config)
   config.filter_sensitive_data('<APPID>') do |interaction|
@@ -80,22 +67,21 @@ if disable_vcr?
   VCR.turn_off!(ignore_cassettes: true)
   WebMock.allow_net_connect!
 end
-
 # end of VCR config helper
 
-logger = Logger.new STDOUT
-logger.level = Logger::INFO
-ConvertLab::logger = logger
+require 'minitest'
+require 'minitest/autorun'
+require 'minitest/profile'
+# reporter is not working
+# require "minitest/reporters"
+# Minitest::Reporters.use! Minitest::Reporters::HtmlReporter
+
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+$LOAD_PATH.unshift(File.dirname(__FILE__))
+require 'convertlabsdk'
+require 'byebug'
 
 require 'standalone_migrations'
-def config
-  @config ||= StandaloneMigrations::Configurator.new.config_for(ENV['RAILS_ENV'])
-end
-
-def app_client
-  url = config['api_endpoint'] || 'http://api.51convert.cn'
-  @app_client ||= ConvertLab::AppClient.new url, ENV['CLAB_APPID'], ENV['CLAB_SECRET']
-end 
 
 class MiniTest::Test
 end

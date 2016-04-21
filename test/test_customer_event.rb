@@ -3,10 +3,10 @@
 require 'helper'
 
 class TestCustomerEvent < MiniTest::Test
-  # always get a new token for test case so that get access token is record by VCR 
-  # then this case can be run independently with running test_access_token first
+  attr_accessor :app_client
+
   def setup
-    app_client.expire_token!
+    self.app_client = ConvertLab::AppClient.new
   end
 
   def test_customer_event_can_be_created_updated
