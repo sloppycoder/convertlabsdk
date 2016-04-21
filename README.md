@@ -25,9 +25,6 @@ git clone <url_of_this_repo>
 cd convertlabsdk
 bundle install
 
-# prepare test data, this should be incorporated into Rakefile later
-rake db:migrate
-
 # set CLAB APPID and SECRET in envronment variables
 export CLAB_APPID=<appid>
 export CLAB_SECRET=<secret>
@@ -51,18 +48,16 @@ open index.html
 # system can cause next test execution to fail. When this happens, run this script to cleanup 
 # the data, then run the test cases again
 
-NO_VCR=1 ruby -I test test/cleanup_testdata.rb
+ruby test/cleanup_testdata.rb
 
 # to run individual test case files
-ruby -I test test/<your_test>.rb 
+ruby -I test test/test_<whatever>.rb 
 
 ```
 
 * 
 ### TODO
-* add test case for sync (using mock)
-* add SSL::VERIFY option to Resources (not working?)
-* create complete examples of using API without standalone_migration dependency
+* create complete examples
 	* single worker example
 	* multi worker example based on Resque
 * add test cases for deals API
