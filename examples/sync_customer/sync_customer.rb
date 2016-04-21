@@ -3,26 +3,24 @@
 #
 # Demo program to sync customer data to the cloud
 #
-
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
-
-require 'standalone_migrations'
+$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', '..', 'lib'))
 require 'convertlabsdk'
+require 'yaml'
 require 'byebug'
-require 'logger'
 
 logger = Logger.new STDOUT
 logger.level = Logger::DEBUG
 ConvertLab::logger = logger
 
-# initializations
-config = StandaloneMigrations::Configurator.new.config_for(ENV['RAILS_ENV'])
-ActiveRecord::Base.establish_connection
-# ConvertLab::SyncedObject.destroy_all
-url = config['api_endpoint'] || 'http://api.51convert.cn'
-app_client = ConvertLab::AppClient.new url, ENV['CLAB_APPID'], ENV['CLAB_SECRET']
+def config
+  @config ||= YAML::load(File.open('config.yml'))[ENV['RAILS_ENV'] || 'development']
+end
 
-# prepare test data
+def app_client
+  url = config['app']['url'] || 'http://api.51convert.cn'
+  @app_client ||= ConvertLab::AppClient.new(url: url, appid: ENV['CLAB_APPID'], secret: ENV['CLAB_SECRET'])
+end
+
 def testdata
   return @data if @data
 
@@ -51,6 +49,10 @@ def order_details(day)
   testdata.select { |r| r['last_update'] == day }
 end
 
+ActiveRecord::Base.establish_connection(config['db'])
+ActiveRecord::Migrator.migrate(File.dirname(__FILE__) + '/db/migrate/')    
+# ConvertLab::SyncedObject.destroy_all
+db_migrate
 channel = 'TEST_CHANNEL'
 
 #
