@@ -57,11 +57,12 @@ module ConvertLab
 
     attr_accessor :url, :appid, :secret, :options
 
-    def initialize(url = nil, appid = nil, secret = nil, options = {})
-      @url = url || ENV['CLAB_URL'] || 'http://api.51convert.cn'
-      @appid = appid || ENV['CLAB_APPID']
-      @secret = secret || ENV['CLAB_SECRET']
-      @options = options
+    def initialize(options = {})
+      o = options.dup
+      @url = o.delete(:url) || ENV['CLAB_URL'] || 'http://api.51convert.cn'
+      @appid = o.delete(:appid) || ENV['CLAB_APPID']
+      @secret = o.delete(:secret) || ENV['CLAB_SECRET']
+      @options = o
       @token = nil
     end
       
@@ -75,8 +76,9 @@ module ConvertLab
     end
 
     def access_token!
-      o = options.merge(params: { grant_type: 'client_credentials', appid: appid, secret: secret })
-      resp_body = JSON.parse RestClient.get("#{url}/security/accesstoken", o)
+      headers = { accept: :json, params: { grant_type: 'client_credentials', appid: appid, secret: secret } }
+      resp_body = JSON.parse(RestClient::Request.execute({ method: :get, url: "#{url}/security/accesstoken", 
+                                                          headers: headers }))
                                             
       if resp_body['error_code'].to_i != 0 
         raise AccessTokenError, "get access token returned #{resp_body}" 
@@ -106,15 +108,16 @@ module ConvertLab
     def deal
       @deal ||= Resource.new(self, '/v1/deals', options)
     end
+
+    def root
+      @root ||= Resource.new(self, '', options)
+    end
   end
 
   # helper class to wrap HTTP requests to API end point
   class Resource
     include Logging
     
-    ACCEPT = { accept: :json }.freeze
-    CONTENT_TYPE = { content_type: :json }.freeze
-
     attr_reader :app_client, :resource_path, :options
 
     def initialize(app_client, resource_path, options = {})
@@ -123,33 +126,30 @@ module ConvertLab
       @options = options
     end
 
-    def token
-      { access_token: app_client.access_token }
-    end
-
-    def get(id = nil)
-      opt = options.merge(params: token).merge(ACCEPT)
-      parse_response RestClient.get(resource_url(id), opt)
+    def get(id)
+      parse_response new_request(:get, id: id).execute
     end
 
     def find(params = {})
-      opt = options.merge(params: token.merge(params)).merge(ACCEPT)
-      parse_response RestClient.get(resource_url, opt)
+      parse_response new_request(:get, params: params).execute
     end
 
     def post(data)
-      opt = options.merge(params: token).merge(ACCEPT).merge(CONTENT_TYPE)
-      parse_response RestClient.post(resource_url, data.to_json, opt)
+      parse_response new_request(:post, payload: data.to_json).execute
     end
 
     def put(id, data)
-      opt = options.merge(params: token).merge(ACCEPT).merge(CONTENT_TYPE)
-      parse_response RestClient.put(resource_url(id), data.to_json, opt)
+      parse_response new_request(:put, id: id, payload: data.to_json).execute
     end
 
     def delete(id)
-      opt = options.merge(params: token).merge(ACCEPT)
-      parse_response RestClient.delete(resource_url(id), opt)
+      parse_response new_request(:delete, id: id).execute
+    end
+
+    def new_request(method = :get, id: nil, params: {}, payload: {})
+      h = { accept: :json, params: params.merge(access_token: app_client.access_token) }
+      h[:content_type] = :json if [:put, :post].include?(method)
+      RestClient::Request.new options.merge(method: method, headers: h, url: resource_url(id), payload: payload)
     end
 
     def resource_url(id = nil)
@@ -210,23 +210,24 @@ module ConvertLab
     end  
 
     def self.sync(api_client, data, filters)
-      clab_id = filters.delete(:clab_id)
       f = filters.dup
+      clab_id = f.delete(:clab_id)
       f.merge(sync_type: sync_types[:SYNC_UP]) unless filters.key? :sync_type
       sync_obj = where(f).first_or_create
-      logger.info "#{sync_obj} #{sync_obj.ext_obj} <-> #{sync_obj.clab_obj}"
-      sync_obj.sync api_client, data, clab_id
+      logger.debug "#{sync_obj} #{sync_obj.ext_obj} <-> #{sync_obj.clab_obj}"
+      sync_obj.sync(api_client, data, clab_id)
     end
 
     def sync(api_client, data, new_clab_id)
-      link_clab_obj new_clab_id
-      self.ext_last_update = Time.new(data['last_update'])
+      link_clab_obj(new_clab_id)
+      t = data['last_update']
+      self.ext_last_update = t ? Time.new(t) : DUMMY_TIMESTAMP
       save!
       
       if need_sync?
-        do_sync_up api_client, data
+        do_sync_up(api_client, data)
       else
-        logger.info "#{self} is up to date with #{clab_obj}"
+        logger.debug "#{self} is up to date with #{clab_obj}"
       end
     end
 
@@ -242,12 +243,13 @@ module ConvertLab
         self.clab_id = obj['id']
         logger.info "#{self} created #{clab_obj}"
       end
-      self.clab_last_update = DateTime.iso8601(obj['lastUpdated']).to_time
+      t = obj['lastUpdated']
+      self.clab_last_update = t ? DateTime.iso8601(t).to_time : DUMMY_TIMESTAMP
       sync_success
-      logger.info "#{self} marking sync sync success"
+      true
     rescue RuntimeError => e
       sync_fail e.to_s
-      logger.error "#{self} sync error. err_count => #{err_count}, error => #{e}"
+      false
     end
 
     def need_sync?
@@ -260,9 +262,9 @@ module ConvertLab
           # we'll need to sync regardless of last_sync
           # this could happen when clab object was deleted after
           # the last sync
-          clab_id.nil? || ext_last_update > last_sync
+          clab_id.nil? || last_sync == DUMMY_TIMESTAMP || ext_last_update > last_sync
         when :SYNC_DOWN
-          ext_obj_id.nil? || clab_last_update > last_sync
+          ext_obj_id.nil? || last_sync == DUMMY_TIMESTAMP || clab_last_update > last_sync
         else
           raise SyncError, 'sync mode not supported'
         end
@@ -276,7 +278,7 @@ module ConvertLab
     end
 
     def sync_failed(timestamp = Time.now, msg = '')
-      logger.debug "#{self} sync failed with error #{msg}"
+      logger.warn "#{self} sync failed with error #{msg}"
       self.last_err = timestamp
       self.err_msg = msg
       self.err_count += 1
@@ -310,7 +312,9 @@ module ConvertLab
     def link_clab_obj(new_clab_id)
       old_clab_id = clab_id
       if old_clab_id != new_clab_id
+        # change clab obj will reset sync time
         self.clab_id = new_clab_id
+        self.last_sync = DUMMY_TIMESTAMP
         unless old_clab_id.nil?
           logger.warn "#{self} overwriting #{old_clab_id} with #{clab_obj}"
         end
