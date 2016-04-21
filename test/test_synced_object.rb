@@ -1,10 +1,11 @@
 # encoding: utf-8
 require 'helper'
+require 'logger'
 
 class TestSyncedObject < MiniTest::Test
   
   ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: ':memory:')
-  ActiveRecord::Migrator.migrate('db/migrate/')    
+  ActiveRecord::Migrator.migrate(File.dirname(__FILE__) + '/../db/migrate/')    
 
   def test_channel_account_record_can_be_retrieved_as_synced_object
     ext_id = '123123123'
@@ -79,9 +80,16 @@ class TestSyncedObject < MiniTest::Test
 
     assert customer.need_sync?
 
+    # sync_failed will print out scary logs
+    # disable the logging temporarily
+    level = ConvertLab::logger.level
+    ConvertLab::logger.level = Logger::ERROR
+
     (1..ConvertLab::MAX_SYNC_ERR).each do 
       customer.sync_failed
     end
+
+    ConvertLab::logger.level = level
 
     refute customer.need_sync?    
   end
