@@ -60,19 +60,39 @@ RuboCop::RakeTask.new(:rubocop) do |task|
   task.fail_on_error = false
 end
 
-require 'standalone_migrations'
-StandaloneMigrations::Tasks.load_tasks
+# credit goes to https://gist.github.com/schickling/6762581
+require 'active_record'
+require 'yaml'
+namespace :db do
+  config = YAML::load(File.open('db/config.yml'))
+  db_config = config[ENV['RAILS_ENV'] || 'development']
+
+  desc 'Migrate the database'
+  task :migrate do
+    ActiveRecord::Base.establish_connection(db_config)
+    ActiveRecord::Migrator.migrate('db/migrate/')
+    Rake::Task['db:schema'].invoke
+    puts 'Database migrated.'
+  end
+
+  desc 'Create a db/schema.rb file that is portable against any DB supported by AR'
+  task :schema do
+    ActiveRecord::Base.establish_connection(db_config)
+    require 'active_record/schema_dumper'
+    filename = 'db/schema.rb'
+    File.open(filename, 'w:utf-8') do |file|
+      ActiveRecord::SchemaDumper.dump(ActiveRecord::Base.connection, file)
+    end
+  end
+end
+
+require 'rdoc/task'
+Rake::RDocTask.new do |rdoc|
+  version = File.exist?('VERSION') ? File.read('VERSION') : ''
+  rdoc.rdoc_dir = 'rdoc'
+  rdoc.title = "convertlabsdk #{version}"
+  rdoc.rdoc_files.include('README*')
+  rdoc.rdoc_files.include('lib/**/*.rb')
+end
 
 task default: :test
-
-# TODO: restore rdoc later
-
-# require 'rdoc/task'
-# Rake::RDocTask.new do |rdoc|
-#   version = File.exist?('VERSION') ? File.read('VERSION') : ''
-
-#   rdoc.rdoc_dir = 'rdoc'
-#   rdoc.title = 'convertlabsdk #{version}'
-#   rdoc.rdoc_files.include('README*')
-#   rdoc.rdoc_files.include('lib/**/*.rb')
-# end

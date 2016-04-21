@@ -19,7 +19,6 @@ group :development do
   gem 'rubocop'
   gem 'webmock'
   gem 'vcr', '~> 3.0.1'
-  gem 'standalone_migrations', '4.0.3'
   gem 'sqlite3'
   gem 'byebug'
 end

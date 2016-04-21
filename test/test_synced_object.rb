@@ -3,11 +3,8 @@ require 'helper'
 
 class TestSyncedObject < MiniTest::Test
   
-  def setup
-    StandaloneMigrations::Configurator.new.config_for(ENV['RAILS_ENV'])
-    ActiveRecord::Base.establish_connection
-    ConvertLab::SyncedObject.destroy_all
-  end
+  ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: ':memory:')
+  ActiveRecord::Migrator.migrate('db/migrate/')    
 
   def test_channel_account_record_can_be_retrieved_as_synced_object
     ext_id = '123123123'

@@ -60,22 +60,20 @@ ruby -I test test/<your_test>.rb
 
 * 
 ### TODO
-* add test cases for deals API
-* add SSL::VERIFY option to Resources (not working?)
-* review and design for multiple concurent workers
-	* store access token in file so that they can be shared amount multiple processes
-	* review SycnedObject implementation for concurrency
 * add test case for sync (using mock)
-* add caching to rest-client layer
+* add SSL::VERIFY option to Resources (not working?)
 * create complete examples of using API without standalone_migration dependency
 	* single worker example
 	* multi worker example based on Resque
-* (hold) implement sync_down and test cases (conflict with ext fields validation!)
+* add test cases for deals API
+* review and design for multiple concurent workers
+	* store access token in file so that they can be shared amount multiple processes
+	* review SycnedObject implementation for concurrency
+* add caching to rest-client layer
 * (low) add API for remember last sync time.=
 * (low) enable HTML test report from minitest/reporter
 * (low) add async submit and forget support?
-* (low) removed standalone_migrations dependency. too many gems!
-* (low) mask access token values in VCR cassette files
+* (hold) implement sync_down and test cases (conflict with ext fields validation!)
 
 ### Issue with APIs (haven't tested with deals yet)
 

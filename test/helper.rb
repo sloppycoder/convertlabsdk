@@ -81,8 +81,6 @@ $LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'convertlabsdk'
 require 'byebug'
 
-require 'standalone_migrations'
-
 class MiniTest::Test
 end
 
