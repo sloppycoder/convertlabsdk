@@ -13,7 +13,7 @@ class TestSyncedObject < MiniTest::Test
 
   CHANNEL = 'TEST_CHANNEL'.freeze
   CUSTOMER = { ext_channel: 'RBSDK_TEST_CHANNEL', ext_type: 'customer', ext_id: 'A1234' }.freeze
-  CLAB_CUSTOMER = { 'id' => 1000, 'lastUpdated' => '2016-04-20T16:48:50Z' }
+  CLAB_CUSTOMER = { 'id' => 1000, 'lastUpdated' => '2016-04-20T16:48:50Z' }.freeze
 
   def test_sync_new_customer_to_clab
     new_customer = CUSTOMER.dup

@@ -77,8 +77,8 @@ module ConvertLab
 
     def access_token!
       headers = { accept: :json, params: { grant_type: 'client_credentials', appid: appid, secret: secret } }
-      resp_body = JSON.parse(RestClient::Request.execute({ method: :get, url: "#{url}/security/accesstoken", 
-                                                          headers: headers }))
+      resp_body = JSON.parse(RestClient::Request.execute(method: :get, url: "#{url}/security/accesstoken", 
+                                                         headers: headers))
                                             
       if resp_body['error_code'].to_i != 0 
         raise AccessTokenError, "get access token returned #{resp_body}" 
@@ -252,9 +252,14 @@ module ConvertLab
       false
     end
 
+    # no idea why it complains about this method
+    # rubocop:disable Metrics/CyclomaticComplexity:
+    # rubocop:disable Metrics/PerceivedComplexity:
     def need_sync?
       if is_ignored || err_count >= MAX_SYNC_ERR
         false
+      elsif last_sync == DUMMY_TIMESTAMP
+        true
       else
         case sync_type.to_sym
         when :SYNC_UP
@@ -262,14 +267,16 @@ module ConvertLab
           # we'll need to sync regardless of last_sync
           # this could happen when clab object was deleted after
           # the last sync
-          clab_id.nil? || last_sync == DUMMY_TIMESTAMP || ext_last_update > last_sync
+          clab_id.nil? || ext_last_update > last_sync
         when :SYNC_DOWN
-          ext_obj_id.nil? || last_sync == DUMMY_TIMESTAMP || clab_last_update > last_sync
+          ext_obj_id.nil? || clab_last_update > last_sync
         else
           raise SyncError, 'sync mode not supported'
         end
       end
     end
+    # rubocop:enable Metrics/CyclomaticComplexity:
+    # rubocop:enable Metrics/PerceivedComplexity:
 
     def sync_success(timestamp = Time.now)
       logger.debug "#{self} sync success"

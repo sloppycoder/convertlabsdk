@@ -8,6 +8,14 @@ AllCops:
     - 'db/schema.rb'
     - 'Rakefile'
 
+Lint/HandleExceptions:
+  Exclude:
+    - 'test/helper.rb'
+
+Style/ClassVars:
+  Exclude:
+    - 'test/test_*.rb'
+
 Style/Encoding:
   Enabled: true
   Exclude:
