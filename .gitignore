@@ -57,3 +57,4 @@ pkg
 # files created during test executions
 *.sqlite3
 *.log
+gem_graph.png
