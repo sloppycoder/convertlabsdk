@@ -3,10 +3,9 @@
 require 'helper'
 
 class TestCustomerEvent < MiniTest::Test
-  attr_accessor :app_client
-
-  def setup
-    self.app_client = ConvertLab::AppClient.new
+  @@app_client ||= ConvertLab::AppClient.new
+  def app_client
+    @@app_client
   end
 
   def test_customer_event_can_be_created_updated
