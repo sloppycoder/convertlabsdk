@@ -4,10 +4,10 @@ require 'helper'
 # rubocop:disable Metrics/MethodLength:
 
 class TestChannelAccount < MiniTest::Test
-  
-  @@app_client ||= ConvertLab::AppClient.new
-  def app_client
-    @@app_client
+  attr_accessor :app_client
+
+  def setup
+    self.app_client = ConvertLab::AppClient.new
   end
 
   def test_channel_account_can_be_created_and_deleted

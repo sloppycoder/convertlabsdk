@@ -4,9 +4,10 @@
 require 'helper'
 
 class TestCustomer < MiniTest::Test
-  @@app_client ||= ConvertLab::AppClient.new
-  def app_client
-    @@app_client
+  attr_accessor :app_client
+
+  def setup
+    self.app_client = ConvertLab::AppClient.new
   end
 
   def test_create_customer_with_same_mobile_number_will_return_an_existing_record

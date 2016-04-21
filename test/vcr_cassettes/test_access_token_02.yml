@@ -8,7 +8,7 @@ http_interactions:
       string: ''
     headers:
       Accept:
-      - "*/*; q=0.5, application/xml"
+      - application/json
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
@@ -21,7 +21,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Wed, 20 Apr 2016 16:49:13 GMT
+      - Thu, 21 Apr 2016 13:03:18 GMT
       Content-Type:
       - application/json;charset=UTF-8
       Transfer-Encoding:
@@ -32,9 +32,9 @@ http_interactions:
       - application:test:8015
     body:
       encoding: UTF-8
-      string: '{"error_code":0,"access_token":"8b30cfea5c7bdacc4f5aaa4115c93249","expires_in":7200}'
+      string: '{"error_code":0,"access_token":"99dafd497a886b305c6b4da3<ACCESSTOKEN>","expires_in":7200}'
     http_version: 
-  recorded_at: Wed, 20 Apr 2016 16:49:13 GMT
+  recorded_at: Thu, 21 Apr 2016 13:03:18 GMT
 - request:
     method: get
     uri: http://api.51convert.cn/security/accesstoken?appid=<APPID>&grant_type=client_credentials&secret=<SECRET>
@@ -43,7 +43,7 @@ http_interactions:
       string: ''
     headers:
       Accept:
-      - "*/*; q=0.5, application/xml"
+      - application/json
       Accept-Encoding:
       - gzip, deflate
       User-Agent:
@@ -56,7 +56,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Wed, 20 Apr 2016 16:49:14 GMT
+      - Thu, 21 Apr 2016 13:03:19 GMT
       Content-Type:
       - application/json;charset=UTF-8
       Transfer-Encoding:
@@ -67,7 +67,7 @@ http_interactions:
       - application:test:8015
     body:
       encoding: UTF-8
-      string: '{"error_code":0,"access_token":"c121cd0f070e69cf5dfe53fee474beab","expires_in":7200}'
+      string: '{"error_code":0,"access_token":"935dfcb9d6e69f8563a86353<ACCESSTOKEN>","expires_in":7200}'
     http_version: 
-  recorded_at: Wed, 20 Apr 2016 16:49:14 GMT
+  recorded_at: Thu, 21 Apr 2016 13:03:19 GMT
 recorded_with: VCR 3.0.1
