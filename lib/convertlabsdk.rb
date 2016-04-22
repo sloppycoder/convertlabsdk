@@ -6,7 +6,8 @@
 #
 #
 require 'rest-client'
-require 'active_support/all'
+require 'active_support'
+require 'active_support/core_ext'
 require 'active_record'
 require 'json'
 require 'date'
@@ -146,10 +147,15 @@ module ConvertLab
       parse_response new_request(:delete, id: id).execute
     end
 
-    def new_request(method = :get, id: nil, params: {}, payload: {})
+    # def new_request(method = :get, id: nil, params: {}, payload: {})
+    def new_request(*args)
+      opts = args.extract_options!
+      method = args.first
+      params = opts[:params] || {}
       h = { accept: :json, params: params.merge(access_token: app_client.access_token) }
       h[:content_type] = :json if [:put, :post].include?(method)
-      RestClient::Request.new options.merge(method: method, headers: h, url: resource_url(id), payload: payload)
+      RestClient::Request.new options.merge(method: method, headers: h, 
+                                            url: resource_url(opts[:id]), payload: opts[:payload])
     end
 
     def resource_url(id = nil)
