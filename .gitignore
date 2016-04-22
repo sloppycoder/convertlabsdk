@@ -1,5 +1,6 @@
 #
 .ruby-version
+*.gem
 
 # rcov generated
 coverage
@@ -54,10 +55,10 @@ pkg
 # ruby debugger
 .byebug_*
 
-#
-*.gem
-
 # files created during test executions
 *.sqlite3
 *.log
 gem_graph.png
+
+# jruby
+*.jar

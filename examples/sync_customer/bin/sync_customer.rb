@@ -50,7 +50,8 @@ def order_details(day)
 end
 
 ActiveRecord::Base.establish_connection(config['db'])
-ActiveRecord::Migrator.migrate(File.dirname(__FILE__) + '/db/migrate/')    
+mig_path = File.expand_path(File.dirname(__FILE__) + '/../db/migrate')
+ActiveRecord::Migrator.migrate(mig_path)    
 # ConvertLab::SyncedObject.destroy_all
 channel = 'TEST_CHANNEL'
 
