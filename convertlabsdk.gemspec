@@ -39,19 +39,12 @@ Gem::Specification.new do |s|
     s.add_runtime_dependency('activerecord', ['~> 4.2'])
     s.add_development_dependency('minitest', ['>= 0'])
     s.add_development_dependency('minitest-profile', ['>= 0'])
+    s.add_development_dependency('minitest-reporters', ['>= 0'])
     s.add_development_dependency('rdoc', ['~> 3.12'])
     s.add_development_dependency('bundler', ['~> 1.0'])
     s.add_development_dependency('simplecov', ['>= 0'])
     s.add_development_dependency('rubocop', ['>= 0'])
     s.add_development_dependency('webmock', ['>= 0'])
     s.add_development_dependency('vcr', ['~> 3.0'])
-
-    if RUBY_PLATFORM == 'java'
-      # s.add_development_dependency('jruby-openssl', ['>= 0'])
-      s.add_development_dependency('activerecord-jdbcsqlite3-adapter', ['>= 0'])
-      s.add_development_dependency('jdbc-sqlite3', ['>= 0'])      
-    else
-      s.add_development_dependency('sqlite3', ['>= 0'])
-    end
   end
 end
