@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib"]
   s.authors = ["Li Lin"]
-  s.date = "2016-04-21"
+  s.date = "2016-04-22"
   s.description = "Library to facilitate synchronizing your application object with ConvertLab cloud services"
   s.email = "guru.lin@gmail.com"
   s.extra_rdoc_files = [
@@ -71,7 +71,7 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<rest-client>, ["~> 1.8"])
-      s.add_runtime_dependency(%q<activerecord>, ["~> 4.2.5.1"])
+      s.add_runtime_dependency(%q<activerecord>, ["~> 4.2.5"])
       s.add_development_dependency(%q<minitest>, [">= 0"])
       s.add_development_dependency(%q<minitest-profile>, [">= 0"])
       s.add_development_dependency(%q<rdoc>, ["~> 3.12"])
@@ -85,7 +85,7 @@ Gem::Specification.new do |s|
       s.add_development_dependency(%q<byebug>, [">= 0"])
     else
       s.add_dependency(%q<rest-client>, ["~> 1.8"])
-      s.add_dependency(%q<activerecord>, ["~> 4.2.5.1"])
+      s.add_dependency(%q<activerecord>, ["~> 4.2.5"])
       s.add_dependency(%q<minitest>, [">= 0"])
       s.add_dependency(%q<minitest-profile>, [">= 0"])
       s.add_dependency(%q<rdoc>, ["~> 3.12"])
@@ -100,7 +100,7 @@ Gem::Specification.new do |s|
     end
   else
     s.add_dependency(%q<rest-client>, ["~> 1.8"])
-    s.add_dependency(%q<activerecord>, ["~> 4.2.5.1"])
+    s.add_dependency(%q<activerecord>, ["~> 4.2.5"])
     s.add_dependency(%q<minitest>, [">= 0"])
     s.add_dependency(%q<minitest-profile>, [">= 0"])
     s.add_dependency(%q<rdoc>, ["~> 3.12"])
