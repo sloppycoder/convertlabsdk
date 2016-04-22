@@ -60,8 +60,8 @@ module ConvertLab
     def initialize(options = {})
       o = options.dup
       @url = o.delete(:url) || ENV['CLAB_URL'] || 'http://api.51convert.cn'
-      @appid = o.delete(:appid) || ENV['CLAB_APPID']
-      @secret = o.delete(:secret) || ENV['CLAB_SECRET']
+      @appid = o.delete(:appid) || ENV['CLAB_APPID'] || 'appid'
+      @secret = o.delete(:secret) || ENV['CLAB_SECRET'] || 'secret'
       @options = o
       @token = nil
     end
