@@ -34,16 +34,16 @@ require 'vcr'
 require 'json'
 
 def vcr_configure_sensitive_data(config)
-  config.filter_sensitive_data('<APPID>') do |interaction|
+  config.filter_sensitive_data('APPID') do |interaction|
     uri_param_value interaction.request.uri, 'appid'
   end
-  config.filter_sensitive_data('<SECRET>') do |interaction|
+  config.filter_sensitive_data('SECRET') do |interaction|
     uri_param_value interaction.request.uri, 'secret'
   end
-  config.filter_sensitive_data('<ACCESSTOKEN>') do |interaction|
+  config.filter_sensitive_data('ACCESSTOKEN') do |interaction|
     uri_param_value interaction.request.uri, 'access_token'
   end
-  config.filter_sensitive_data('<ACCESSTOKEN>') do |interaction|
+  config.filter_sensitive_data('ACCESSTOKEN') do |interaction|
     if interaction.request.uri.include?('/security/accesstoken')
       begin
         response = JSON.parse(interaction.response.body)

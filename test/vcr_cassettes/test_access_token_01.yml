@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://api.51convert.cn/security/accesstoken?appid=<APPID>&grant_type=client_credentials&secret=<SECRET>
+    uri: http://api.51convert.cn/security/accesstoken?appid=APPID&grant_type=client_credentials&secret=SECRET
     body:
       encoding: US-ASCII
       string: ''
@@ -32,7 +32,7 @@ http_interactions:
       - application:test:8015
     body:
       encoding: UTF-8
-      string: '{"error_code":0,"access_token":"9102b2f1eb943fc8588deb71<ACCESSTOKEN>","expires_in":7200}'
+      string: '{"error_code":0,"access_token":"9102b2f1eb943fc8588deb71ACCESSTOKEN","expires_in":7200}'
     http_version: 
   recorded_at: Thu, 21 Apr 2016 13:03:17 GMT
 recorded_with: VCR 3.0.1

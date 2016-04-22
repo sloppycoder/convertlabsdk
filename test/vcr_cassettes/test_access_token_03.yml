@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: http://api.51convert.cn/security/accesstoken?appid=<APPID>&grant_type=client_credentials&secret=<SECRET>
+    uri: http://api.51convert.cn/security/accesstoken?appid=APPID&grant_type=client_credentials&secret=SECRET
     body:
       encoding: US-ASCII
       string: ''
