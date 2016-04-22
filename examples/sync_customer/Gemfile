@@ -5,6 +5,14 @@
 # blocked by GFW inside China
 source 'https://ruby.taobao.org'
 
-gem 'convertlabsdk', path: '../..'
-gem 'sqlite3'
-gem 'byebug'
+gem 'convertlabsdk', '0.5.0'
+
+platforms :ruby do
+  gem 'sqlite3'
+end
+
+platforms :jruby do
+  # gem 'jruby-openssl'
+  gem 'activerecord-jdbcsqlite3-adapter'
+  gem 'jdbc-sqlite3'
+end

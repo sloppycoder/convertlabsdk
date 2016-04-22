@@ -1,11 +1,10 @@
 # encoding: utf-8
 
 task :clean do
-  rm_rf "coverage"
-  rm_rf "dev.sqlite3"
-  rm_rf "test.sqlite3"
-  rm_rf "pkg"
-  rm_rf "convertlabsdk.gem"
+  rm_rf 'coverage'
+  rm_rf 'dev.sqlite3'
+  rm_rf 'test.sqlite3'
+  rm_rf 'convertlabsdk.gem'
 end
 
 require 'rubygems'
@@ -19,20 +18,6 @@ rescue Bundler::BundlerError => e
 end
 
 require 'rake'
-
-require 'jeweler'
-Jeweler::Tasks.new do |gem|
-  # gem is a Gem::Specification... 
-  # see http://guides.rubygems.org/specification-reference/ for more options
-  gem.name = 'convertlabsdk'
-  gem.homepage = 'http://github.com/sloppycoder/convertlabsdk'
-  gem.license = 'Commercial'
-  gem.summary = 'ConvertLab SDK'
-  gem.description = %(Library to facilitate synchronizing your application object with ConvertLab cloud services)
-  gem.email = 'guru.lin@gmail.com'
-  gem.authors = ['Li Lin']
-  # dependencies defined in Gemfile
-end
 
 # do not publish to rubygems.org just yet
 # Jeweler::RubygemsDotOrgTasks.new
@@ -64,8 +49,10 @@ end
 require 'active_record'
 require 'yaml'
 namespace :db do
-  config = YAML::load(File.open('db/config.yml'))
-  db_config = config[ENV['RAILS_ENV'] || 'development']
+  e = ENV['RAILS_ENV'] || 'development'
+  e += '_jruby' if RUBY_PLATFORM == 'java' 
+  config = YAML::load(File.open('config/config.yml'))[e]
+  db_config = config['db']
 
   desc 'Migrate the database'
   task :migrate do

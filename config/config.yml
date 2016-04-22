@@ -2,16 +2,19 @@ development:
   db:
     adapter: sqlite3
     database: dev.sqlite3
-    pool: 5
+    pool: 2
     timeout: 5000
-  app:
-    url: http://api.51convert.cn
 
-test: &test
+development_jruby:
+  db:
+    adapter: jdbcsqlite3
+    database: dev.sqlite3
+    pool: 2
+    timeout: 5000
+
+test:
   db:
     adapter: sqlite3
     database: test.sqlite3
     pool: 5
     timeout: 5000
-  app:
-    url: http://api.51convert.cn

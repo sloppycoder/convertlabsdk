@@ -3,17 +3,17 @@
 #
 # Demo program to sync customer data to the cloud
 #
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', '..', 'lib'))
 require 'convertlabsdk'
 require 'yaml'
-require 'byebug'
 
 logger = Logger.new STDOUT
 logger.level = Logger::DEBUG
 ConvertLab::logger = logger
 
 def config
-  @config ||= YAML::load(File.open('config.yml'))[ENV['RAILS_ENV'] || 'development']
+  e = ENV['RAILS_ENV'] || 'development'
+  e += '_jruby' if RUBY_PLATFORM == 'java' 
+  @config ||= YAML::load(File.open('config/config.yml'))[e]
 end
 
 def app_client
@@ -52,7 +52,6 @@ end
 ActiveRecord::Base.establish_connection(config['db'])
 ActiveRecord::Migrator.migrate(File.dirname(__FILE__) + '/db/migrate/')    
 # ConvertLab::SyncedObject.destroy_all
-db_migrate
 channel = 'TEST_CHANNEL'
 
 #

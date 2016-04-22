@@ -4,9 +4,7 @@
 AllCops:
   Exclude:
     # this file is generated 
-    - 'convertlabsdk.gemspec'
     - '**/schema.rb'
-    - 'Rakefile'
 
 Lint/HandleExceptions:
   Exclude:
