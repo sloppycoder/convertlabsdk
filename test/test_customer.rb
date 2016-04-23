@@ -1,7 +1,7 @@
 # encoding: utf-8
 # rubocop:disable Lint/HandleExceptions:
 
-require 'helper'
+require_relative 'helper'
 
 class TestCustomer < MiniTest::Test
   attr_accessor :app_client

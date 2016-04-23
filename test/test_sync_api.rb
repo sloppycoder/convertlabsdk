@@ -1,5 +1,6 @@
 # encoding: utf-8
-require 'helper'
+
+require_relative 'helper'
 
 class TestSyncedObject < MiniTest::Test
   attr_reader :data

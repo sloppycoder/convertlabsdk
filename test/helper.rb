@@ -67,7 +67,7 @@ def disable_vcr?
 end
 
 VCR.configure do |config|
-  config.cassette_library_dir = 'test/vcr_cassettes'
+  config.cassette_library_dir = File.dirname(__FILE__) + '/vcr_cassettes'
   config.hook_into :webmock 
   config.default_cassette_options = {
     match_requests_on: [:method, VCR.request_matchers.uri_without_param(:access_token, :appid, :secret)]
@@ -84,15 +84,13 @@ end
 require 'minitest'
 require 'minitest/autorun'
 require 'minitest/profile'
-# reporter is not working
-# require "minitest/reporters"
-# Minitest::Reporters.use! Minitest::Reporters::HtmlReporter
+require 'minitest/reporters'
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
-$LOAD_PATH.unshift(File.dirname(__FILE__))
 require 'convertlabsdk'
 
 class MiniTest::Test
 end
 
+MiniTest::Reporters.use!
 MiniTest.autorun

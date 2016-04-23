@@ -1,5 +1,6 @@
 # encoding: utf-8
-require 'helper'
+
+require_relative 'helper'
 require 'logger'
 
 class TestSyncedObject < MiniTest::Test

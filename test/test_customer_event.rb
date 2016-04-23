@@ -1,6 +1,6 @@
 # encoding: utf-8
 
-require 'helper'
+require_relative 'helper'
 
 class TestCustomerEvent < MiniTest::Test
   attr_accessor :app_client

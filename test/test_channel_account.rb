@@ -1,7 +1,8 @@
 # encoding: utf-8
-require 'helper'
 # rubocop:disable Lint/HandleExceptions:
 # rubocop:disable Metrics/MethodLength:
+
+require_relative 'helper'
 
 class TestChannelAccount < MiniTest::Test
   attr_accessor :app_client
