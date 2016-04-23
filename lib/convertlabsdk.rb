@@ -47,20 +47,79 @@ module ConvertLab
     end
   end
 
+  class AccessToken < ActiveRecord::Base
+  end
+
   # store the access token
   class TokenStore
-    attr_accessor :token, :expires_at
+    include Logging
 
-    def initialize(shared = false)
+    attr_accessor :url, :appid, :secret, :shared, :token, :expires_at
+
+    def initialize(url, appid = 'appid', secret = 'secret', shared = false)
+      self.url = url
+      self.appid = appid
+      self.secret = secret
+      self.shared = shared
     end
 
-    def save(args)
-      self.expires_at = args[1]
-      self.token = args[0]
+    def access_token
+      read_shared_token if shared
+
+      # we fresh 5 seconds before token expires to be safe
+      if token.nil? || Time.now >= expires_at - 5
+        update_token
+      else
+        logger.debug "return valid token #{self}"
+      end
+
+      token
+    end
+
+    def read_shared_token
+      # shared token needs to be read from database
+      record = AccessToken.first_or_create
+      self.token = record.token
+      self.expires_at = record.expires_at
+
+      logger.debug "read shared token #{self}"
+    end
+
+    def update_token
+      # lock the token so that nobody can read it while we get a new one
+      if shared
+        logger.info 'updating shared token'
+        record = AccessToken.first_or_create
+        record.with_lock do
+          new_access_token
+          record.token = token
+          record.expires_at = expires_at
+          record.save!
+        end
+      else
+        new_access_token
+      end
+    end
+
+    def new_access_token
+      headers = { accept: :json, params: { grant_type: 'client_credentials', appid: appid, secret: secret } }
+      resp_body = JSON.parse(RestClient::Request.execute(method: :get, url: "#{url}/security/accesstoken",
+                                                         headers: headers))
+      if resp_body['error_code'].to_i != 0
+        raise AccessTokenError, "get access token returned #{resp_body}"
+      end
+
+      token_expires_at = Time.now + resp_body['expires_in'].to_i
+      token = resp_body['access_token']
+
+      self.expires_at = token_expires_at
+      self.token = token
+
+      logger.debug "received new token #{self}"
     end
 
     def to_s
-      "token #{token} expires at #{Time.at(expires_at||0)}"
+      "token #{token} expires at #{Time.at(expires_at || 0)}"
     end
   end
 
@@ -73,39 +132,20 @@ module ConvertLab
   class AppClient
     include Logging
 
-    attr_accessor :url, :appid, :secret, :options
+    attr_accessor :url, :options, :token_store
 
     def initialize(options = {})
       o = options.dup
       @url = o.delete(:url) || ENV['CLAB_URL'] || 'http://api.51convert.cn'
-      @appid = o.delete(:appid) || ENV['CLAB_APPID'] || 'appid'
-      @secret = o.delete(:secret) || ENV['CLAB_SECRET'] || 'secret'
+      appid = o.delete(:appid) || ENV['CLAB_APPID']
+      secret = o.delete(:secret) || ENV['CLAB_SECRET']
       shared_token = o.delete(:shared_token) ? true : false
       @options = o
-      @token_store = TokenStore.new(shared_token)
+      @token_store = TokenStore.new(url, appid, secret, shared_token)
     end
-      
+
     def access_token
-      # we fresh 5 seconds before token expires to be safe
-      if @token_store.token.nil? || Time.now.to_i < @token_store.expires_at - 5
-        @token_store.save access_token!
-      end
-      @token_store.token
-    end
-
-    def access_token!
-      headers = { accept: :json, params: { grant_type: 'client_credentials', appid: appid, secret: secret } }
-      resp_body = JSON.parse(RestClient::Request.execute(method: :get, url: "#{url}/security/accesstoken", 
-                                                         headers: headers))
-                                            
-      if resp_body['error_code'].to_i != 0 
-        raise AccessTokenError.new "get access token returned #{resp_body}"
-      end
-
-      token_expires_at = Time.now.to_i + resp_body['expires_in'].to_i
-      token = resp_body['access_token']
-
-      [token, token_expires_at]
+      @token_store.access_token
     end
 
     def channel_account
@@ -124,6 +164,7 @@ module ConvertLab
       @deal ||= Resource.new(self, '/v1/deals', options)
     end
 
+    # for testing only...
     def root
       @root ||= Resource.new(self, '', options)
     end
@@ -190,7 +231,7 @@ module ConvertLab
         if resp_obj.is_a?(Hash) && resp_obj.key?('error_code') 
           err_code = resp_obj['error_code'].to_i
           if err_code != 0
-            raise ApiError.new "#{err_code} - #{resp_obj['error_description']}"
+            raise ApiError, "#{err_code} - #{resp_obj['error_description']}"
           end
         end
         resp_obj
@@ -291,7 +332,7 @@ module ConvertLab
         when :SYNC_DOWN
           ext_obj_id.nil? || clab_last_update > last_sync
         else
-          raise SyncError.new 'sync mode not supported'
+          raise SyncError, 'sync mode not supported'
         end
       end
     end

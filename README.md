@@ -61,9 +61,7 @@ ruby test/test_<whatever>.rb
 	* multi worker example based on Resque
 * add test cases for deals API
 * review and design for multiple concurent workers
-	* store access token in file so that they can be shared amount multiple processes
 	* review SycnedObject implementation for concurrency
-* replace hash parameter list with keyword parameters
 * (low) add API for remember last sync time.=
 * (low) enable HTML test report from minitest/reporter
 * (low) add async submit and forget support?
