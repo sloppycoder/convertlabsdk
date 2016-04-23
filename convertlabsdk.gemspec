@@ -16,19 +16,19 @@ Gem::Specification.new do |s|
   s.rubygems_version = '2.4.5.1'
   s.summary = 'ConvertLab SDK'
 
-  s.extra_rdoc_files = [
-    'LICENSE.txt',
-    'README.md'
-  ]
+  s.extra_rdoc_files = %w(
+    LICENSE.txt
+    README.md'
+  )
 
-  s.files = [
-    'Gemfile',
-    'Gemfile.lock',
-    'README.md',
-    'README.rdoc',
-    'Rakefile',
-    'convertlabsdk.gemspec'
-  ]
+  s.files = %w(
+    Gemfile
+    Gemfile.lock
+    README.md
+    README.rdoc
+    Rakefile
+    convertlabsdk.gemspec
+  )
 
   %w(lib test db config).each do |path|
     Find.find(path) { |f| s.files << f if FileTest.file?(f) && File.basename(f)[0] != '.' }
