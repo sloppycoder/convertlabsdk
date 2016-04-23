@@ -21,7 +21,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Thu, 21 Apr 2016 13:03:53 GMT
+      - Sat, 23 Apr 2016 08:06:38 GMT
       Content-Type:
       - application/json;charset=UTF-8
       Transfer-Encoding:
@@ -32,9 +32,9 @@ http_interactions:
       - application:test:8015
     body:
       encoding: UTF-8
-      string: '{"error_code":0,"access_token":"238f965ba019cfac63533dc2ACCESSTOKEN","expires_in":7200}'
+      string: '{"error_code":0,"access_token":"86cdd61e112ac08ce03c280bACCESSTOKEN","expires_in":7200}'
     http_version: 
-  recorded_at: Thu, 21 Apr 2016 13:03:53 GMT
+  recorded_at: Sat, 23 Apr 2016 08:06:38 GMT
 - request:
     method: post
     uri: http://api.51convert.cn/v1/customerevents?access_token=ACCESSTOKEN
@@ -60,7 +60,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Thu, 21 Apr 2016 13:03:54 GMT
+      - Sat, 23 Apr 2016 08:06:39 GMT
       Content-Type:
       - application/json;charset=UTF-8
       Transfer-Encoding:
@@ -71,12 +71,47 @@ http_interactions:
       - application:test:8015
     body:
       encoding: UTF-8
-      string: '{"attr1":"headache","attr2":null,"attr3":null,"attr4":null,"attr5":null,"batchId":null,"campaign":null,"campaignName":null,"channelAccount":"TEST_CHANNEL","channelType":"sales_order","contentName":null,"customerId":531,"date":"2016-04-21T13:03:54Z","device":null,"employee":null,"event":null,"eventGroup":null,"externalId":"12234","id":1059132,"inbound":true,"internalContentId":null,"lastForwarder":null,"lastUpdated":"2016-04-21T13:03:54Z","location":null,"pageId":null,"refScore":0,"referrer":null,"referrerName":null,"score":0,"source":"TEST_CHANNEL","summary":null,"tag":null,"targetId":"531","targetName":null}'
+      string: '{"attr1":"headache","attr2":null,"attr3":null,"attr4":null,"attr5":null,"batchId":null,"campaign":null,"campaignName":null,"channelAccount":"TEST_CHANNEL","channelType":"sales_order","contentName":null,"customerId":531,"date":"2016-04-23T08:06:39Z","device":null,"employee":null,"event":null,"eventGroup":null,"externalId":"12234","id":1059266,"inbound":true,"internalContentId":null,"lastForwarder":null,"lastUpdated":"2016-04-23T08:06:39Z","location":null,"pageId":null,"refScore":0,"referrer":null,"referrerName":null,"score":0,"source":"TEST_CHANNEL","summary":null,"tag":null,"targetId":"531","targetName":null}'
     http_version: 
-  recorded_at: Thu, 21 Apr 2016 13:03:55 GMT
+  recorded_at: Sat, 23 Apr 2016 08:06:39 GMT
+- request:
+    method: get
+    uri: http://api.51convert.cn/security/accesstoken?appid=APPID&grant_type=client_credentials&secret=SECRET
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.4.6 (Ubuntu)
+      Date:
+      - Sat, 23 Apr 2016 08:06:40 GMT
+      Content-Type:
+      - application/json;charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Application-Context:
+      - application:test:8015
+    body:
+      encoding: UTF-8
+      string: '{"error_code":0,"access_token":"d617d5c1c1c6c336982ef91dACCESSTOKEN","expires_in":7200}'
+    http_version: 
+  recorded_at: Sat, 23 Apr 2016 08:06:40 GMT
 - request:
     method: put
-    uri: http://api.51convert.cn/v1/customerevents/1059132?access_token=ACCESSTOKEN
+    uri: http://api.51convert.cn/v1/customerevents/1059266?access_token=ACCESSTOKEN
     body:
       encoding: UTF-8
       string: '{"attr1":"happy"}'
@@ -99,7 +134,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Thu, 21 Apr 2016 13:03:56 GMT
+      - Sat, 23 Apr 2016 08:06:41 GMT
       Content-Type:
       - application/json;charset=UTF-8
       Transfer-Encoding:
@@ -110,24 +145,55 @@ http_interactions:
       - application:test:8015
     body:
       encoding: UTF-8
-      string: '{"attr1":"happy","attr2":null,"attr3":null,"attr4":null,"attr5":null,"batchId":null,"campaign":null,"campaignName":null,"channelAccount":"TEST_CHANNEL","channelType":"sales_order","contentName":null,"customerId":531,"date":"2016-04-21T13:03:54Z","device":null,"employee":null,"event":"default","eventGroup":null,"externalId":"12234","id":1059132,"inbound":true,"internalContentId":null,"lastForwarder":null,"lastUpdated":"2016-04-21T13:03:56Z","location":null,"pageId":null,"refScore":0,"referrer":null,"referrerName":null,"score":0,"source":"TEST_CHANNEL","summary":null,"tag":null,"targetId":"531","targetName":null}'
+      string: '{"attr1":"happy","attr2":null,"attr3":null,"attr4":null,"attr5":null,"batchId":null,"campaign":null,"campaignName":null,"channelAccount":"TEST_CHANNEL","channelType":"sales_order","contentName":null,"customerId":531,"date":"2016-04-23T08:06:39Z","device":null,"employee":null,"event":"default","eventGroup":null,"externalId":"12234","id":1059266,"inbound":true,"internalContentId":null,"lastForwarder":null,"lastUpdated":"2016-04-23T08:06:41Z","location":null,"pageId":null,"refScore":0,"referrer":null,"referrerName":null,"score":0,"source":"TEST_CHANNEL","summary":null,"tag":null,"targetId":"531","targetName":null}'
     http_version: 
-  recorded_at: Thu, 21 Apr 2016 13:03:56 GMT
+  recorded_at: Sat, 23 Apr 2016 08:06:41 GMT
 - request:
-    method: delete
-    uri: http://api.51convert.cn/v1/customerevents/1059132?access_token=ACCESSTOKEN
+    method: get
+    uri: http://api.51convert.cn/security/accesstoken?appid=APPID&grant_type=client_credentials&secret=SECRET
     body:
-      encoding: ASCII-8BIT
+      encoding: US-ASCII
       string: ''
     headers:
       Accept:
       - application/json
       Accept-Encoding:
       - gzip, deflate
-      Content-Length:
-      - '0'
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx/1.4.6 (Ubuntu)
+      Date:
+      - Sat, 23 Apr 2016 08:06:42 GMT
       Content-Type:
-      - application/x-www-form-urlencoded
+      - application/json;charset=UTF-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Application-Context:
+      - application:test:8015
+    body:
+      encoding: UTF-8
+      string: '{"error_code":0,"access_token":"e87a77ee106a6dc3c7f873f1ACCESSTOKEN","expires_in":7200}'
+    http_version: 
+  recorded_at: Sat, 23 Apr 2016 08:06:42 GMT
+- request:
+    method: delete
+    uri: http://api.51convert.cn/v1/customerevents/1059266?access_token=ACCESSTOKEN
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      Accept-Encoding:
+      - gzip, deflate
       User-Agent:
       - Ruby
   response:
@@ -138,7 +204,7 @@ http_interactions:
       Server:
       - nginx/1.4.6 (Ubuntu)
       Date:
-      - Thu, 21 Apr 2016 13:03:57 GMT
+      - Sat, 23 Apr 2016 08:06:43 GMT
       Content-Type:
       - text/html;charset=utf-8
       Connection:
@@ -149,5 +215,5 @@ http_interactions:
       encoding: UTF-8
       string: ''
     http_version: 
-  recorded_at: Thu, 21 Apr 2016 13:03:57 GMT
+  recorded_at: Sat, 23 Apr 2016 08:06:43 GMT
 recorded_with: VCR 3.0.1

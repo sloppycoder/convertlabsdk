@@ -36,7 +36,7 @@ rake test
 NO_VCR=1 RESTCLIENT_LOG=stdout rake test 
 
 # run the tests and display slowest 10 test cases
-NO_VCR=1 ruby -I test test/test_convertlabsdk.rb --profile
+NO_VCR=1 ruby test/test_convertlabsdk.rb --profile
 
 # to get coverage report
 COVERAGE=1 rake test
@@ -51,7 +51,7 @@ open index.html
 ruby test/cleanup_testdata.rb
 
 # to run individual test case files
-ruby -I test test/test_<whatever>.rb 
+ruby test/test_<whatever>.rb
 
 ```
 
@@ -63,12 +63,12 @@ ruby -I test test/test_<whatever>.rb
 * review and design for multiple concurent workers
 	* store access token in file so that they can be shared amount multiple processes
 	* review SycnedObject implementation for concurrency
-* add caching to rest-client layer
 * replace hash parameter list with keyword parameters
 * (low) add API for remember last sync time.=
 * (low) enable HTML test report from minitest/reporter
 * (low) add async submit and forget support?
 * (hold) implement sync_down and test cases (conflict with ext fields validation!)
+* (hold) add caching to rest-client layer
 
 ### Issue with APIs (haven't tested with deals yet)
 

@@ -1,7 +1,7 @@
 # encoding: utf-8
 #
 # this module contains SDK to access ConvertLab API and 
-# helpers to facilitate syncrhonization local applicaiton
+# helpers to facilitate synchronization local applicaiton
 # objects using such APIs
 #
 #
@@ -47,6 +47,23 @@ module ConvertLab
     end
   end
 
+  # store the access token
+  class TokenStore
+    attr_accessor :token, :expires_at
+
+    def initialize(shared = false)
+    end
+
+    def save(args)
+      self.expires_at = args[1]
+      self.token = args[0]
+    end
+
+    def to_s
+      "token #{token} expires at #{Time.at(expires_at||0)}"
+    end
+  end
+
   class AccessTokenError < RuntimeError; end
   class ApiError < RuntimeError; end
 
@@ -63,17 +80,17 @@ module ConvertLab
       @url = o.delete(:url) || ENV['CLAB_URL'] || 'http://api.51convert.cn'
       @appid = o.delete(:appid) || ENV['CLAB_APPID'] || 'appid'
       @secret = o.delete(:secret) || ENV['CLAB_SECRET'] || 'secret'
+      shared_token = o.delete(:shared_token) ? true : false
       @options = o
-      @token = nil
+      @token_store = TokenStore.new(shared_token)
     end
       
     def access_token
       # we fresh 5 seconds before token expires to be safe
-      if @token && Time.now.to_i < @token_expires_at - 5
-        @token
-      else
-        access_token!
+      if @token_store.token.nil? || Time.now.to_i < @token_store.expires_at - 5
+        @token_store.save access_token!
       end
+      @token_store.token
     end
 
     def access_token!
@@ -82,16 +99,13 @@ module ConvertLab
                                                          headers: headers))
                                             
       if resp_body['error_code'].to_i != 0 
-        raise AccessTokenError, "get access token returned #{resp_body}" 
+        raise AccessTokenError.new "get access token returned #{resp_body}"
       end
 
-      @token_expires_at = Time.now.to_i + resp_body['expires_in'].to_i  
-      @token = resp_body['access_token']
-      @token
-    end
+      token_expires_at = Time.now.to_i + resp_body['expires_in'].to_i
+      token = resp_body['access_token']
 
-    def expire_token!
-      @token_expires_at = Time.now.to_i - 1
+      [token, token_expires_at]
     end
 
     def channel_account
@@ -176,7 +190,7 @@ module ConvertLab
         if resp_obj.is_a?(Hash) && resp_obj.key?('error_code') 
           err_code = resp_obj['error_code'].to_i
           if err_code != 0
-            raise ApiError "#{err_code} - #{resp_obj['error_description']}"
+            raise ApiError.new "#{err_code} - #{resp_obj['error_description']}"
           end
         end
         resp_obj
@@ -277,7 +291,7 @@ module ConvertLab
         when :SYNC_DOWN
           ext_obj_id.nil? || clab_last_update > last_sync
         else
-          raise SyncError, 'sync mode not supported'
+          raise SyncError.new 'sync mode not supported'
         end
       end
     end
