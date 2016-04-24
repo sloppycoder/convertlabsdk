@@ -1,6 +1,6 @@
 # encoding: utf-8
 #
-# this module contains SDK to access ConvertLab API and 
+# this module contains SDK to access ConvertLab API and
 # helpers to facilitate synchronization local applicaiton
 # objects using such APIs
 #
@@ -14,9 +14,9 @@ require 'date'
 require 'logger'
 
 module ConvertLab
-  
+
   MAX_SYNC_ERR ||= 10
-  DUMMY_TIMESTAMP ||= Time.at(0)
+  DUMMY_TIMESTAMP ||= Time.new('2000-01-01')
 
   def self.logger
     @logger ||= default_logger
@@ -45,6 +45,18 @@ module ConvertLab
     def logger
       ConvertLab::logger
     end
+  end
+
+  class JobStatus < ActiveRecord::Base
+    def new?
+      last_sync == DUMMY_TIMESTAMP
+    end
+  end
+
+  def self.job_status(job_name)
+    job = JobStatus.where(name: job_name).first_or_create
+    job.last_sync ||= DUMMY_TIMESTAMP
+    job
   end
 
   class AccessToken < ActiveRecord::Base
