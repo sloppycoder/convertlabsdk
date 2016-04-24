@@ -42,6 +42,16 @@ task :simplecov do
   Rake::Task['test'].execute
 end
 
+require 'rubocop/rake_task'
+desc 'Run RuboCop on the lib and test directory'
+RuboCop::RakeTask.new(:rubocop) do |task|
+  task.patterns = ['lib/**/*.rb', 'test/**/*.rb']
+  # only show the files with failures
+  # task.formatters = ['files']
+  # don't abort rake on failure
+  task.fail_on_error = false
+end
+
 # credit goes to https://gist.github.com/schickling/6762581
 require 'active_record'
 require 'yaml'
