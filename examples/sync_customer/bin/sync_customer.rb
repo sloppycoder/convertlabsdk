@@ -51,7 +51,10 @@ end
 
 ActiveRecord::Base.establish_connection(config['db'])
 mig_path = File.expand_path(File.dirname(__FILE__) + '/../db/migrate')
-ActiveRecord::Migrator.migrate(mig_path)    
+silence_stream(STDOUT) do
+  ActiveRecord::Migrator.migrate(mig_path)
+end
+
 # ConvertLab::SyncedObject.destroy_all
 channel = 'TEST_CHANNEL'
 
