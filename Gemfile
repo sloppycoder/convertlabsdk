@@ -17,4 +17,5 @@ group :development do
   gem 'sqlite3', '>=0', platform: :ruby
   gem 'byebug', '>=0', platform: [:ruby_20, :ruby_21, :ruby_22]
   gem 'debugger', '>=0', platform: :ruby_19
+  gem 'redcarpet', '>=0', platform: :ruby_19
 end

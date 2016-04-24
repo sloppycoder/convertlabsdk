@@ -73,6 +73,7 @@ GEM
       spoon (~> 0.0)
     rainbow (2.1.0)
     rake (10.4.2)
+    redcarpet (3.3.4)
     rest-client (1.8.0)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
@@ -100,6 +101,7 @@ GEM
       thread_safe (~> 0.1)
     unf (0.1.4)
       unf_ext
+    unf (0.1.4-java)
     unf_ext (0.0.7.2)
     unicode-display_width (1.0.3)
     vcr (3.0.1)
@@ -125,12 +127,10 @@ DEPENDENCIES
   minitest-reporters
   pry
   rake (~> 10.1)
+  redcarpet
   rubocop
   simplecov
   sqlite3
   vcr (~> 3.0)
   webmock
   yard (~> 0.8)
-
-BUNDLED WITH
-   1.11.2
