@@ -28,7 +28,7 @@ module ConvertLab
 
   def self.default_logger
     new_logger = Logger.new STDOUT
-    new_logger.level = Logger::INFO
+    new_logger.level = Logger::WARN
     new_logger
   end
 
@@ -88,15 +88,6 @@ module ConvertLab
       token
     end
 
-    def read_shared_token
-      # shared token needs to be read from database
-      record = AccessToken.first_or_create
-      self.token = record.token
-      self.expires_at = record.expires_at
-
-      logger.debug "read shared token #{self}"
-    end
-
     def update_token
       # lock the token so that nobody can read it while we get a new one
       if shared
@@ -111,6 +102,12 @@ module ConvertLab
       else
         new_access_token
       end
+    end
+
+    private
+
+    def to_s
+      "token #{token} expires at #{Time.at(expires_at || 0)}"
     end
 
     def new_access_token
@@ -130,9 +127,15 @@ module ConvertLab
       logger.debug "received new token #{self}"
     end
 
-    def to_s
-      "token #{token} expires at #{Time.at(expires_at || 0)}"
+    def read_shared_token
+      # shared token needs to be read from database
+      record = AccessToken.first_or_create
+      self.token = record.token
+      self.expires_at = record.expires_at
+
+      logger.debug "read shared token #{self}"
     end
+
   end
 
   class AccessTokenError < RuntimeError; end
@@ -213,6 +216,8 @@ module ConvertLab
     def delete(id)
       parse_response new_request(:delete, id: id).execute
     end
+
+    private
 
     # def new_request(method = :get, id: nil, params: {}, payload: {})
     def new_request(*args)
@@ -365,24 +370,6 @@ module ConvertLab
       save!
     end
 
-    def lock
-      # locking will automatically trigger reload
-      # locker older than 1 hour is considered stale
-      if !is_locked || (is_locked && locked_at < Time.now - 3600)
-        self.is_locked = true
-        self.locked_at = Time.now
-        save!
-      else 
-        false
-      end
-    end
-
-    def unlock
-      self.is_locked = false
-      self.locked_at = nil
-      save!
-    end
-
     def link_ext_obj(channel, type, id)
       self.ext_channel = channel
       self.ext_type = type
@@ -399,6 +386,24 @@ module ConvertLab
           logger.warn "#{self} overwriting #{old_clab_id} with #{clab_obj}"
         end
       end
+    end
+
+    def lock
+      # locking will automatically trigger reload
+      # locker older than 1 hour is considered stale
+      if !is_locked || (is_locked && locked_at < Time.now - 3600)
+        self.is_locked = true
+        self.locked_at = Time.now
+        save!
+      else 
+        false
+      end
+    end
+
+    def unlock
+      self.is_locked = false
+      self.locked_at = nil
+      save!
     end
 
     # used in loggin
