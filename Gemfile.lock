@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    convertlabsdk (0.5.0)
+    convertlabsdk (0.6.0)
       activerecord (~> 4.2)
       rest-client (~> 1.8)
 

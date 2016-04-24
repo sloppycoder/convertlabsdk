@@ -21,7 +21,7 @@ GEM
       tzinfo (~> 1.1)
     arel (6.0.3)
     builder (3.2.2)
-    convertlabsdk (0.5.0)
+    convertlabsdk (0.6.0)
       activerecord (~> 4.2)
       rest-client (~> 1.8)
     domain_name (0.5.20160310)
@@ -46,7 +46,6 @@ GEM
       thread_safe (~> 0.1)
     unf (0.1.4)
       unf_ext
-    unf (0.1.4-java)
     unf_ext (0.0.7.2)
 
 PLATFORMS
@@ -55,7 +54,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-jdbcsqlite3-adapter
-  convertlabsdk (= 0.5.0)
+  convertlabsdk (= 0.6.0)
   jdbc-sqlite3
   sqlite3
 

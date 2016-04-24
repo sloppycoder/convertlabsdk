@@ -5,7 +5,7 @@
 # blocked by GFW inside China
 source 'https://ruby.taobao.org'
 
-gem 'convertlabsdk', '0.5.0'
+gem 'convertlabsdk', '0.6.0'
 
 platforms :ruby do
   gem 'sqlite3'

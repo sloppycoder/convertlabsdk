@@ -1,29 +1,36 @@
-## convertlabsdk
+## ConvertLab SDK
 
-Library to facilitate synchronizing your application object with ConvertLab cloud services
+Library to facilitate synchronizing your application object with ConvertLab cloud services. A very simple use case looks like the following:
 
-## modules
+```
+ActiveRecord::Base.establish_connection
 
-### AppClient
-client application that access the cloud APIs.
-* handling authentication and access_token
-* provide wrapper to access objects provided by APIs. 
-	channelaccount
-	customer
-	event
-	deal
+app_client = ConvertLab::AppClient.new
+clab_id = app_client.customer.find(mobile: '13911223366')['records'].first['id']
 
-### SyncedObject
-helpers that facilitate syncing of external objects to convertlab cloud services locally maintain external object and cloud object mappings it mains a local datastore that stores the mapping:
+# this is the customer record in local applicaiton that we want to synchronize to ConvertLab
+ext_customer_info = { ext_channel: 'MY_SUPER_STORE', ext_type: 'customer',
+                      ext_id: 'my_customer_id', clab_id: clab_id }
+clab_customer = map_ext_customer_to_clab(ext_customer_info)
+ConvertLab::SyncedCustomer.sync app_client.customer, clab_customer, ext_customer_info
 
-...
+```
 
-### Running the test 
+For more details, generate API documentation and look around.
 
 ```
 git clone <url_of_this_repo>
 cd convertlabsdk
 bundle install
+rake yard
+open doc/index.html
+```
+
+
+### Running the test 
+
+```
+# clone the repo first
 
 # set CLAB APPID and SECRET in envronment variables
 export CLAB_APPID=<appid>
@@ -55,11 +62,13 @@ ruby test/test_<whatever>.rb
 
 ```
 
+### Use it in your project
+For single process simple scenario, see this [example](examples/sync_customer).
+
 ### TODO
-* create complete examples
-	* multi worker example based on Resque
-* document classes and pbulic APIs using rdoc. maybe YARD?
+* create multi worker example based on Resque
 * review SycnedObject implementation for concurrency
+* add support for Docker
 * (low) add async submit and forget support?
 * (hold) implement sync_down and test cases (conflict with ext fields validation!)
 * (hold) add caching to rest-client layer
