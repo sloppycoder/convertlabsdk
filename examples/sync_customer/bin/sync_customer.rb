@@ -27,15 +27,13 @@ def testdata
   require 'csv'
   csv_source = %(
 orderNumber,isMember,membershipLevel,membershipNo,mobile,name,last_update
-# 1st batch. both are new records
 10001,true,silver,A1234,139112233,guru lin,2016-01-01
 10002,true,gold,A1111,133123123,stefan liu,2016-01-01
-# 2nd batch. 1 update, 1 new
 10001,true,gold,A1234,139112233,guru lin,2016-01-02
 10003,true,platinum,A8888,133333333,jack ma,2016-01-02
 )
   @data = []
-  CSV.parse(csv_source, skip_blanks: true, skip_lines: '^#', headers: true) do |row|
+  CSV.parse(csv_source, skip_blanks: true, headers: true) do |row|
     @data << row.to_hash
   end
   @data
