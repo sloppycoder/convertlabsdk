@@ -2,13 +2,13 @@
 
 task :clean do
   %w(
-  dev.sqlite3
-  test.sqlite3
-  convertlabsdk-*.gem
-  doc
-  rdoc
-  coverage
-  gem_graph.png
+    dev.sqlite3
+    test.sqlite3
+    convertlabsdk-*.gem
+    doc
+    rdoc
+    coverage
+    gem_graph.png
   ).each do |path|
     rm_rf path, verbose: false
   end

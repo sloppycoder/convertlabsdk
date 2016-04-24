@@ -5,9 +5,7 @@ require_relative 'helper'
 class TestAccessToken < MiniTest::Test
   attr_accessor :app_client
 
-  adapter = RUBY_PLATFORM == 'java' ? 'jdbcsqlite3' : 'sqlite3'
-  ActiveRecord::Base.establish_connection(adapter: adapter, database: ':memory:')
-  ActiveRecord::Migrator.migrate(File.dirname(__FILE__) + '/../db/migrate/')
+  init_test_db
 
   def setup
     self.app_client = ConvertLab::AppClient.new(shared_token: true)
@@ -21,14 +19,17 @@ class TestAccessToken < MiniTest::Test
 
   def test_incorrect_credentials_causes_access_token_error
     VCR.use_cassette('test_access_token_02') do
-      old_secret = app_client.token_store.secret
-      app_client.token_store.secret = 'bogus'
+      # there is no need for token_store to be made public accessible,
+      # we do a hack here for the sake of testing
+      token_store = app_client.instance_variable_get('@token_store')
+      old_secret = token_store.secret
+      token_store.secret = 'bogus'
       
       assert_raises ConvertLab::AccessTokenError do 
-        app_client.token_store.update_token
+        app_client.update_token
       end
 
-      app_client.token_store.secret = old_secret
+      token_store.secret = old_secret
     end
   end
 
@@ -40,7 +41,7 @@ class TestAccessToken < MiniTest::Test
       old_token2 = app_client.access_token
       assert_equal old_token, old_token2
 
-      app_client.token_store.update_token
+      app_client.update_token
       new_token = app_client.access_token
       refute_nil new_token
 

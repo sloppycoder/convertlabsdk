@@ -14,9 +14,11 @@ Style/ClassVars:
   Exclude:
     - 'test/test_*.rb'
 
+Style/EmptyLines:
+  Enabled: false
+  
 Style/Encoding:
   Enabled: true
-  Exclude:
 
 Style/TrailingWhitespace:
   Enabled: false
