@@ -81,6 +81,14 @@ if disable_vcr?
 end
 # end of VCR config helper
 
+def init_test_db
+  adapter = RUBY_PLATFORM == 'java' ? 'jdbcsqlite3' : 'sqlite3'
+  ActiveRecord::Base.establish_connection(adapter: adapter, database: ':memory:')
+  silence_stream(STDOUT) do
+    ActiveRecord::Migrator.migrate(File.dirname(__FILE__) + '/../db/migrate/')
+  end
+end
+
 require 'minitest'
 require 'minitest/autorun'
 require 'minitest/profile'

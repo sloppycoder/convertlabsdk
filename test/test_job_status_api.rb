@@ -4,9 +4,7 @@ require_relative 'helper'
 
 class TestJobStatus < MiniTest::Test
 
-  adapter = RUBY_PLATFORM == 'java' ? 'jdbcsqlite3' : 'sqlite3'
-  ActiveRecord::Base.establish_connection(adapter: adapter, database: ':memory:')
-  ActiveRecord::Migrator.migrate(File.dirname(__FILE__) + '/../db/migrate/')
+  init_test_db
 
   def test_job_status_api
     job = ConvertLab.job_status('test_job')

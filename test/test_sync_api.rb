@@ -5,9 +5,7 @@ require_relative 'helper'
 class TestSyncedObject < MiniTest::Test
   attr_reader :data
   
-  adapter = RUBY_PLATFORM == 'java' ? 'jdbcsqlite3' : 'sqlite3'  
-  ActiveRecord::Base.establish_connection(adapter: adapter, database: ':memory:')
-  ActiveRecord::Migrator.migrate(File.dirname(__FILE__) + '/../db/migrate/')    
+  init_test_db
 
   def setup
     ConvertLab::SyncedObject.destroy_all

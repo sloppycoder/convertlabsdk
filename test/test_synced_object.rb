@@ -4,9 +4,8 @@ require_relative 'helper'
 require 'logger'
 
 class TestSyncedObject < MiniTest::Test
-  adapter = RUBY_PLATFORM == 'java' ? 'jdbcsqlite3' : 'sqlite3'  
-  ActiveRecord::Base.establish_connection(adapter: adapter, database: ':memory:')
-  ActiveRecord::Migrator.migrate(File.dirname(__FILE__) + '/../db/migrate/')    
+
+  init_test_db
 
   def test_channel_account_record_can_be_retrieved_as_synced_object
     ext_id = '123123123'
