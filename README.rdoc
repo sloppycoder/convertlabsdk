@@ -1,9 +1,0 @@
-= convertlabsdk
-
-Library to facilitate synchronizing your application object with ConvertLab cloud services
-
-== Copyright
-
-Copyright (c) 2016 Li Lin. See LICENSE.txt for
-further details.
-

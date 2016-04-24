@@ -5,6 +5,9 @@ task :clean do
   rm_rf 'dev.sqlite3'
   rm_rf 'test.sqlite3'
   rm_rf 'convertlabsdk.gem'
+  rm_rf 'doc'
+  rm_rf 'rdoc'
+  rm_rf 'gem_graph.png'
 end
 
 require 'rubygems'
@@ -73,13 +76,8 @@ namespace :db do
   end
 end
 
-require 'rdoc/task'
-Rake::RDocTask.new do |rdoc|
-  version = File.exist?('VERSION') ? File.read('VERSION') : ''
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "convertlabsdk #{version}"
-  rdoc.rdoc_files.include('README*')
-  rdoc.rdoc_files.include('lib/**/*.rb')
+require 'yard'
+YARD::Rake::YardocTask.new do |t|
 end
 
 task default: :test

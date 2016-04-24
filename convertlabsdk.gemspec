@@ -25,7 +25,6 @@ Gem::Specification.new do |s|
     Gemfile
     Gemfile.lock
     README.md
-    README.rdoc
     Rakefile
     convertlabsdk.gemspec
   )
@@ -40,7 +39,7 @@ Gem::Specification.new do |s|
     s.add_development_dependency('minitest', ['>= 0'])
     s.add_development_dependency('minitest-profile', ['>= 0'])
     s.add_development_dependency('minitest-reporters', ['>= 0'])
-    s.add_development_dependency('rdoc', ['~> 3.12'])
+    s.add_development_dependency('yard', ['~> 0.8'])
     s.add_development_dependency('bundler', ['~> 1.0'])
     s.add_development_dependency('simplecov', ['>= 0'])
     s.add_development_dependency('rubocop', ['>= 0'])
