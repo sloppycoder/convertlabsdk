@@ -1,13 +1,17 @@
 # encoding: utf-8
 
 task :clean do
-  rm_rf 'coverage'
-  rm_rf 'dev.sqlite3'
-  rm_rf 'test.sqlite3'
-  rm_rf 'convertlabsdk.gem'
-  rm_rf 'doc'
-  rm_rf 'rdoc'
-  rm_rf 'gem_graph.png'
+  %w(
+  dev.sqlite3
+  test.sqlite3
+  convertlabsdk-*.gem
+  doc
+  rdoc
+  coverage
+  gem_graph.png
+  ).each do |path|
+    rm_rf path, verbose: false
+  end
 end
 
 require 'rubygems'
