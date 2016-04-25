@@ -38,5 +38,21 @@ gem install warbler
 warble
 java -jar sync_customer.jar
 
+```
+
+### Docker
+
+We can also package the applicaiton into a docker container image
 
 ```
+cp ../../convertlabsdk-0.6.0.gem .
+docker build -t syncer:latest .
+
+# to run it
+docker run -d -e CLAB_APPID=$CLAB_APPID -e CLAB_SECRET=$CLAB_SECRET syncer:latest
+
+# attach to the container and poke around
+docker exec -it <container_id> /bin/bash
+
+```
+

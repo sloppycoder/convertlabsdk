@@ -21,6 +21,7 @@ GEM
       tzinfo (~> 1.1)
     arel (6.0.3)
     builder (3.2.2)
+    byebug (8.2.4)
     convertlabsdk (0.6.0)
       activerecord (~> 4.2)
       rest-client (~> 1.8)
@@ -54,8 +55,11 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-jdbcsqlite3-adapter
+  byebug
   convertlabsdk (= 0.6.0)
+  debugger
   jdbc-sqlite3
+  pry
   sqlite3
 
 BUNDLED WITH

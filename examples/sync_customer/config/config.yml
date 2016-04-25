@@ -1,3 +1,12 @@
+docker:
+  db:
+    adapter: sqlite3
+    database: /data/syncdb.sqlite3
+    pool: 2
+    timeout: 5000
+  app:
+    url: http://api.51convert.cn
+
 development:
   db:
     adapter: sqlite3

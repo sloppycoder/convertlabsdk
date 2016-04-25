@@ -11,7 +11,7 @@ logger.level = Logger::DEBUG
 ConvertLab::logger = logger
 
 def config
-  e = ENV['RAILS_ENV'] || 'development'
+  e = ARGV.first || 'development'
   e += '_jruby' if RUBY_PLATFORM == 'java' 
   @config ||= YAML::load(File.open('config/config.yml'))[e]
 end
@@ -47,11 +47,22 @@ def order_details(day)
   testdata.select { |r| r['last_update'] == day }
 end
 
+if ARGV.at(1) == 'debug' 
+  if RUBY_PLATFORM == 'java'
+    require 'pry'
+    binding.pry
+  elsif RUBY_VERSION.index('2.') == 0
+    require 'byebug'
+    byebug
+  else
+    require 'debugger'
+    debugger
+  end
+end
+
 ActiveRecord::Base.establish_connection(config['db'])
 mig_path = File.expand_path(File.dirname(__FILE__) + '/../db/migrate')
-silence_stream(STDOUT) do
-  ActiveRecord::Migrator.migrate(mig_path)
-end
+ActiveRecord::Migrator.migrate(mig_path)
 
 # ConvertLab::SyncedObject.destroy_all
 channel = 'TEST_CHANNEL'
@@ -85,3 +96,6 @@ intervals.each do |since|
 
   logger.info "done with current batch at #{since}"
 end
+
+# this prevent the container from being stopped 
+sleep 1000000 if ARGV.first == 'docker'
