@@ -14,11 +14,12 @@ SimpleCov.configure do
 end
 
 ENV['COVERAGE'] && SimpleCov.start do
+  add_filter 'test'
   add_filter '/.rvm/'
   add_filter '/.rbenv/'
   # path for ubuntu linux 14.04
   add_filter '/var/lib/gems'
-  add_filter '/usr/lib/ruby'
+  add_filter '/lib/ruby'
 end
 
 require 'rubygems'
