@@ -16,7 +16,10 @@ Style/ClassVars:
 
 Style/EmptyLines:
   Enabled: false
-  
+
+Style/MutableConstant:
+  Enabled: false
+
 Style/Encoding:
   Enabled: true
 

@@ -4,7 +4,7 @@ task :clean do
   %w(
     dev.sqlite3
     test.sqlite3
-    convertlabsdk-*.gem
+    pkg
     doc
     rdoc
     coverage
@@ -18,6 +18,7 @@ require 'rubygems'
 require 'bundler'
 begin
   Bundler.setup(:default, :development)
+  Bundler::GemHelper.install_tasks
 rescue Bundler::BundlerError => e
   $stderr.puts e.message
   $stderr.puts 'Run `bundle install` to install missing gems'

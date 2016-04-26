@@ -1,9 +1,10 @@
 # encoding: utf-8
 require 'find'
+require File.expand_path('../lib/convertlabsdk/version', __FILE__)
 
 Gem::Specification.new do |s|
   s.name = 'convertlabsdk'
-  s.version = '0.6.0'
+  s.version = ConvertLab::VERSION
 
   s.required_rubygems_version = Gem::Requirement.new('>= 0') if s.respond_to? :required_rubygems_version=
   s.require_paths = ['lib']
