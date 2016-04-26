@@ -1,0 +1,46 @@
+# encoding: utf-8
+
+HERE = File.dirname(__FILE__)
+$LOAD_PATH.unshift HERE unless $LOAD_PATH.include?(HERE)
+
+require 'resque/tasks'
+require 'resque-scheduler'
+require 'resque/scheduler/tasks'
+require 'resque/pool'
+require 'resque/pool/tasks'
+require 'active_record'
+require 'synchronizer'
+
+DB_CONFIG = Synchronizer::config("#{HERE}/config/config.yml")['db']
+
+namespace :resque do
+  task :setup do
+    ActiveRecord::Base.establish_connection(DB_CONFIG)
+  end
+
+  task 'pool:setup' do
+    ActiveRecord::Base.connection.disconnect!
+    Resque::Pool.after_prefork do |job|
+      ActiveRecord::Base.establish_connection(DB_CONFIG)
+    end
+  end
+
+  task :setup_schedule => :setup do
+    Resque.schedule = YAML.load_file("#{HERE}/config/resque-scheduler.yml")
+  end
+
+  task :scheduler => :setup_schedule
+
+  task :web do 
+    exec 'rackup config.ru'
+  end
+end
+
+namespace :db do
+  desc 'Migrate the database'
+  task :migrate do
+    ActiveRecord::Base.establish_connection(DB_CONFIG)
+    ActiveRecord::Migrator.migrate('db/migrate/')
+    puts 'Database migrated.'
+  end
+end

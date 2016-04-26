@@ -1,0 +1,6 @@
+query_for_updated_orders:
+  #cron: "*/5 * * * *"
+  every: 1m
+  queue: order
+  args: { scheduled: true }
+  class: Synchronizer::OrderReader

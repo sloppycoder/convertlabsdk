@@ -66,3 +66,6 @@ gem_graph.png
 
 # rubymine
 .idea
+
+# test data
+test*.csv
