@@ -1,5 +1,5 @@
 # encoding: utf-8
-#
+# rubocop:disable Lint/Debugger:
 #
 # Demo program to sync customer data to the cloud
 #

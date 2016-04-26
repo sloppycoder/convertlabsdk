@@ -3,7 +3,6 @@
 require_relative 'helper'
 
 class TestJobStatus < MiniTest::Test
-
   init_test_db
 
   def test_job_status_api

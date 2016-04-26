@@ -4,7 +4,6 @@ require_relative 'helper'
 require 'logger'
 
 class TestSyncedObject < MiniTest::Test
-
   init_test_db
 
   def test_channel_account_record_can_be_retrieved_as_synced_object
