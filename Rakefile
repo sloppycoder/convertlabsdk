@@ -53,14 +53,16 @@ RuboCop::RakeTask.new(:rubocop) do |task|
   task.fail_on_error = false
 end
 
+def db_config
+  env = ENV['RAILS_ENV'] || 'development'
+  env += '_jruby' if RUBY_PLATFORM == 'java'
+  YAML::load(File.open('config/database.yml'))[env]
+end
+
 # credit goes to https://gist.github.com/schickling/6762581
 require 'active_record'
 require 'yaml'
 namespace :db do
-  e = ENV['RAILS_ENV'] || 'development'
-  e += '_jruby' if RUBY_PLATFORM == 'java' 
-  config = YAML::load(File.open('config/config.yml'))[e]
-  db_config = config['db']
 
   desc 'Migrate the database'
   task :migrate do

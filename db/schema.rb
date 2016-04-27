@@ -11,13 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160423135355) do
+ActiveRecord::Schema.define(version: 20160424130223) do
 
   create_table "access_tokens", force: :cascade do |t|
     t.string   "token",      limit: 64
     t.datetime "expires_at"
     t.boolean  "is_locked",             default: false
     t.string   "locked_by"
+  end
+
+  create_table "job_statuses", force: :cascade do |t|
+    t.string   "name",      limit: 64
+    t.string   "status",    limit: 16
+    t.string   "memo",      limit: 2000
+    t.datetime "last_sync"
   end
 
   create_table "synced_objects", force: :cascade do |t|
