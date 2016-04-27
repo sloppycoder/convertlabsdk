@@ -7,4 +7,5 @@ This is a simple program that upload data to ConvertLab using multiple worker pr
 * setup logging
 * Dockerfile
 * docker compose with SQL and Redis
-* modify sync_customer to use same code structure
+* upadate single worker doc.
+* add warble config? or remove warble example?

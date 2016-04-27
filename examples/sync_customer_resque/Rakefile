@@ -9,7 +9,7 @@ require 'resque/scheduler/tasks'
 require 'resque/pool'
 require 'resque/pool/tasks'
 require 'active_record'
-require 'synchronizer'
+require 'syncer'
 
 def db_config
   env = ENV['RAILS_ENV'] || 'development'
