@@ -55,7 +55,6 @@ end
 
 def db_config
   env = ENV['RAILS_ENV'] || 'development'
-  env += '_jruby' if RUBY_PLATFORM == 'java'
   YAML::load(File.open('config/database.yml'))[env]
 end
 

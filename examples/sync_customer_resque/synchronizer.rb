@@ -1,18 +1,21 @@
 # encoding: utf-8
 
+require 'resque'
 require 'convertlabsdk'
+require_relative 'testdata'
 
 module Synchronizer
   TEST_CHANNEL = 'TEST_CHANNEL'
   
   class OrderReader
+    include ConvertLab::Logging
 
     @queue = :order
 
     def self.perform(*args)
-      puts "*** OrderReader *** "
-      intervals.each do |since|
-        order_details(since).each do |order|
+      logger.info '*** OrderReader ***'
+      TestData.intervals.each do |since|
+        TestData.order_details(since).each do |order|
           clab_cust = Synchronizer.app_client.customer.find(mobile: order['mobile'])['rows'].first || {}
           customer = extract_customer_info_from_order(order)
           ext_id = order['membershipNo']
@@ -21,7 +24,7 @@ module Synchronizer
         end
       end
       sleep Random.rand(5.0)
-      puts "*** OrderReader done *** "
+      logger.info '*** OrderReader done ***'
     end
 
     def self.extract_customer_info_from_order(order)
@@ -29,26 +32,6 @@ module Synchronizer
       order.dup
     end
 
-    def self.testdata
-      @data ||= load_testdata
-    end
-
-    def self.load_testdata
-      require 'csv'
-      t = []
-      CSV.parse(IO.read(Synchronizer.config['app']['data']), skip_blanks: true, headers: true) do |row|
-        t << row.to_hash
-      end
-      t
-    end
-
-    def self.intervals
-      testdata.collect { |row| row['last_update'] }.uniq.sort
-    end
-
-    def self.order_details(day)
-      testdata.select { |r| r['last_update'] == day }
-    end
   end
 
   class CustomerUploader
@@ -57,10 +40,10 @@ module Synchronizer
     def self.perform(*args)
       opts = args.extract_options!
       customer = args
-      puts "*** CustomerUploader #{opts} ***"
+      logger.info "*** CustomerUploader #{opts} ***"
       ConvertLab::SyncedCustomer.sync(SyncCustomer::app_client.customer, customer, opts)
       sleep Random.rand(5.0)
-      puts "*** CustomerUploader done ***"
+      logger.info '*** CustomerUploader done ***'
     end
   end
 
@@ -69,21 +52,28 @@ module Synchronizer
   end
 
   def self.new_app_client
-    url = config['app']['url'] || 'http://api.51convert.cn'
-    ConvertLab::AppClient.new(url: url, appid: ENV['CLAB_APPID'], secret: ENV['CLAB_SECRET'])
-  end
-  private_class_method :new_app_client
-
-  def self.config(config_file=nil)
-    @config ||= load_config(config_file)
+    ConvertLab::AppClient.new(shared_token: true)
   end
 
-  def self.load_config(config_file)
-    require 'yaml'
+  def self.init_logging
 
-    e = ENV['RAILS_ENV'] || 'development'
-    e += '_jruby' if RUBY_PLATFORM == 'java'
-    YAML::load_file(config_file)[e]
+    return if @log_init
+
+    env = ENV['CLAB_LOGGER'] || 'stdout'
+    if env.upcase == 'STDOUT'
+      puts " Logging to STDOUT "
+      logger = Logger.new STDOUT
+    else
+      puts " Logging to #{env} "
+      log_f = File.open(env, File::WRONLY | File::APPEND | File::CREAT)
+      logger = Logger.new log_f
+    end
+    logger.level = Logger::DEBUG
+
+    ConvertLab.logger = logger
+    Resque.logger = logger
+    ActiveRecord::Base.logger = logger
+
+    @log_init = true
   end
-  private_class_method :load_config
 end

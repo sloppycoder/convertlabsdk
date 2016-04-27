@@ -11,17 +11,20 @@ require 'resque/pool/tasks'
 require 'active_record'
 require 'synchronizer'
 
-DB_CONFIG = Synchronizer::config("#{HERE}/config/config.yml")['db']
+def db_config
+  env = ENV['RAILS_ENV'] || 'development'
+  YAML::load(File.open('config/database.yml'))[env]
+end
 
 namespace :resque do
   task :setup do
-    ActiveRecord::Base.establish_connection(DB_CONFIG)
+    ActiveRecord::Base.establish_connection(db_config)
   end
 
   task 'pool:setup' do
     ActiveRecord::Base.connection.disconnect!
     Resque::Pool.after_prefork do |job|
-      ActiveRecord::Base.establish_connection(DB_CONFIG)
+      ActiveRecord::Base.establish_connection(db_config)
     end
   end
 
@@ -39,7 +42,7 @@ end
 namespace :db do
   desc 'Migrate the database'
   task :migrate do
-    ActiveRecord::Base.establish_connection(DB_CONFIG)
+    ActiveRecord::Base.establish_connection(db_config)
     ActiveRecord::Migrator.migrate('db/migrate/')
     puts 'Database migrated.'
   end

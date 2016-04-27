@@ -13,7 +13,7 @@ ConvertLab::logger = logger
 def config
   e = ARGV.first || 'development'
   e += '_jruby' if RUBY_PLATFORM == 'java' 
-  @config ||= YAML::load(File.open('config/config.yml'))[e]
+  @config ||= YAML::load(File.open('config/database.yml'))[e]
 end
 
 def app_client
