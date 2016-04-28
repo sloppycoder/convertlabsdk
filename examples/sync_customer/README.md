@@ -1,48 +1,62 @@
-## Sync customer demo program
+## Sync customer demo
 
-This is a simple program that upload customer infomration into ConvertLab cloud server. It demostrates how to use the APIs in this SDK
-
-
-### Running demo
+This is a simple program that upload data to ConvertLab. It can be run with a single process or multiple processes managed by [Resque](https://github.com/resque/resque)
+The difference is only in the startup procedure, the [syncer.rb](syncer.rb) code is used in either modes.
+### Install the SDK GEM
+Run the following steps to install the ConvertLabSDK GEM before running any demo program.
 
 ```
-# build and install  SDK first
-#
-# cd <convertlabsdk>
-# gem build convertlabsdk.gemspec
-# gem install
-#
-# then
-#
+cd <convertlabsdk>
+rake build
+rake install
+```
+
+Install gems and setup environment variables needed by the demo program
+
+```
+cd examples/sync_customer
 
 bundle install
 
-# set CLAB APPID and SECRET in envronment variables
+# url defaults to http://api.51convert.cn if not set
+export CLAB_URL=<url>
 export CLAB_APPID=<appid>
 export CLAB_SECRET=<secret>
 
+# create database needed for the demo
+rake db:migrate
+
+```
+
+### Running the demo in single process mode
+```
+ruby syncer.rb
+
+```
+
+### Running the demo in multi process mode managed by Resque
+
+```
 #
-# review the setting in config/config.yml for database configuration
-# defaults to dev.sqlite3 in current directory
+# make sure you have a Redis running locally
 #
 
-ruby bin/sync_customer.rb
+# starts the scheduler
+rake resque:scheudler &
 
-# 
-# if using jruby and warbler, a self-contained executable jar can be created
-# 
-# warbler 2.0 is required for jruby 9000
-#
+# starts the worker pool
+rake resque:pool &
 
-gem install warbler 
-warble
-java -jar sync_customer.jar
+# startup Resque web console
+rake resque:web
+open http://localhost:9292/resque
 
 ```
 
 ### Docker
 
-We can also package the applicaiton into a docker container image
+We can also package the applicaiton into a docker container image.
+Single process model only.
 
 ```
 cp ../../convertlabsdk-0.6.0.gem .
@@ -56,3 +70,8 @@ docker exec -it <container_id> /bin/bash
 
 ```
 
+
+### TODO
+* setup logging. log to file in single process model. STDOUT in docker mode
+* update Dockerfile to support resque mode
+* docker compose with SQL and Redis

@@ -12,9 +12,8 @@ module Synchronizer
     @queue = :order
 
     def self.perform(*args)
-      logger.info '*** OrderReader #{args} ***'
+      puts "*** OrderReader #{args} ***"
       opts = args.extract_options!
-
       TestData.intervals.each do |since|
         TestData.order_details(since).each do |order|
           clab_cust = Synchronizer.app_client.customer.find(mobile: order['mobile'])['rows'].first || {}
@@ -22,22 +21,22 @@ module Synchronizer
           ext_id = order['membershipNo']
           filter = { ext_channel: TEST_CHANNEL, ext_type: 'buyer', ext_id: ext_id, clab_id: clab_cust['id'].to_i }
 
-          if opts[:use_queue]
+          if opts[:use_queue] || opts['use_resque']
             require 'resque'
             Resque.enqueue(CustomerUploader, customer, filter)
           else
             CustomerUploader.perform(customer, filter)
           end
+        end
+        sleep Random.rand(5.0)
+        puts '*** OrderReader done ***'
       end
-      sleep Random.rand(5.0)
-      logger.info '*** OrderReader done ***'
     end
 
     def self.extract_customer_info_from_order(order)
       # dummy for now fix later.
       order.dup
     end
-
   end
 
   class CustomerUploader
@@ -48,10 +47,10 @@ module Synchronizer
     def self.perform(*args)
       opts = args.extract_options!
       customer = args.first
-      logger.info "*** CustomerUploader #{opts} ***"
+      puts "*** CustomerUploader #{opts} ***"
       ConvertLab::SyncedCustomer.sync(Synchronizer.app_client.customer, customer, opts)
       sleep Random.rand(5.0)
-      logger.info '*** CustomerUploader done ***'
+      puts '*** CustomerUploader done ***'
     end
   end
 
@@ -102,7 +101,6 @@ module Synchronizer
 end
 
 if __FILE__ == $0
-  puts '***runnig***'
   Synchronizer.run
 end
 
