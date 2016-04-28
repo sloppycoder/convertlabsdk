@@ -62,13 +62,11 @@ ruby test/test_<whatever>.rb
 
 ```
 
-### Use it in your project
-For single process simple scenario, see this [example](examples/sync_customer).
+See this [sync customer example](examples/sync_customer) for how to use the API in real world application.
 
 ### TODO
-* create multi worker example based on Resque
 * review SycnedObject implementation for concurrency
-* add support for Docker
+* (big) add web console to examine sync objects, similiar to Resque web console?
 * (low) add async submit and forget support?
 * (hold) implement sync_down and test cases (conflict with ext fields validation!)
 * (hold) add caching to rest-client layer
