@@ -12,7 +12,7 @@ use Rack::ShowExceptions
 # Set the AUTH env variable to your basic auth password to protect Resque.
 AUTH_PASSWORD = ENV['AUTH']
 if AUTH_PASSWORD
-  Resque::Server.use Rack::Auth::Basic do |username, password|
+  Resque::Server.use Rack::Auth::Basic do |_, password|
     password == AUTH_PASSWORD
   end
 end

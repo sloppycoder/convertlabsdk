@@ -69,12 +69,11 @@ module Synchronizer
   end
 
   def self.init_logging
-
     return if @log_init
 
     env = ENV['CLAB_LOGGER'] || 'stdout'
-    if env.upcase == 'STDOUT'
-      puts " Logging to STDOUT "
+    if env.casecmp('STDOUT')
+      puts ' Logging to STDOUT '
       logger = Logger.new STDOUT
     else
       puts " Logging to #{env} "
@@ -84,7 +83,7 @@ module Synchronizer
     logger.level = Logger::DEBUG
 
     ConvertLab.logger = logger
-    #ActiveRecord::Base.logger = logger
+    # ActiveRecord::Base.logger = logger
 
     @log_init = true
   end
@@ -99,14 +98,11 @@ module Synchronizer
 
     init_logging
 
-    while true
+    loop do
       Synchronizer::OrderReader.perform(use_queue: false)
       sleep Random.rand(5.0)
     end
   end
 end
 
-if __FILE__ == $0
-  Synchronizer.run
-end
-
+__FILE__ == $PROGRAM_NAME && Synchronizer.run

@@ -59,7 +59,7 @@ We can also package the applicaiton into a docker container image.
 Single process model only.
 
 ```
-cp ../../convertlabsdk-0.6.0.gem .
+cp ../../pkg/convertlabsdk-0.6.0.gem .
 docker build -t syncer:latest .
 
 # to run it in single process mode
@@ -78,4 +78,3 @@ docker exec -it <container_id> /bin/bash
 ### TODO
 * setup logging. log to file in single process model. STDOUT in docker mode
 * docker compose to add PostgresSQL
-* expose config directory to allow override without building a new image
