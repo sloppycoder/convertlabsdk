@@ -1,0 +1,23 @@
+version: '2'
+
+services:
+  resque:
+    image: syncer:latest
+    ports:
+      - "9292:9292"
+    depends_on:
+      - redis
+    command: resque
+# uncomment the volume mapping below to map host directory to the container
+#    volumes:
+#      - ./run/data:/data
+#      - ./run/config:/app/config
+    environment:
+      CLAB_APPID: ${CLAB_APPID}
+      CLAB_SECRET: ${CLAB_SECRET}
+      CLAB_URL: "http://api.51convert.cn"
+      REDIS_HOST: "redis:6379"
+
+  redis:
+    image: redis:3-alpine
+

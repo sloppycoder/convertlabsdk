@@ -62,8 +62,12 @@ Single process model only.
 cp ../../convertlabsdk-0.6.0.gem .
 docker build -t syncer:latest .
 
-# to run it
+# to run it in single process mode
 docker run -d -e CLAB_APPID=$CLAB_APPID -e CLAB_SECRET=$CLAB_SECRET syncer:latest
+
+# to run in multipe process mode using docker-compose
+# it'll start a redis container for use with Resque
+docker-compose up -d
 
 # attach to the container and poke around
 docker exec -it <container_id> /bin/bash
@@ -73,5 +77,5 @@ docker exec -it <container_id> /bin/bash
 
 ### TODO
 * setup logging. log to file in single process model. STDOUT in docker mode
-* update Dockerfile to support resque mode
-* docker compose with SQL and Redis
+* docker compose to add PostgresSQL
+* expose config directory to allow override without building a new image

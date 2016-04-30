@@ -12,6 +12,9 @@ module Synchronizer
     @queue = :order
 
     def self.perform(*args)
+      # to prevent error caused by long running process with a stale db server connection
+      ActiveRecord::Base.clear_active_connections!
+
       puts "*** OrderReader #{args} ***"
       opts = args.extract_options!
       TestData.intervals.each do |since|
@@ -45,6 +48,9 @@ module Synchronizer
     @queue = :customer
 
     def self.perform(*args)
+      # to prevent error caused by long running process with a stale db server connection
+      ActiveRecord::Base.clear_active_connections!
+
       opts = args.extract_options!
       customer = args.first
       puts "*** CustomerUploader #{opts} ***"

@@ -13,6 +13,17 @@ rescue LoadError
   puts 'resque not available'
 end
 
+task :clean do
+  %w(
+    dev.sqlite3
+    gem_graph.png
+    tmp
+    convertlabsdk-0.6.0.gem
+  ).each do |path|
+    rm_rf path, verbose: false
+  end
+end
+
 require 'active_record'
 require 'syncer'
 
@@ -24,6 +35,7 @@ end
 namespace :resque do
 
   task :setup do
+    Resque.redis = ENV['REDIS_HOST'] || 'localhost:6379'
     ActiveRecord::Base.establish_connection(db_config)
   end
 

@@ -11,7 +11,12 @@ WORKDIR /app
 RUN gem install convertlabsdk-0.6.0.gem
 RUN bundle install
 
+RUN mkdir -p /data
 VOLUME /data
+VOLUME /app/config
 
-ENTRYPOINT ["ruby", "bin/sync_customer.rb"]
-CMD ["docker"]
+# resque console is accessible from this port
+EXPOSE 9292
+
+ENTRYPOINT ["/bin/bash", "/app/docker-entrypoint.sh"]
+CMD ["single"]

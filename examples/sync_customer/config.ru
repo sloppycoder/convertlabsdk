@@ -17,4 +17,5 @@ if AUTH_PASSWORD
   end
 end
 
+Resque.redis = ENV['REDIS_HOST'] || 'localhost:6379'
 run Rack::URLMap.new '/resque' => Resque::Server.new
