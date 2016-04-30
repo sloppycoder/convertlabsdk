@@ -33,7 +33,6 @@ def db_config
 end
 
 namespace :resque do
-
   task :setup do
     Resque.redis = ENV['REDIS_HOST'] || 'localhost:6379'
     ActiveRecord::Base.establish_connection(db_config)
@@ -41,19 +40,19 @@ namespace :resque do
 
   task 'pool:setup' do
     ActiveRecord::Base.connection.disconnect!
-    Resque::Pool.after_prefork do |job|
+    Resque::Pool.after_prefork do
       ActiveRecord::Base.establish_connection(db_config)
     end
   end
 
-  task :setup_schedule => :setup do
+  task setup_schedule: :setup do
     Resque.schedule = YAML.load_file("#{HERE}/config/resque-scheduler.yml")
   end
 
-  task :scheduler => :setup_schedule
+  task scheduler: :setup_schedule
 
   task :web do 
-    exec 'rackup config.ru'
+    exec 'rackup config.ru -p9292 --host 0.0.0.0'
   end
 end
 
