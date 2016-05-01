@@ -18,7 +18,7 @@ task :clean do
     dev.sqlite3
     gem_graph.png
     tmp
-    convertlabsdk-0.6.0.gem
+    convertlabsdk-0.6.1.gem
   ).each do |path|
     rm_rf path, verbose: false
   end

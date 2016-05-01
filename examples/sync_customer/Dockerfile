@@ -8,7 +8,7 @@ RUN mkdir -p /app
 COPY . /app
 
 WORKDIR /app
-RUN gem install convertlabsdk-0.6.0.gem
+RUN gem install convertlabsdk-0.6.1.gem
 RUN bundle install
 
 RUN mkdir -p /data
@@ -18,5 +18,5 @@ VOLUME /app/config
 # resque console is accessible from this port
 EXPOSE 9292
 
-ENTRYPOINT ["/bin/bash", "/app/docker-entrypoint.sh"]
+ENTRYPOINT ["/app/docker-entrypoint.sh"]
 CMD ["single"]

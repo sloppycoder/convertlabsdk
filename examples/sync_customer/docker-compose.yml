@@ -2,7 +2,7 @@ version: '2'
 
 services:
   resque:
-    image: syncer:latest
+    image: syncer:0.6.1
     ports:
       - "9292:9292"
     depends_on:
@@ -16,6 +16,7 @@ services:
       CLAB_APPID: ${CLAB_APPID}
       CLAB_SECRET: ${CLAB_SECRET}
       CLAB_URL: "http://api.51convert.cn"
+      RAILS_ENV: "docker"
       REDIS_HOST: "redis:6379"
 
   redis:

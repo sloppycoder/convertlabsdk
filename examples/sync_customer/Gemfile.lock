@@ -16,7 +16,7 @@ GEM
       tzinfo (~> 1.1)
     arel (6.0.3)
     builder (3.2.2)
-    convertlabsdk (0.6.0)
+    convertlabsdk (0.6.1)
       activerecord (~> 4.2)
       rest-client (~> 1.8)
     domain_name (0.5.20160310)
@@ -76,7 +76,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-jdbcsqlite3-adapter
-  convertlabsdk (= 0.6.0)
+  convertlabsdk (= 0.6.1)
   jdbc-sqlite3
   resque
   resque-pool
