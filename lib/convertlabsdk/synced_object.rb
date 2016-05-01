@@ -13,6 +13,7 @@ module ConvertLab
     end
   end
 
+  #
   # Returns JobStatus record for job_name. A new record will be created if one does not exist
   #
   # @example
@@ -22,7 +23,9 @@ module ConvertLab
   #     end
   #
   # @param job_name [String]
+  #
   # @return [JobStatus]
+  #
   def self.job_status(job_name)
     job = JobStatus.where(name: job_name).first_or_create
     job.last_sync ||= DUMMY_TIMESTAMP
@@ -88,6 +91,7 @@ module ConvertLab
     # rubocop:disable Metrics/PerceivedComplexity:
 
 
+    #
     # Returns true if the record needs to be synchronized. 
     # A record should be synchronized if either of the following is true
     #  the record has never been synchronized before
@@ -95,6 +99,7 @@ module ConvertLab
     #  the record's err_count has not exceed MAX_SYNC_ERR. currently set to 10
     #
     # @return [Boolean]
+    #
     def need_sync?
       if is_ignored || err_count >= MAX_SYNC_ERR
         false
@@ -137,18 +142,24 @@ module ConvertLab
       self.err_msg = ''
     end
 
+    #
     # link the record to an external record
+    #
     # @param channel [String] external channel
     # @param type [String] external record type
     # @param id [String] external record id
+    #
     def link_ext_obj(channel, type, id)
       self.ext_channel = channel
       self.ext_type = type
       self.ext_id = id
     end
 
+    #
     # Link the record to a ConvertLab record
+    #
     # @param new_clab_id [Fixnum] ConvertLab record id
+    #
     def link_clab_obj(new_clab_id)
       old_clab_id = clab_id
       if old_clab_id != new_clab_id
@@ -161,28 +172,39 @@ module ConvertLab
       end
     end
 
+    #
     # Returns string representation of an external object. Used for logging
+    #
     # @return [String]
+    #
     def ext_obj
       "ext(#{ext_channel}, #{ext_type}, #{ext_id})"
     end
 
+    #
     # Returns string representation of a convert lab object. Used for logging
+    #
     # @return [String]
+    #
     def clab_obj
       id_string = clab_id ? clab_id : 'new'
       "clab(#{clab_type}, #{id_string})"
     end
 
+    #
     # Returns string representation of the object. Used for logging
+    #
     # @return [String]
+    #
     def to_s
       t = (type || 'unknown').split(':')[-1]
       i = id ? id.to_s : 'new'
       "#{t}(#{i})"
     end
 
+    #
     # Lock the record. Not in use.
+    #
     def lock
       # locking will automatically trigger reload
       # locker older than 1 hour is considered stale
@@ -195,7 +217,9 @@ module ConvertLab
       end
     end
 
+    #
     # Unlock the record. Not in use.
+    #
     def unlock
       self.is_locked = false
       self.locked_at = nil
@@ -245,23 +269,31 @@ module ConvertLab
     end
   end
 
+  #
   # Object that tracks the synchronization between an external object and a ConvertLab channelaccount record
   # (see {SyncedObject}) for Usage details
+  #
   class SyncedChannelAccount < SyncedObject
   end
 
+  #
   # Object that tracks the synchronization between an external object and a ConvertLab customer record
   # (see {SyncedObject}) for Usage details
+  #
   class SyncedCustomer < SyncedObject
   end
 
+  #
   # Object that tracks the synchronization between an external object and a ConvertLab customerevent record
   # (see {SyncedObject}) for Usage details
+  #
   class SyncedCustomerEvent < SyncedObject
   end
 
+  #
   # Object that tracks the synchronization between an external object and a ConvertLab customerevent record
   # (see {SyncedObject}) for Usage details
+  #
   class SyncedDeal < SyncedObject
   end
 end

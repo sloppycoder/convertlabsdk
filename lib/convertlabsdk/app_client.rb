@@ -10,6 +10,7 @@ module ConvertLab
   class AccessToken < ActiveRecord::Base
   end
 
+  #
   # Storage container for access token
   #
   # ConvertLab only allows 1 active access token per app id. When multiple processes needs to access the APIs
@@ -24,11 +25,14 @@ module ConvertLab
     attr_accessor :url, :appid, :secret, :shared, :token, :expires_at
 
     # Constructor
+    #
     # @param url [String] base url of the ConvertLab API REST end points, e.g. http://api.51convert.cn
     # @param appid [String] application id. obtained from ConvertLab
     # @param secret [String] secret for the above application id
     # @param shared [Boolean] whether token will be shared. shared tokens are stored in activerecord data store
+    #
     # @return [TokenStore] object created
+    #
     def initialize(url, appid = 'appid', secret = 'secret', shared = false)
       self.url = url
       self.appid = appid
@@ -36,9 +40,12 @@ module ConvertLab
       self.shared = shared
     end
 
+    #
     # Returns a valid access token. If the token will expire within 5 seconds, a new one will be obtained and returned
+    #
     # @return [String] the access token
     # @raise [AccessTokenError] when new access token cannot be obtained
+    #
     def access_token
       read_shared_token if shared
 
@@ -52,9 +59,12 @@ module ConvertLab
       token
     end
 
+    #
     # obtain a new access token and save in database when sharing is enabled
+    #
     # @return nil when successful
     # @raise [AccessTokenError] when new access token cannot be obtained
+    #
     def update_token
       # lock the token so that nobody can read it while we get a new one
       if shared
@@ -71,8 +81,11 @@ module ConvertLab
       end
     end
 
+    #
     # Returns the string representation of the token
+    #
     # @return [String]
+    #
     def to_s
       "token #{token} expires at #{Time.at(expires_at || 0)}"
     end
@@ -141,6 +154,7 @@ module ConvertLab
 
     attr_accessor :url, :options
 
+    #
     # Constructor
     #
     # @param options [Hash] options below are used. All other key/values will be passed on to RestClient::Request
@@ -149,8 +163,8 @@ module ConvertLab
     # @option options [String] :secret secret for the above application id
     # @option options [Boolean] :shared_token token will be shared, defaults to false
     #
-    #
     # @return [AppClient] object created
+    #
     def initialize(options = {})
       o = options.dup
       @url = o.delete(:url) || ENV['CLAB_URL'] || 'http://api.51convert.cn'
@@ -161,37 +175,58 @@ module ConvertLab
       @token_store = TokenStore.new(url, appid, secret, shared_token)
     end
 
+    #
     # Returns a valid access token. If the token will expire within 5 seconds, a new one will be obtained and returned
+    #
     # @return [String] the access token
     # @raise [AccessTokenError] when new access token cannot be obtained
+    #
     def access_token
       @token_store.access_token
     end
 
+    #
     # obtain a new access token and save in database when sharing is enabled
+    #
     # @return nil when successful
     # @raise [AccessTokenError] when new access token cannot be obtained
+    #
     def update_token
       @token_store.update_token
     end
 
+    #
     # Returns helper object to access ConvertLab channelaccount API
+    #
     # return [Resource]
+    #
     def channel_account
       @channel_account ||= Resource.new(self, '/v1/channelaccounts', options)
     end
 
+    #
     # Returns helper object to access ConvertLab custoemr API
+    #
+    # return [Resource]
+    #
     def customer
       @customer ||= Resource.new(self, '/v1/customers', options)
     end
 
+    #
     # Returns helper object to access ConvertLab customerevent API
+    #
+    # return [Resource]
+    #
     def customer_event
       @customer_event ||= Resource.new(self, '/v1/customerevents', options)
     end
 
+    #
     # Returns helper object to access ConvertLab deal API
+    #
+    # return [Resource]
+    #
     def deal
       @deal ||= Resource.new(self, '/v1/deals', options)
     end
@@ -210,57 +245,81 @@ module ConvertLab
     
     attr_reader :app_client, :resource_path, :options
 
+    #
     # @param app_client [AppClient]
     # @param resource_path [String] relative path of the resource, e.g. '/v1/customer'
     # @param options [Hash] options to past to RestClient:Request, e.g. { verify_ssl: OpenSSL::SSL::VERIFY_NONE }
+    #
+    # @return [Resource] object created
+    #
     def initialize(app_client, resource_path, options = {})
       @app_client = app_client
       @resource_path = resource_path
       @options = options
     end
 
+    #
     # send HTTP GET method ConvertLab API endpoint end point to retrieve a record
+    #
     # @param id [#to_s] id of the ConvertLab record
+    #
     # @return Hash result of JSON::parse.
     # @raise ApiError when response body contains error code
     # @raise Exception any exception from RestClient
+    #
     def get(id)
       parse_response new_request(:get, id: id).execute
     end
 
+    #
     # send HTTP GET method to ConvertLab API end point to query for records
+    #
     # @param params [Hash] Hash containing the query parameters. Parameters will be converted to URL query string.
+    #
     # @return Hash result of JSON::parse.
     # @raise ApiError when response body contains error code
     # @raise Exception any exception from RestClient
+    #
     def find(params = {})
       parse_response new_request(:get, params: params).execute
     end
 
+    #
     # send HTTP POST method to ConvertLab API end point to create new record
+    #
     # @param data [Object] Any object that can be converted to JSON string with .to_json method
+    #
     # @return Hash result of JSON::parse.
     # @raise ApiError when response body contains error code
     # @raise Exception any exception from RestClient
+    #
     def post(data)
       parse_response new_request(:post, payload: data.to_json).execute
     end
 
+    #
     # send HTTP PUT method to ConvertLab API end point to update an existing record
+    #
     # @param id [#to_s] id of the ConvertLab record
     # @param data [Object] Any object that can be converted to JSON string with .to_json method
+    #
     # @return Hash result of JSON::parse.
     # @raise ApiError when response body contains error code
     # @raise Exception any exception from RestClient
+    #
     def put(id, data)
       parse_response new_request(:put, id: id, payload: data.to_json).execute
     end
 
+    #
     # send HTTP DELETE method ConvertLab API endpoint end point to delete a record
+    #
     # @param id [#to_s] id of the ConvertLab record
+    #
     # @return nil if successful
     # @raise ApiError when response body contains error code
     # @raise Exception any exception from RestClient
+    #
     def delete(id)
       parse_response new_request(:delete, id: id).execute
     end
