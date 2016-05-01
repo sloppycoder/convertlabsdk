@@ -3,7 +3,6 @@
 set -o errexit
 umask 0027
 
-export RAILS_ENV=docker
 export CLAB_LOGGER=STDOUT
 
 if [ "$1" = "single" ]; then
