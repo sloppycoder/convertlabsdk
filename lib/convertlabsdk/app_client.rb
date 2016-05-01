@@ -93,21 +93,26 @@ module ConvertLab
     private
 
     # request new access token from ConvertLab server and update the instance variable
+    # TODO: add more intelligent error handling, like re-try?
     def new_access_token
-      headers = { accept: :json, params: { grant_type: 'client_credentials', appid: appid, secret: secret } }
-      resp_body = JSON.parse(RestClient::Request.execute(method: :get, url: "#{url}/security/accesstoken",
-                                                         headers: headers))
-      if resp_body['error_code'].to_i != 0
-        raise AccessTokenError, "get access token returned #{resp_body}"
+      begin
+        headers = { accept: :json, params: { grant_type: 'client_credentials', appid: appid, secret: secret } }
+        resp_body = JSON.parse(RestClient::Request.execute(method: :get, url: "#{url}/security/accesstoken",
+                                                           headers: headers))
+        if resp_body['error_code'].to_i != 0
+          raise AccessTokenError, "get access token returned #{resp_body}"
+        end
+
+        token_expires_at = Time.now + resp_body['expires_in'].to_i
+        token = resp_body['access_token']
+
+        self.expires_at = token_expires_at
+        self.token = token
+
+        logger.debug "received new token #{self}"
+      rescue => e
+        raise AccessTokenError, "got exception #{e.class}:#{e.message}"
       end
-
-      token_expires_at = Time.now + resp_body['expires_in'].to_i
-      token = resp_body['access_token']
-
-      self.expires_at = token_expires_at
-      self.token = token
-
-      logger.debug "received new token #{self}"
     end
 
     # read token from a shared storage
@@ -264,11 +269,10 @@ module ConvertLab
     # @param id [#to_s] id of the ConvertLab record
     #
     # @return Hash result of JSON::parse.
-    # @raise ApiError when response body contains error code
-    # @raise Exception any exception from RestClient
+    # @raise ApiError when response body contains error code or exception is thrown from RestClient
     #
     def get(id)
-      parse_response new_request(:get, id: id).execute
+      parse_response { new_request(:get, id: id).execute }
     end
 
     #
@@ -277,11 +281,10 @@ module ConvertLab
     # @param params [Hash] Hash containing the query parameters. Parameters will be converted to URL query string.
     #
     # @return Hash result of JSON::parse.
-    # @raise ApiError when response body contains error code
-    # @raise Exception any exception from RestClient
+    # @raise ApiError when response body contains error code or exception is thrown from RestClient
     #
     def find(params = {})
-      parse_response new_request(:get, params: params).execute
+      parse_response { new_request(:get, params: params).execute }
     end
 
     #
@@ -290,11 +293,10 @@ module ConvertLab
     # @param data [Object] Any object that can be converted to JSON string with .to_json method
     #
     # @return Hash result of JSON::parse.
-    # @raise ApiError when response body contains error code
-    # @raise Exception any exception from RestClient
+    # @raise ApiError when response body contains error code or exception is thrown from RestClient
     #
     def post(data)
-      parse_response new_request(:post, payload: data.to_json).execute
+      parse_response { new_request(:post, payload: data.to_json).execute }
     end
 
     #
@@ -304,11 +306,10 @@ module ConvertLab
     # @param data [Object] Any object that can be converted to JSON string with .to_json method
     #
     # @return Hash result of JSON::parse.
-    # @raise ApiError when response body contains error code
-    # @raise Exception any exception from RestClient
+    # @raise ApiError when response body contains error code or exception is thrown from RestClient
     #
     def put(id, data)
-      parse_response new_request(:put, id: id, payload: data.to_json).execute
+      parse_response { new_request(:put, id: id, payload: data.to_json).execute }
     end
 
     #
@@ -317,11 +318,10 @@ module ConvertLab
     # @param id [#to_s] id of the ConvertLab record
     #
     # @return nil if successful
-    # @raise ApiError when response body contains error code
-    # @raise Exception any exception from RestClient
+    # @raise ApiError when response body contains error code or exception is thrown from RestClient
     #
     def delete(id)
-      parse_response new_request(:delete, id: id).execute
+      parse_response { new_request(:delete, id: id).execute }
     end
 
     private
@@ -348,19 +348,24 @@ module ConvertLab
     # parse the response for error information
     # raise the error is error code is not 0, otherwise return the 
     # object parsed from response json
-    def parse_response(response)
-      case response.code
-      when 204 # No Content
-        nil
-      when 200..201
-        resp_obj = JSON.parse(response)
-        if resp_obj.is_a?(Hash) && resp_obj.key?('error_code') 
-          err_code = resp_obj['error_code'].to_i
-          if err_code != 0
-            raise ApiError, "#{err_code} - #{resp_obj['error_description']}"
+    def parse_response(&block)
+      begin
+        response = block.call
+        case response.code
+        when 204 # No Content
+          nil
+        when 200..201
+          resp_obj = JSON.parse(response)
+          if resp_obj.is_a?(Hash) && resp_obj.key?('error_code')
+            err_code = resp_obj['error_code'].to_i
+            if err_code != 0
+              raise ApiError, "#{err_code} - #{resp_obj['error_description']}"
+            end
           end
+          resp_obj
         end
-        resp_obj
+      rescue => e
+        raise ApiError, "got exception #{e.class}:#{e.message}"
       end
     end
   end

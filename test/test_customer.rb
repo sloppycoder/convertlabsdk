@@ -33,7 +33,7 @@ class TestCustomer < MiniTest::Test
       # instead of return 404. is it a bug?
       begin
         app_client.customer.get(id)
-      rescue RestClient::InternalServerError
+      rescue ConvertLab::ApiError
       end
     end
   end

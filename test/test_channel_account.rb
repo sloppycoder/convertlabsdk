@@ -26,7 +26,7 @@ class TestChannelAccount < MiniTest::Test
 
       # retrieve with non-existent id throws internal exception
       # instead of return 404. is it a bug?
-      assert_raises RestClient::InternalServerError do 
+      assert_raises ConvertLab::ApiError do
         app_client.channel_account.get(id)
       end
     end
@@ -62,7 +62,7 @@ class TestChannelAccount < MiniTest::Test
       [id1, id2, id3].each do |id|
         begin
           app_client.channel_account.delete(id)
-        rescue RestClient::InternalServerError
+        rescue ConvertLab::ApiError
         end
       end
     end
@@ -88,7 +88,7 @@ class TestChannelAccount < MiniTest::Test
       # delete what we just created so that we can run the test again
       begin
         app_client.channel_account.delete(id)
-      rescue RestClient::InternalServerError
+      rescue ConvertLab::ApiError
       end
     end
   end
