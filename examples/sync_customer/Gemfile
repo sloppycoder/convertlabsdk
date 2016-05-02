@@ -13,7 +13,7 @@ gem 'pg'
 gem 'sqlite3'
 
 # convenience only. use the same rake version as the SDK itself to avoid typing bundle exec ...
-gem 'rake', '~> 10.4'
+gem 'rake', '~> 10.4.2'
 
 group :resque do
   gem 'resque'
