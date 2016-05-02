@@ -56,11 +56,17 @@ namespace :resque do
   end
 end
 
+require 'retries'
+require 'pg'
 namespace :db do
   desc 'Migrate the database'
   task :migrate do
-    ActiveRecord::Base.establish_connection(db_config)
-    ActiveRecord::Migrator.migrate('db/migrate/')
-    puts 'Database migrated.'
+    # wait for database to startup fully
+    with_retries(max_tries: 4, base_sleep_seconds: 5, max_sleep_seconds: 120.0, rescue: PG::ConnectionBad) do |n|
+      puts "Trying db:migrate attempt #{n}"
+      ActiveRecord::Base.establish_connection(db_config)
+      ActiveRecord::Migrator.migrate('db/migrate/')
+      puts 'Database migrated.'
+    end
   end
 end

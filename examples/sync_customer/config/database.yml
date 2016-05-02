@@ -5,6 +5,16 @@ development:
   timeout: 5000
 
 docker:
+  adapter: postgresql
+  encoding: unicode
+  host: postgres
+  database: postgres
+  username: postgres
+  password: mysecretpassword
+  pool: 2
+  checkout_timeout: 30
+
+docker_sqlite:
   adapter: sqlite3
   database: /data/syncdb.sqlite3
   pool: 2

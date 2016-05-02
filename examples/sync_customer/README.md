@@ -2,6 +2,7 @@
 
 This is a simple program that upload data to ConvertLab. It can be run with a single process or multiple processes managed by [Resque](https://github.com/resque/resque)
 The difference is only in the startup procedure, the [syncer.rb](syncer.rb) code is used in either modes.
+
 ### Install the SDK GEM
 Run the following steps to install the ConvertLabSDK GEM before running any demo program.
 
@@ -65,11 +66,25 @@ docker build -t syncer:0.6.1 .
 # to run it in single process mode
 docker run -d -e CLAB_APPID=$CLAB_APPID -e CLAB_SECRET=$CLAB_SECRET syncer:0.6.1
 
-# to run in multipe process mode using docker-compose
-# it'll start a redis container for use with Resque
+```
+
+To run in multiple process mode using docker-compose
+
+```
+# prepare local directory for use as docker volumes
+# that stores configuration file and database
+
+mkdir -p ../run/pgdata
+cp -r config ../run/.
+
+# startup all services
 docker-compose up -d
 
-# attach to the container and poke around
+```
+
+To attach to the container and poke around
+
+```
 docker exec -it <container_id> /bin/bash
 
 ```
@@ -77,4 +92,3 @@ docker exec -it <container_id> /bin/bash
 
 ### TODO
 * setup logging. log to file in single process model. STDOUT in docker mode
-* docker compose to add PostgresSQL

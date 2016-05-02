@@ -7,11 +7,12 @@ services:
       - "9292:9292"
     depends_on:
       - redis
+      - postgres
     command: resque
-# uncomment the volume mapping below to map host directory to the container
-#    volumes:
-#      - ./run/data:/data
-#      - ./run/config:/app/config
+    volumes:
+      # /data is used by sqlite3 adapter only.
+      - ../run/data:/data
+      - ../run/config:/app/config
     environment:
       CLAB_APPID: ${CLAB_APPID}
       CLAB_SECRET: ${CLAB_SECRET}
@@ -22,3 +23,10 @@ services:
   redis:
     image: redis:3-alpine
 
+  postgres:
+    image: postgres:9.5
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "mysecretpassword"
+    volumes:
+      - ../run/pgdata:/var/lib/postgresql/data

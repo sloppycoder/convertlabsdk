@@ -67,5 +67,5 @@ gem_graph.png
 # rubymine
 .idea
 
-# test data
-test*.csv
+# data volumes used by docker
+examples/run

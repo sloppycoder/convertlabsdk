@@ -4,3 +4,7 @@ customer: 1
 docker:
   order: 1
   customer: 1
+
+docker_sqlite:
+  order: 1
+  customer: 1
