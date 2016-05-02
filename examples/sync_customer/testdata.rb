@@ -1,5 +1,7 @@
 # encoding: utf-8
 
+# rubocop:disable Style/ModuleFunction
+
 module TestData
   extend self
 

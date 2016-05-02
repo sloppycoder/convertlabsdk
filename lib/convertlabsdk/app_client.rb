@@ -95,24 +95,22 @@ module ConvertLab
     # request new access token from ConvertLab server and update the instance variable
     # TODO: add more intelligent error handling, like re-try?
     def new_access_token
-      begin
-        headers = { accept: :json, params: { grant_type: 'client_credentials', appid: appid, secret: secret } }
-        resp_body = JSON.parse(RestClient::Request.execute(method: :get, url: "#{url}/security/accesstoken",
-                                                           headers: headers))
-        if resp_body['error_code'].to_i != 0
-          raise AccessTokenError, "get access token returned #{resp_body}"
-        end
-
-        token_expires_at = Time.now + resp_body['expires_in'].to_i
-        token = resp_body['access_token']
-
-        self.expires_at = token_expires_at
-        self.token = token
-
-        logger.debug "received new token #{self}"
-      rescue => e
-        raise AccessTokenError, "got exception #{e.class}:#{e.message}"
+      headers = { accept: :json, params: { grant_type: 'client_credentials', appid: appid, secret: secret } }
+      resp_body = JSON.parse(RestClient::Request.execute(method: :get, url: "#{url}/security/accesstoken",
+                                                         headers: headers))
+      if resp_body['error_code'].to_i != 0
+        raise AccessTokenError, "get access token returned #{resp_body}"
       end
+
+      token_expires_at = Time.now + resp_body['expires_in'].to_i
+      token = resp_body['access_token']
+
+      self.expires_at = token_expires_at
+      self.token = token
+
+      logger.debug "received new token #{self}"
+    rescue => e
+      raise AccessTokenError, "got exception #{e.class}:#{e.message}"
     end
 
     # read token from a shared storage
@@ -348,25 +346,23 @@ module ConvertLab
     # parse the response for error information
     # raise the error is error code is not 0, otherwise return the 
     # object parsed from response json
-    def parse_response(&block)
-      begin
-        response = block.call
-        case response.code
-        when 204 # No Content
-          nil
-        when 200..201
-          resp_obj = JSON.parse(response)
-          if resp_obj.is_a?(Hash) && resp_obj.key?('error_code')
-            err_code = resp_obj['error_code'].to_i
-            if err_code != 0
-              raise ApiError, "#{err_code} - #{resp_obj['error_description']}"
-            end
+    def parse_response(&_)
+      response = yield
+      case response.code
+      when 204 # No Content
+        nil
+      when 200..201
+        resp_obj = JSON.parse(response)
+        if resp_obj.is_a?(Hash) && resp_obj.key?('error_code')
+          err_code = resp_obj['error_code'].to_i
+          if err_code != 0
+            raise ApiError, "#{err_code} - #{resp_obj['error_description']}"
           end
-          resp_obj
         end
-      rescue => e
-        raise ApiError, "got exception #{e.class}:#{e.message}"
+        resp_obj
       end
+    rescue => e
+      raise ApiError, "got exception #{e.class}:#{e.message}"
     end
   end
 end

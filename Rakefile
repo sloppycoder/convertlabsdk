@@ -62,7 +62,6 @@ end
 require 'active_record'
 require 'yaml'
 namespace :db do
-
   desc 'Migrate the database'
   task :migrate do
     ActiveRecord::Base.establish_connection(db_config)
