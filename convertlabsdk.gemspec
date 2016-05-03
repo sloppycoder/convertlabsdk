@@ -36,6 +36,7 @@ Gem::Specification.new do |s|
   if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') 
     s.add_runtime_dependency('rest-client', ['~> 1.8'])
     s.add_runtime_dependency('activerecord', ['~> 4.2'])
+    s.add_runtime_dependency('sinatra', ['~> 0.9.2'])
     s.add_development_dependency('minitest', ['>= 0'])
     s.add_development_dependency('minitest-profile', ['>= 0'])
     s.add_development_dependency('minitest-reporters', ['>= 0'])
