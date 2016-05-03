@@ -60,11 +60,11 @@ We can also package the applicaiton into a docker container image.
 Single process model only.
 
 ```
-cp ../../pkg/convertlabsdk-0.6.1.gem .
-docker build -t syncer:0.6.1 .
+cp ../../pkg/convertlabsdk-0.7.0.gem .
+docker build -t syncer:0.7.0 .
 
 # to run it in single process mode
-docker run -d -e CLAB_APPID=$CLAB_APPID -e CLAB_SECRET=$CLAB_SECRET syncer:0.6.1
+docker run -d -e CLAB_APPID=$CLAB_APPID -e CLAB_SECRET=$CLAB_SECRET -e RAILS_ENV=docker_sqlite syncer:0.7.0
 
 ```
 

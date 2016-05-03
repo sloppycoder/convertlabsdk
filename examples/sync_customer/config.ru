@@ -3,9 +3,13 @@
 HERE = File.dirname(__FILE__)
 $LOAD_PATH.unshift HERE unless $LOAD_PATH.include?(HERE)
 
+require 'active_record'
 require 'resque/server'
 require 'resque-scheduler'
 require 'resque/scheduler/server'
+require 'convertlabsdk'
+require 'convertlabsdk/server'
+
 
 use Rack::ShowExceptions
 
@@ -18,4 +22,10 @@ if AUTH_PASSWORD
 end
 
 Resque.redis = ENV['REDIS_HOST'] || 'localhost:6379'
-run Rack::URLMap.new '/resque' => Resque::Server.new
+ConvertLab.database_yml = 'config/database.yml'
+ConvertLab.establish_connection
+
+run Rack::URLMap.new(
+  '/syncer' => ConvertLab::Server.new,
+  '/resque' => Resque::Server.new
+)

@@ -18,11 +18,14 @@ task :clean do
     dev.sqlite3
     gem_graph.png
     tmp
-    convertlabsdk-0.6.1.gem
+    convertlabsdk-0.7.0.gem
   ).each do |path|
     rm_rf path, verbose: false
   end
 end
+
+require 'convertlabsdk'
+ConvertLab.database_yml = 'config/database.yml'
 
 require 'active_record'
 require 'syncer'
@@ -30,13 +33,13 @@ require 'syncer'
 namespace :resque do
   task :setup do
     Resque.redis = ENV['REDIS_HOST'] || 'localhost:6379'
-    ActiveRecord::Base.establish_connection(db_config)
+    ConvertLab.establish_connection
   end
 
   task 'pool:setup' do
     ActiveRecord::Base.connection.disconnect!
     Resque::Pool.after_prefork do
-      ActiveRecord::Base.establish_connection(db_config)
+      ConvertLab.establish_connection
     end
   end
 
@@ -59,7 +62,6 @@ namespace :db do
     # wait for database to startup fully
     with_retries(max_tries: 4, base_sleep_seconds: 5, max_sleep_seconds: 120.0, rescue: PG::ConnectionBad) do |n|
       puts "Trying db:migrate attempt #{n}"
-      ConvertLab.database_yml = 'config/database.yml'
       ConvertLab.establish_connection
       ActiveRecord::Migrator.migrate('db/migrate/')
       puts 'Database migrated.'

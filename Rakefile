@@ -14,19 +14,17 @@ task :clean do
   end
 end
 
-#
-# TODO: this cause test_server.rb to fail ONLY. why???
-#
-# require 'rubygems'
-# require 'bundler'
-# begin
-#   Bundler.setup(:default, :development)
-#   Bundler::GemHelper.install_tasks
-# rescue Bundler::BundlerError => e
-#   $stderr.puts e.message
-#   $stderr.puts 'Run `bundle install` to install missing gems'
-#   exit e.status_code
-# end
+require 'rubygems'
+require 'bundler'
+begin
+  # TODO: this cause test_server.rb to fail ONLY. why???
+  # Bundler.setup(:default, :development)
+  Bundler::GemHelper.install_tasks
+rescue Bundler::BundlerError => e
+  $stderr.puts e.message
+  $stderr.puts 'Run `bundle install` to install missing gems'
+  exit e.status_code
+end
 
 require 'rake'
 require 'rake/testtask'

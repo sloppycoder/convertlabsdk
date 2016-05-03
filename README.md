@@ -60,6 +60,10 @@ ruby test/cleanup_testdata.rb
 # to run individual test case files
 ruby test/test_<whatever>.rb
 
+# to start the web conosle 
+rackup
+open http://localhost:9292/syncer
+
 ```
 
 See this [sync customer example](examples/sync_customer) for how to use the API in real world application.

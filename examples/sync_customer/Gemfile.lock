@@ -16,10 +16,9 @@ GEM
       tzinfo (~> 1.1)
     arel (6.0.3)
     builder (3.2.2)
-    convertlabsdk (0.6.1)
+    convertlabsdk (0.7.0)
       activerecord (~> 4.2)
       rest-client (~> 1.8)
-      retries
     domain_name (0.5.20160310)
       unf (>= 0.0.5, < 1.0.0)
     http-cookie (1.0.2)
@@ -78,7 +77,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  convertlabsdk (= 0.6.1)
+  convertlabsdk (= 0.7.0)
   pg
   rake (~> 10.4.2)
   resque

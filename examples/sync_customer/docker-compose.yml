@@ -2,7 +2,7 @@ version: '2'
 
 services:
   resque:
-    image: syncer:0.6.1
+    image: syncer:0.7.0
     ports:
       - "9292:9292"
     depends_on:

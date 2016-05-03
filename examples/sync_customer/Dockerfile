@@ -8,7 +8,7 @@ RUN mkdir -p /app
 COPY . /app
 
 WORKDIR /app
-RUN gem install convertlabsdk-0.6.1.gem
+RUN gem install convertlabsdk-0.7.0.gem
 RUN bundle install
 
 RUN mkdir -p /data

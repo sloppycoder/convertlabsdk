@@ -5,7 +5,7 @@
 # blocked by GFW inside China
 source 'https://ruby.taobao.org'
 
-gem 'convertlabsdk', '0.6.1'
+gem 'convertlabsdk', '0.7.0'
 gem 'retries'
 
 # only 1 database is required. the gem here should correspond to database.yml configuration

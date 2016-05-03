@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    convertlabsdk (0.6.1)
+    convertlabsdk (0.7.0)
       activerecord (~> 4.2)
       rest-client (~> 1.8)
 
@@ -36,7 +36,6 @@ GEM
     docile (1.1.5)
     domain_name (0.5.20160310)
       unf (>= 0.0.5, < 1.0.0)
-    ffi (1.9.10-x86-mingw32)
     hashdiff (0.3.0)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
@@ -66,11 +65,6 @@ GEM
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
-    rest-client (1.8.0-x86-mingw32)
-      ffi (~> 1.9)
-      http-cookie (>= 1.0.2, < 2.0)
-      mime-types (>= 1.16, < 3.0)
-      netrc (~> 0.7)
     rubocop (0.39.0)
       parser (>= 2.3.0.7, < 3.0)
       powerpack (~> 0.1)
@@ -94,9 +88,7 @@ GEM
       thread_safe (~> 0.1)
     unf (0.1.4)
       unf_ext
-    unf (0.1.4-java)
     unf_ext (0.0.7.2)
-    unf_ext (0.0.7.2-x86-mingw32)
     unicode-display_width (1.0.3)
     vcr (3.0.1)
     webmock (1.24.5)
