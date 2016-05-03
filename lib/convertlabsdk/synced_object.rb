@@ -5,7 +5,6 @@ require 'active_support/core_ext'
 require 'date'
 
 module ConvertLab
-
   # path to database.yml
   mattr_accessor :database_yml
 
@@ -46,11 +45,11 @@ module ConvertLab
   #     # we can use ActiveRecord now
   #     ActiveRecord::Migrator.migrate('db/migrate/')
   #
-  # @param env [String] defaults to 'development'
+  # @param env [String]
   #
   # @return true
   #
-  def self.establish_connection(env = 'development')
+  def self.establish_connection(env = nil)
     env = env || ENV['RAILS_ENV'] || ENV['RACK_ENV']
     db_config = YAML::load_file(database_yml)[env]
     ActiveRecord::Base.establish_connection(db_config)

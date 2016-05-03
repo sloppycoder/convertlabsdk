@@ -1,0 +1,16 @@
+<p class='sub'>
+  Database connection configuration</b>
+</p>
+
+<table>
+  <% ActiveRecord::Base.connection_config.each do | key, val | %>
+  <tr>
+    <td>
+      <%= key %>
+    </td>
+    <td>
+      <%= val %>
+    </td>
+  </tr>
+  <% end %>
+</table>

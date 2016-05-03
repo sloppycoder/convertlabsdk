@@ -1,5 +1,6 @@
 # encoding: utf-8
 
+require 'active_record'
 require 'convertlabsdk'
 require_relative 'testdata'
 

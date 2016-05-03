@@ -1,0 +1,33 @@
+  <h1>Synced Objects</h1>
+  <table class='workers'>
+    <tr>
+      <th>Channel</th>
+      <th>Type</th>
+      <th>Ext Id</th>
+      <th>Last Update</th>
+      <th>Clab Type</th>
+      <th>Clab Id</th>
+      <th>Clab Last Update</th>
+      <th>Last Sync Time</th>
+      <th>Error Count</th>
+      <th>Last Error Time</th>
+      <th>Error Message</th>
+    </tr>
+    <% ConvertLab::SyncedObject.take(100).each do |obj| %>
+    <tr>
+      <td><%= obj.ext_channel %></td>
+      <td><%= obj.ext_type %></td>
+      <td><%= obj.ext_id %></td>
+      <td><span class="code"><%= obj.ext_last_update %></span></td>
+      <td><%= obj.clab_type %></td>
+      <td><%= obj.clab_id %></td>
+      <td><span class="code"><%= obj.clab_last_update %></span></td>
+      <td><span class="code"><%= obj.last_sync %></span></td>
+      <td><%= obj.err_count %></td>
+      <td><span class="code"><%= obj.last_err %></span></td>
+      <td class='process'>
+        <code><%= obj.err_msg %></code>
+      </td>
+    </tr>
+    <% end %>
+  </table>

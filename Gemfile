@@ -15,4 +15,6 @@ group :development do
   # MRI stuff
   gem 'sqlite3', '>=0', platform: [:ruby, :mingw_19]
   gem 'redcarpet', '>=0', platform: [:ruby_19, :mingw_19]
+  # for web console
+  gem 'sinatra', '~> 0.9.2'
 end
