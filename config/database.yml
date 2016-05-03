@@ -3,3 +3,17 @@ development:
   database: dev.sqlite3
   pool: 2
   timeout: 5000
+
+test:
+  adapter: sqlite3
+  database: ":memory:"
+
+staging:
+  adapter: postgresql
+  encoding: unicode
+  host: postgres
+  database: postgres
+  username: postgres
+  password: mysecretpassword
+  pool: 2
+  checkout_timeout: 30

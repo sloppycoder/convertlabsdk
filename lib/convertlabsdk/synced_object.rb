@@ -5,6 +5,10 @@ require 'active_support/core_ext'
 require 'date'
 
 module ConvertLab
+
+  # path to database.yml
+  mattr_accessor :database_yml
+
   class JobStatus < ActiveRecord::Base
     # is the JobStatus record new
     # @return [boolean]
@@ -32,6 +36,26 @@ module ConvertLab
     job
   end
 
+  #
+  # Establish database connection
+  #
+  # @example
+  #     ConvertLab.database_yml = 'config/database.yml'
+  #     ConvertLab.establish_connection
+  #
+  #     # we can use ActiveRecord now
+  #     ActiveRecord::Migrator.migrate('db/migrate/')
+  #
+  # @param env [String] defaults to 'development'
+  #
+  # @return true
+  #
+  def self.establish_connection(env = 'development')
+    env = env || ENV['RAILS_ENV'] || ENV['RACK_ENV']
+    db_config = YAML::load_file(database_yml)[env]
+    ActiveRecord::Base.establish_connection(db_config)
+  end
+
 
   # Exception indicates error occurred when trying to synchronizate an external object with ConvertLab record
   class SyncError < RuntimeError; end
@@ -47,7 +71,7 @@ module ConvertLab
   #
   #     # to upload an external customer to ConvertLab
   #
-  #     ActiveRecord::Base.establish_connection
+  #     ConvertLab.establish_connection
   #
   #     app_client = init_connection_detail
   #     ext_customer_info = {ext_channel: 'MY_SUPER_STORE', ext_type: 'customer', , ext_id: 'my_customer_id'}

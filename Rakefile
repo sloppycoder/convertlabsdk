@@ -53,18 +53,14 @@ RuboCop::RakeTask.new(:rubocop) do |task|
   task.fail_on_error = false
 end
 
-def db_config
-  env = ENV['RAILS_ENV'] || 'development'
-  YAML::load(File.open('config/database.yml'))[env]
-end
-
 # credit goes to https://gist.github.com/schickling/6762581
 require 'active_record'
 require 'yaml'
 namespace :db do
   desc 'Migrate the database'
   task :migrate do
-    ActiveRecord::Base.establish_connection(db_config)
+    ConvertLab.database_yml = 'config/database.yml'
+    ConvertLab.establish_connection
     ActiveRecord::Migrator.migrate('db/migrate/')
     Rake::Task['db:schema'].invoke
     puts 'Database migrated.'
@@ -72,7 +68,8 @@ namespace :db do
 
   desc 'Create a db/schema.rb file that is portable against any DB supported by AR'
   task :schema do
-    ActiveRecord::Base.establish_connection(db_config)
+    ConvertLab.database_yml = 'config/database.yml'
+    ConvertLab.establish_connection
     require 'active_record/schema_dumper'
     filename = 'db/schema.rb'
     File.open(filename, 'w:utf-8') do |file|

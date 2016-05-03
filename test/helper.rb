@@ -86,8 +86,8 @@ end
 # end of VCR config helper
 
 def init_test_db
-  adapter = RUBY_PLATFORM == 'java' ? 'jdbcsqlite3' : 'sqlite3'
-  ActiveRecord::Base.establish_connection(adapter: adapter, database: ':memory:')
+  ConvertLab.database_yml = File.dirname(__FILE__) + '/../config/database.yml'
+  ConvertLab.establish_connection('test')
   silence_stream(STDOUT) do
     ActiveRecord::Migrator.migrate(File.dirname(__FILE__) + '/../db/migrate/')
   end

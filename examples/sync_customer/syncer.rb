@@ -91,9 +91,8 @@ module Synchronizer
   # entry point for running in standalone mode
   # it is not called when running under Resque
   def self.run
-    env = ENV['RAILS_ENV'] || 'development'
-    db_config = YAML::load(File.open('config/database.yml'))[env]
-    ActiveRecord::Base.establish_connection(db_config)
+    ConvertLab.database_yml = 'config/database.yml'
+    ConvertLab.establish_connection
     ActiveRecord::Migrator.migrate('db/migrate/')
 
     init_logging
