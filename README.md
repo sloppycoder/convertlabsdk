@@ -71,7 +71,6 @@ See this [sync customer example](examples/sync_customer) for how to use the API 
 ### TODO
 * review SycnedObject implementation for concurrency
 * add filter entry/reset for console
-* add tab to Resque web console to allow navigate back to Syncer
 * (low) add async submit and forget support?
 * (hold) implement sync_down and test cases (conflict with ext fields validation!)
 * (hold) add caching to rest-client layer
