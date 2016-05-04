@@ -17,8 +17,7 @@ end
 require 'rubygems'
 require 'bundler'
 begin
-  # TODO: this cause test_server.rb to fail ONLY. why???
-  # Bundler.setup(:default, :development)
+  Bundler.setup(:default, :development)
   Bundler::GemHelper.install_tasks
 rescue Bundler::BundlerError => e
   $stderr.puts e.message
