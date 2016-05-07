@@ -24,7 +24,7 @@ module ConvertLab
   #
   # @example
   #   class MyComplexClassThatNeedsLogging
-  #     include ConvertLab::logging
+  #     include ConvertLab::Logging
   #
   #     def self.my_class_method
   #       logger.warn 'blah'
