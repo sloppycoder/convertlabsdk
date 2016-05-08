@@ -14,7 +14,7 @@ test:
 
   artifacts:
     paths:
-    - converge
+    - coverage
     - pkg
 
   only:
