@@ -51,6 +51,7 @@ end
 
 # credit goes to https://gist.github.com/schickling/6762581
 require 'active_record'
+require 'convertlabsdk'
 require 'yaml'
 namespace :db do
   desc 'Migrate the database'
