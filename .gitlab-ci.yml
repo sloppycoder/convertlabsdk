@@ -6,7 +6,7 @@ test:
 
   script:
     - bundle install
-    - COVEARGE=1; bundle exec rake clean test
+    - COVEARGE=1 bundle exec rake clean test
     - bundle exec rake build
 
   tags:
