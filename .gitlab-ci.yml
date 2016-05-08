@@ -1,0 +1,21 @@
+
+test:
+  
+  stage: test
+
+  script:
+    - bundle install
+    - COVEARGE=1; bundle exec rake test
+    - bundle exec rake build
+  
+  artifacts:
+    paths:
+      - covearge
+      - pkg
+  
+  tags:
+    - ruby
+
+   only:
+      - master
+      - /^test.*$/
