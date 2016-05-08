@@ -10,9 +10,9 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 require 'convertlabsdk'
 require 'convertlabsdk/server'
 
-def init_test_db
+def init_test_db(env = nil)
   ConvertLab.database_yml = File.dirname(__FILE__) + '/../config/database.yml'
-  ConvertLab.establish_connection('test')
+  ConvertLab.establish_connection(env || 'test')
   silence_stream(STDOUT) do
     ActiveRecord::Migrator.migrate(File.dirname(__FILE__) + '/../db/migrate/')
   end
