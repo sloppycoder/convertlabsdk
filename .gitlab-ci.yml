@@ -6,11 +6,16 @@ test:
 
   script:
     - bundle install
-    - COVEARGE=1; bundle exec rake test
+    - COVEARGE=1; bundle exec rake convergelean test
     - bundle exec rake build
 
   tags:
     - ruby
+
+  artifacts:
+    paths:
+    - converge
+    - pkg
 
   only:
     - master

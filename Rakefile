@@ -3,7 +3,7 @@
 task :clean do
   %w(
     dev.sqlite3
-    test.sqlite3
+    test/dev.sqlite3
     pkg
     doc
     rdoc
