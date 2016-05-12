@@ -12,6 +12,7 @@ class TestAccessToken < MiniTest::Test
   end
 
   def test_child_processes_share_the_same_token
+    skip "Fork does not work on Windows" if Gem.win_platform?
     VCR.use_cassette('test_access_token_04') do
       parent_token = app_client.access_token
       (1..5).each do
