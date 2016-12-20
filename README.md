@@ -75,3 +75,11 @@ See this [sync customer example](examples/sync_customer) for how to use the API 
 * (hold) implement sync_down and test cases (conflict with ext fields validation!)
 * (hold) add caching to rest-client layer
 
+### Fix sqlite crash on Mac OS Sierra
+```
+gem uninstall sqlite3
+bundle config build.sqlite3-ruby "--with-sqlite3-include=/usr/local/Cellar/sqlite/3.15.2/include/ --with-sqlite3-lib=/usr/local/Cellar/sqlite/3.15.2/lib"
+bundle install
+```
+:wq
+
