@@ -9,6 +9,7 @@ defined?(Encoding) || Encoding.default_external = Encoding::UTF_8
 module ConvertLab
   class Server < Sinatra::Base
     dir = File.dirname(File.expand_path(__FILE__))
+    @url_prefix = ''
 
     set :views, "#{dir}/server/views"
 

@@ -4,7 +4,7 @@ require_relative 'server_helper'
 class TestServer < MiniTest::Test
   include Rack::Test::Methods
 
-  init_test_db
+  init_test_db2
 
   def app
     ConvertLab::Server
