@@ -8,7 +8,7 @@ source 'https://ruby.taobao.org'
 gemspec
 
 group :development do
-  gem 'rake', '~> 10.1'
+  gem 'rake'
   # jruby stuff
   gem 'activerecord-jdbcsqlite3-adapter', '>=0', platform: :jruby
   gem 'jdbc-sqlite3', '>=0', platform: :jruby
