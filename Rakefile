@@ -29,7 +29,7 @@ require 'rake'
 require 'rake/testtask'
 Rake::TestTask.new(:test) do |test|
   test.libs << 'lib'
-  test.pattern = 'test/**/test_*.rb'
+  test.test_files = ['test/test_convertlabsdk.rb']
   test.verbose = true
 end
 
