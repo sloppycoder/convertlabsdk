@@ -4,7 +4,7 @@ development:
   pool: 2
   timeout: 5000
 
-test:
+memory:
   adapter: sqlite3
   database: ":memory:"
 

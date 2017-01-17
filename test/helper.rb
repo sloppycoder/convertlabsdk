@@ -85,9 +85,9 @@ if disable_vcr?
 end
 # end of VCR config helper
 
-def init_test_db(env = nil)
+def init_test_db(env = 'memory')
   ConvertLab.database_yml = File.dirname(__FILE__) + '/../config/database.yml'
-  ConvertLab.establish_connection(env || 'test')
+  ConvertLab.establish_connection(env)
   silence_stream(STDOUT) do
     ActiveRecord::Migrator.migrate(File.dirname(__FILE__) + '/../db/migrate/')
   end
